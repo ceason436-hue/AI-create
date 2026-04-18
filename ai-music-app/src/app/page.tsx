@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Play, Sparkles, Mic, Music } from "lucide-react";
+import { Play, Sparkles, Mic, Music, ArrowUpRight } from "lucide-react";
 
 export default function Home() {
   return (
@@ -13,40 +13,52 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-4 md:mt-8 w-full max-w-5xl px-4 md:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-4 md:mt-8 w-full max-w-6xl px-4 md:px-0">
         {/* Module 1: Rhythm */}
-        <Link href="/stage1/rhythm" className="btn-bouncy group bg-white rounded-3xl p-8 border-4 border-macaron-yellow shadow-lg flex flex-col items-center text-center gap-4 hover:bg-yellow-50">
-          <div className="w-24 h-24 bg-macaron-yellow rounded-full flex items-center justify-center shadow-inner">
-            <span className="text-5xl">🥁</span>
+        <Link href="/stage1/rhythm" className="btn-bouncy group bg-white rounded-3xl p-6 border-4 border-macaron-yellow shadow-lg flex flex-col items-center text-center gap-4 hover:bg-yellow-50">
+          <div className="w-20 h-20 bg-macaron-yellow rounded-full flex items-center justify-center shadow-inner">
+            <span className="text-4xl">🥁</span>
           </div>
-          <h2 className="text-2xl font-bold text-orange-600">节奏魔法练习室</h2>
-          <p className="text-gray-500 font-bold">跟着魔法音符拍拍手，创造你的第一个鼓点！</p>
+          <h2 className="text-xl font-bold text-orange-600">节奏练习室</h2>
+          <p className="text-sm text-gray-500 font-bold">跟着魔法音符拍拍手，创造你的第一个鼓点！</p>
           <div className="mt-auto pt-4 flex items-center text-orange-500 font-bold group-hover:scale-110 transition-transform">
-            <Play className="w-6 h-6 mr-2" /> 开始闯关
+            <Play className="w-5 h-5 mr-2" /> 开始闯关
+          </div>
+        </Link>
+
+        {/* Module 1.5: Pitch Explorer */}
+        <Link href="/stage1/pitch-explorer" className="btn-bouncy group bg-white rounded-3xl p-6 border-4 border-macaron-green shadow-lg flex flex-col items-center text-center gap-4 hover:bg-green-50">
+          <div className="w-20 h-20 bg-macaron-green rounded-full flex items-center justify-center shadow-inner">
+            <span className="text-4xl">🪜</span>
+          </div>
+          <h2 className="text-xl font-bold text-green-600">音高体验器</h2>
+          <p className="text-sm text-gray-500 font-bold">爬上魔法楼梯，听听声音变高变低的奇妙感觉！</p>
+          <div className="mt-auto pt-4 flex items-center text-green-500 font-bold group-hover:scale-110 transition-transform">
+            <ArrowUpRight className="w-5 h-5 mr-2" /> 去爬楼梯
           </div>
         </Link>
 
         {/* Module 2: Melody */}
-        <Link href="/stage1/melody" className="btn-bouncy group bg-white rounded-3xl p-8 border-4 border-macaron-blue shadow-lg flex flex-col items-center text-center gap-4 hover:bg-blue-50">
-          <div className="w-24 h-24 bg-macaron-blue rounded-full flex items-center justify-center shadow-inner">
-            <span className="text-5xl">🎹</span>
+        <Link href="/stage1/melody" className="btn-bouncy group bg-white rounded-3xl p-6 border-4 border-macaron-blue shadow-lg flex flex-col items-center text-center gap-4 hover:bg-blue-50">
+          <div className="w-20 h-20 bg-macaron-blue rounded-full flex items-center justify-center shadow-inner">
+            <span className="text-4xl">🎹</span>
           </div>
-          <h2 className="text-2xl font-bold text-teal-600">AI旋律生成器</h2>
-          <p className="text-gray-500 font-bold">选一个心情，召唤小精灵为你写一句好听的旋律！</p>
+          <h2 className="text-xl font-bold text-teal-600">AI旋律生成器</h2>
+          <p className="text-sm text-gray-500 font-bold">选一个心情，召唤小精灵为你写一句好听的旋律！</p>
           <div className="mt-auto pt-4 flex items-center text-teal-500 font-bold group-hover:scale-110 transition-transform">
-            <Sparkles className="w-6 h-6 mr-2" /> 召唤魔法
+            <Sparkles className="w-5 h-5 mr-2" /> 召唤魔法
           </div>
         </Link>
 
         {/* Module 3: Three Keys */}
-        <Link href="/stage1/three-keys" className="btn-bouncy group bg-white rounded-3xl p-8 border-4 border-macaron-purple shadow-lg flex flex-col items-center text-center gap-4 hover:bg-purple-50">
-          <div className="w-24 h-24 bg-macaron-purple rounded-full flex items-center justify-center shadow-inner">
-            <span className="text-5xl">🎹</span>
+        <Link href="/stage1/three-keys" className="btn-bouncy group bg-white rounded-3xl p-6 border-4 border-macaron-purple shadow-lg flex flex-col items-center text-center gap-4 hover:bg-purple-50">
+          <div className="w-20 h-20 bg-macaron-purple rounded-full flex items-center justify-center shadow-inner">
+            <span className="text-4xl">🎹</span>
           </div>
-          <h2 className="text-2xl font-bold text-purple-600">三键成曲</h2>
-          <p className="text-gray-500 font-bold">选择3个不同的音，小精灵为你变出一首完整的伴奏！</p>
+          <h2 className="text-xl font-bold text-purple-600">三键成曲</h2>
+          <p className="text-sm text-gray-500 font-bold">选择3个不同的音，小精灵为你变出一首完整的伴奏！</p>
           <div className="mt-auto pt-4 flex items-center text-purple-500 font-bold group-hover:scale-110 transition-transform">
-            <Music className="w-6 h-6 mr-2" /> 开始编曲
+            <Music className="w-5 h-5 mr-2" /> 开始编曲
           </div>
         </Link>
       </div>
