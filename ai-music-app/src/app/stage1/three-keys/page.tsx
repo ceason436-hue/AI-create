@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Play, RotateCcw, Save, Sparkles, Music, Settings2, SlidersHorizontal, Volume2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Play, RotateCcw, Save, Sparkles, Music, Settings2, SlidersHorizontal, Volume2, Square } from "lucide-react";
+import * as Tone from "tone";
 
 const PIANO_KEYS = [
   { note: "C", type: "white" },
@@ -32,6 +33,100 @@ export default function ThreeKeys() {
   });
   const [appState, setAppState] = useState<"idle" | "generating" | "done">("idle");
   const [progress, setProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Tone.js instances
+  const synthRef = useRef<Tone.PolySynth | any>(null);
+  const sequenceRef = useRef<Tone.Sequence | null>(null);
+
+  // Cleanup Tone.js when component unmounts
+  useEffect(() => {
+    return () => {
+      Tone.Transport.stop();
+      if (sequenceRef.current) sequenceRef.current.dispose();
+      if (synthRef.current) synthRef.current.dispose();
+    };
+  }, []);
+
+  const createSynth = () => {
+    if (synthRef.current) synthRef.current.dispose();
+    let synth;
+    
+    // Apply Reverb to make it sound better
+    const reverb = new Tone.Reverb({ decay: 2.5, preDelay: 0.1 }).toDestination();
+    reverb.generate(); // Ensure it computes the IR
+
+    switch (arrangement.timbre) {
+      case "🎹 三角钢琴":
+        synth = new Tone.PolySynth(Tone.Synth, {
+          envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 1 },
+          oscillator: { type: "triangle" }
+        }).connect(reverb);
+        break;
+      case "🎵 木琴":
+        synth = new Tone.PolySynth(Tone.FMSynth, {
+          envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.5 },
+          modulationIndex: 2
+        }).connect(reverb);
+        break;
+      case "👦 童声":
+        synth = new Tone.PolySynth(Tone.AMSynth, {
+          envelope: { attack: 0.1, decay: 0.2, sustain: 0.8, release: 0.5 }
+        }).connect(reverb);
+        break;
+      case "🎸 吉他":
+        synth = new Tone.PolySynth(Tone.PluckSynth).connect(reverb);
+        break;
+      case "🪘 铃鼓":
+        synth = new Tone.PolySynth(Tone.MembraneSynth).connect(reverb);
+        break;
+      default:
+        synth = new Tone.PolySynth(Tone.Synth).connect(reverb);
+    }
+    return synth;
+  };
+
+  const generateSequence = (notes: string[]) => {
+    // Add octave to notes (e.g. C -> C4)
+    const baseNotes = notes.map(n => `${n}4`);
+    const higherNotes = notes.map(n => `${n}5`);
+    
+    let pattern: string[] = [];
+    
+    // Apply Style logic
+    switch (arrangement.style) {
+      case "流行 Pop":
+        pattern = [baseNotes[0], baseNotes[1], baseNotes[2], higherNotes[1]];
+        break;
+      case "古典 Classical":
+        pattern = [baseNotes[0], higherNotes[0], baseNotes[1], higherNotes[0], baseNotes[2], higherNotes[0]];
+        break;
+      case "电子 Electronic":
+        pattern = [baseNotes[0], baseNotes[0], baseNotes[1], baseNotes[2], higherNotes[2], baseNotes[1]];
+        break;
+      case "摇滚 Rock":
+        pattern = [baseNotes[0], baseNotes[0], baseNotes[1], baseNotes[1], baseNotes[2], baseNotes[2]];
+        break;
+      case "爵士 Jazz":
+        pattern = [baseNotes[0], null as any, baseNotes[1], baseNotes[2], null as any, higherNotes[1]];
+        break;
+      default:
+        pattern = baseNotes;
+    }
+
+    // Apply Divergence (if high, occasionally swap a note randomly)
+    if (arrangement.divergence > 60) {
+       pattern = pattern.map(n => Math.random() > 0.7 ? higherNotes[Math.floor(Math.random() * 3)] : n);
+    }
+
+    if (sequenceRef.current) sequenceRef.current.dispose();
+    
+    sequenceRef.current = new Tone.Sequence((time, note) => {
+      if (note && synthRef.current) {
+        synthRef.current.triggerAttackRelease(note, "8n", time);
+      }
+    }, pattern, "8n");
+  };
 
   const handleNoteClick = (note: string) => {
     if (selectedNotes.includes(note)) {
@@ -43,12 +138,19 @@ export default function ThreeKeys() {
     }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (selectedNotes.length !== 3) return;
+    
+    // Setup Audio context and generator
+    await Tone.start();
+    synthRef.current = createSynth();
+    generateSequence(selectedNotes);
+    Tone.Transport.bpm.value = arrangement.tempo;
+
     setAppState("generating");
     setProgress(0);
     
-    // Simulate generation
+    // Simulate generation loading
     const interval = setInterval(() => {
       setProgress((p) => {
         if (p >= 100) {
@@ -59,6 +161,20 @@ export default function ThreeKeys() {
         return p + 5;
       });
     }, 150);
+  };
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      Tone.Transport.pause();
+      setIsPlaying(false);
+    } else {
+      if (sequenceRef.current) {
+        Tone.Transport.bpm.value = arrangement.tempo;
+        sequenceRef.current.start(0);
+        Tone.Transport.start();
+        setIsPlaying(true);
+      }
+    }
   };
 
   return (
@@ -259,13 +375,21 @@ export default function ThreeKeys() {
                       <p className="text-xs text-indigo-600">{selectedNotes.join(' · ')} | {arrangement.style}</p>
                     </div>
                   </div>
-                  <button className="w-12 h-12 bg-white text-indigo-500 rounded-full shadow border-2 border-indigo-200 flex items-center justify-center hover:bg-indigo-50 btn-bouncy">
-                    <Play className="w-5 h-5 ml-1" fill="currentColor" />
+                  <button 
+                    onClick={togglePlay}
+                    className="w-12 h-12 bg-white text-indigo-500 rounded-full shadow border-2 border-indigo-200 flex items-center justify-center hover:bg-indigo-50 btn-bouncy"
+                  >
+                    {isPlaying ? <Square className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-1" fill="currentColor" />}
                   </button>
                 </div>
                 <div className="flex gap-3">
                   <button 
-                    onClick={() => { setAppState("idle"); setSelectedNotes([]); }}
+                    onClick={() => { 
+                      setAppState("idle"); 
+                      setSelectedNotes([]);
+                      setIsPlaying(false);
+                      Tone.Transport.stop(); 
+                    }}
                     className="flex-1 py-3 bg-white text-gray-600 rounded-xl font-bold border-2 border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2 text-sm"
                   >
                     <RotateCcw className="w-4 h-4" /> 重新创作
