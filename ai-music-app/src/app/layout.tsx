@@ -18,28 +18,28 @@ export default function RootLayout({
       <body>
         <div className="min-h-screen flex flex-col overflow-x-hidden">
           {/* Top Navigation */}
-          <header className="h-20 bg-white/80 backdrop-blur-sm shadow-sm border-b-4 border-macaron-pink flex items-center justify-between px-8 sticky top-0 z-50">
+          <header className="min-h-[5rem] h-auto md:h-20 bg-white/80 backdrop-blur-sm shadow-sm border-b-4 border-macaron-pink flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4 md:py-0 gap-4 md:gap-0 sticky top-0 z-50">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-macaron-pink rounded-full flex items-center justify-center shadow-inner">
-                <Music className="w-7 h-7 text-white" />
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-macaron-pink rounded-full flex items-center justify-center shadow-inner flex-shrink-0">
+                <Music className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-pink-500 tracking-wide drop-shadow-sm">
+              <h1 className="text-xl md:text-2xl font-bold text-pink-500 tracking-wide drop-shadow-sm text-center">
                 AI音乐魔法学院 🎶
               </h1>
             </div>
             
-            <nav className="flex gap-4">
-              <Link href="/" className="btn-bouncy flex items-center gap-2 px-6 py-3 bg-macaron-blue text-teal-800 rounded-full font-bold shadow-sm border-2 border-teal-200">
-                <Home className="w-5 h-5" />
+            <nav className="flex flex-wrap justify-center gap-2 md:gap-4 w-full md:w-auto">
+              <Link href="/" className="btn-bouncy flex items-center gap-1 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-macaron-blue text-teal-800 rounded-full font-bold shadow-sm border-2 border-teal-200 text-sm md:text-base">
+                <Home className="w-4 h-4 md:w-5 md:h-5" />
                 首页
               </Link>
-              <Link href="/stage1" className="btn-bouncy flex items-center gap-2 px-6 py-3 bg-macaron-yellow text-orange-800 rounded-full font-bold shadow-sm border-2 border-orange-200">
-                <Star className="w-5 h-5 text-orange-500" />
+              <Link href="/stage1" className="btn-bouncy flex items-center gap-1 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-macaron-yellow text-orange-800 rounded-full font-bold shadow-sm border-2 border-orange-200 text-sm md:text-base">
+                <Star className="w-4 h-4 md:w-5 md:h-5 text-orange-500" />
                 启蒙入门篇
               </Link>
             </nav>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-end">
               {/* Magic Energy Bar Placeholder */}
               <div className="flex flex-col items-end gap-1">
                 <span className="text-xs font-bold text-gray-500">魔法能量 ⚡</span>

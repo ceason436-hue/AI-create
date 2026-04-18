@@ -459,28 +459,28 @@ export default function RhythmRoom() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4 md:gap-6">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border-4 border-macaron-yellow flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-macaron-yellow rounded-full flex items-center justify-center text-3xl">
+      <div className="bg-white rounded-3xl p-4 md:p-6 shadow-sm border-4 border-macaron-yellow flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-macaron-yellow rounded-full flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
             🥁
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-orange-600">节奏魔法练习室</h1>
-            <p className="text-gray-500 font-bold mt-1">跟着节拍，创造你的专属鼓点吧！</p>
+            <h1 className="text-xl md:text-3xl font-bold text-orange-600">节奏魔法练习室</h1>
+            <p className="text-sm md:text-base text-gray-500 font-bold mt-1">跟着节拍，创造你的专属鼓点吧！</p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full md:w-auto justify-center">
           <button 
             onClick={() => setActiveTab("game")}
-            className={`px-6 py-3 rounded-full font-bold transition-all ${activeTab === "game" ? "bg-orange-500 text-white shadow-md" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
+            className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${activeTab === "game" ? "bg-orange-500 text-white shadow-md" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
           >
             闯关游戏
           </button>
           <button 
             onClick={() => setActiveTab("create")}
-            className={`px-6 py-3 rounded-full font-bold transition-all ${activeTab === "create" ? "bg-orange-500 text-white shadow-md" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
+            className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${activeTab === "create" ? "bg-orange-500 text-white shadow-md" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
           >
             自由创作
           </button>
@@ -488,23 +488,23 @@ export default function RhythmRoom() {
       </div>
 
       {activeTab === "create" ? (
-        <div className="bg-white rounded-3xl p-8 shadow-sm border-2 border-orange-100 flex flex-col gap-8">
+        <div className="bg-white rounded-3xl p-4 md:p-8 shadow-sm border-2 border-orange-100 flex flex-col gap-6 md:gap-8">
           {/* Note Selection */}
           <div>
-            <h2 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
-              <Info className="w-5 h-5 text-blue-400" /> 第一步：认识魔法音符
+            <h2 className="text-lg md:text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+              <Info className="w-5 h-5 text-blue-400 flex-shrink-0" /> 第一步：认识魔法音符
             </h2>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start">
               {notes.map(note => (
                 <div 
                   key={note.id}
                   draggable
                   onDragStart={(e) => e.dataTransfer.setData("noteId", note.id)}
-                  className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 flex flex-col items-center gap-2 cursor-grab active:cursor-grabbing hover:bg-orange-100 transition-colors w-32"
+                  className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-2 md:p-4 flex flex-col items-center gap-1 md:gap-2 cursor-grab active:cursor-grabbing hover:bg-orange-100 transition-colors w-24 md:w-32"
                 >
-                  <span className="text-4xl">{note.icon}</span>
-                  <span className="font-bold text-orange-800">{note.name}</span>
-                  <span className="bg-white px-3 py-1 rounded-full text-sm font-bold text-orange-500">"{note.text}"</span>
+                  <span className="text-3xl md:text-4xl">{note.icon}</span>
+                  <span className="font-bold text-orange-800 text-xs md:text-base">{note.name}</span>
+                  <span className="bg-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold text-orange-500">"{note.text}"</span>
                 </div>
               ))}
             </div>
@@ -512,10 +512,10 @@ export default function RhythmRoom() {
 
           {/* Track Area */}
           <div>
-            <h2 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
-              <Info className="w-5 h-5 text-blue-400" /> 第二步：把音符拖进小方格里
+            <h2 className="text-lg md:text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+              <Info className="w-5 h-5 text-blue-400 flex-shrink-0" /> 第二步：把音符拖进小方格里
             </h2>
-            <div className="flex gap-4 bg-gray-50 p-6 rounded-3xl border-2 border-dashed border-gray-300">
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-4 bg-gray-50 p-4 md:p-6 rounded-3xl border-2 border-dashed border-gray-300">
               {track.map((slot, index) => (
                 <div 
                   key={index}
@@ -524,7 +524,7 @@ export default function RhythmRoom() {
                     e.preventDefault();
                     handleDrop(index, e.dataTransfer.getData("noteId"));
                   }}
-                  className={`flex-1 h-32 rounded-2xl border-4 flex flex-col items-center justify-center gap-2 transition-all duration-150 ${playingIndex === index ? 'scale-105 shadow-xl border-orange-500 bg-orange-200 z-10' : slot ? 'border-orange-400 bg-orange-100' : 'border-gray-200 bg-white border-dashed'}`}
+                  className={`flex-1 h-24 md:h-32 rounded-2xl border-4 flex flex-col items-center justify-center gap-1 md:gap-2 transition-all duration-150 ${playingIndex === index ? 'scale-105 shadow-xl border-orange-500 bg-orange-200 z-10' : slot ? 'border-orange-400 bg-orange-100' : 'border-gray-200 bg-white border-dashed'}`}
                 >
                   {slot ? (
                     <>

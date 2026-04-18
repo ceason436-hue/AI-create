@@ -232,14 +232,14 @@ export default function MelodyGenerator() {
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border-4 border-macaron-blue flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-macaron-blue rounded-full flex items-center justify-center text-3xl">
+      <div className="bg-white rounded-3xl p-4 md:p-6 shadow-sm border-4 border-macaron-blue flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-macaron-blue rounded-full flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
             🎹
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-teal-600">AI旋律生成器</h1>
-            <p className="text-gray-500 font-bold mt-1">选一个心情，让小精灵为你写一句好听的旋律！</p>
+            <h1 className="text-xl md:text-3xl font-bold text-teal-600">AI旋律生成器</h1>
+            <p className="text-sm md:text-base text-gray-500 font-bold mt-1">选一个心情，让小精灵为你写一句好听的旋律！</p>
           </div>
         </div>
       </div>
@@ -286,21 +286,21 @@ export default function MelodyGenerator() {
           </div>
 
           {/* Length */}
-          <div className="flex items-center justify-between bg-blue-50 p-4 rounded-2xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-blue-50 p-4 rounded-2xl gap-4 sm:gap-0">
             <span className="font-bold text-gray-700 flex items-center gap-2">
               <Settings className="w-5 h-5 text-teal-500" />
               长度选择：
             </span>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button 
                 onClick={() => setLength(4)}
-                className={`px-4 py-2 rounded-full font-bold ${length === 4 ? 'bg-teal-500 text-white' : 'bg-white text-gray-500'}`}
+                className={`px-4 py-2 rounded-full font-bold text-sm sm:text-base ${length === 4 ? 'bg-teal-500 text-white' : 'bg-white text-gray-500'}`}
               >
                 4小节 (一句话)
               </button>
               <button 
                 onClick={() => setLength(8)}
-                className={`px-4 py-2 rounded-full font-bold ${length === 8 ? 'bg-teal-500 text-white' : 'bg-white text-gray-500'}`}
+                className={`px-4 py-2 rounded-full font-bold text-sm sm:text-base ${length === 8 ? 'bg-teal-500 text-white' : 'bg-white text-gray-500'}`}
               >
                 8小节 (一段话)
               </button>
