@@ -52,8 +52,19 @@ export default function ThreeKeys() {
     if (synthRef.current) synthRef.current.dispose();
     let synth;
     
-    // Apply Reverb to make it sound better
-    const reverb = new Tone.Reverb({ decay: 2.5, preDelay: 0.1 }).toDestination();
+    // Emotion affects Reverb amount
+    let reverbDecay = 2.5;
+    let reverbWet = 0.5;
+    
+    if (arrangement.emotion === "梦幻" || arrangement.emotion === "忧伤") {
+      reverbDecay = 4.0;
+      reverbWet = 0.8;
+    } else if (arrangement.emotion === "激昂" || arrangement.emotion === "欢快") {
+      reverbDecay = 1.5;
+      reverbWet = 0.3;
+    }
+
+    const reverb = new Tone.Reverb({ decay: reverbDecay, preDelay: 0.1, wet: reverbWet }).toDestination();
     reverb.generate(); // Ensure it computes the IR
 
     switch (arrangement.timbre) {
@@ -71,14 +82,22 @@ export default function ThreeKeys() {
         break;
       case "👦 童声":
         synth = new Tone.PolySynth(Tone.AMSynth, {
-          envelope: { attack: 0.1, decay: 0.2, sustain: 0.8, release: 0.5 }
+          envelope: { attack: 0.1, decay: 0.2, sustain: 0.8, release: 0.5 },
+          oscillator: { type: "sine" }
         }).connect(reverb);
         break;
       case "🎸 吉他":
-        synth = new Tone.PolySynth(Tone.PluckSynth).connect(reverb);
+        // PluckSynth is monophonic and tricky in PolySynth. Use a Synth with pluck-like envelope instead.
+        synth = new Tone.PolySynth(Tone.Synth, {
+          oscillator: { type: "pwm", modulationFrequency: 0.2 },
+          envelope: { attack: 0.01, decay: 0.4, sustain: 0.05, release: 1.2 }
+        }).connect(reverb);
         break;
       case "🪘 铃鼓":
-        synth = new Tone.PolySynth(Tone.MembraneSynth).connect(reverb);
+        synth = new Tone.PolySynth(Tone.MembraneSynth, {
+          envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.1 },
+          octaves: 2
+        }).connect(reverb);
         break;
       default:
         synth = new Tone.PolySynth(Tone.Synth).connect(reverb);
@@ -87,45 +106,85 @@ export default function ThreeKeys() {
   };
 
   const generateSequence = (notes: string[]) => {
-    // Add octave to notes (e.g. C -> C4)
-    const baseNotes = notes.map(n => `${n}4`);
-    const higherNotes = notes.map(n => `${n}5`);
+    // Generate different octaves
+    const bass = notes.map(n => `${n}3`);
+    const mid = notes.map(n => `${n}4`);
+    const high = notes.map(n => `${n}5`);
     
-    let pattern: string[] = [];
+    let pattern: any[] = [];
     
-    // Apply Style logic
+    // Apply Style logic with richer arrangements
     switch (arrangement.style) {
       case "流行 Pop":
-        pattern = [baseNotes[0], baseNotes[1], baseNotes[2], higherNotes[1]];
+        // I - V - vi - IV progression feel (simplified using the 3 notes)
+        pattern = [
+          [mid[0], high[1]], mid[1], mid[2], [mid[0], high[2]], 
+          mid[2], mid[1], [mid[1], high[0]], mid[2]
+        ];
         break;
       case "古典 Classical":
-        pattern = [baseNotes[0], higherNotes[0], baseNotes[1], higherNotes[0], baseNotes[2], higherNotes[0]];
+        // Alberti bass style mixed with melody
+        pattern = [
+          [bass[0], high[0]], mid[2], mid[1], mid[2],
+          [bass[1], high[1]], mid[0], mid[2], mid[0],
+          [bass[2], high[2]], mid[1], mid[0], mid[1],
+          [bass[0], high[1]], mid[2], mid[1], mid[2]
+        ];
         break;
       case "电子 Electronic":
-        pattern = [baseNotes[0], baseNotes[0], baseNotes[1], baseNotes[2], higherNotes[2], baseNotes[1]];
+        // Syncopated and repetitive
+        pattern = [
+          bass[0], null, mid[0], bass[0],
+          high[1], mid[1], null, bass[2],
+          mid[2], bass[2], high[2], mid[2],
+          bass[0], mid[0], high[0], null
+        ];
         break;
       case "摇滚 Rock":
-        pattern = [baseNotes[0], baseNotes[0], baseNotes[1], baseNotes[1], baseNotes[2], baseNotes[2]];
+        // Power chord feel (root + 5th usually, here we just stack)
+        pattern = [
+          [bass[0], mid[0]], null, [bass[0], mid[0]], [bass[1], mid[1]],
+          null, [bass[1], mid[1]], [bass[2], mid[2]], null,
+          [bass[0], mid[0]], [bass[0], mid[0]], null, [bass[2], mid[2]],
+          [bass[0], mid[0]], null, null, null
+        ];
         break;
       case "爵士 Jazz":
-        pattern = [baseNotes[0], null as any, baseNotes[1], baseNotes[2], null as any, higherNotes[1]];
+        // Swing feel, lots of rests and complex chords
+        pattern = [
+          [bass[0], mid[1], high[2]], null, null, mid[2],
+          null, [bass[1], mid[2], high[0]], mid[1], null,
+          [bass[2], mid[0], high[1]], null, mid[0], null,
+          null, mid[1], [bass[0], mid[2], high[1]], null
+        ];
         break;
       default:
-        pattern = baseNotes;
+        pattern = mid;
+    }
+
+    // Apply Emotion (Modify the sequence based on feeling)
+    if (arrangement.emotion === "忧伤") {
+      // Slower, more spaces, lower octave
+      pattern = pattern.map((n, i) => i % 2 !== 0 ? null : n);
+    } else if (arrangement.emotion === "激昂") {
+      // Fill spaces with extra notes
+      pattern = pattern.map(n => n === null ? mid[Math.floor(Math.random() * 3)] : n);
     }
 
     // Apply Divergence (if high, occasionally swap a note randomly)
     if (arrangement.divergence > 60) {
-       pattern = pattern.map(n => Math.random() > 0.7 ? higherNotes[Math.floor(Math.random() * 3)] : n);
+       pattern = pattern.map(n => Math.random() > (1 - arrangement.divergence / 200) ? high[Math.floor(Math.random() * 3)] : n);
     }
 
     if (sequenceRef.current) sequenceRef.current.dispose();
     
     sequenceRef.current = new Tone.Sequence((time, note) => {
       if (note && synthRef.current) {
-        synthRef.current.triggerAttackRelease(note, "8n", time);
+        // Randomize velocity slightly for humanization
+        const velocity = 0.7 + Math.random() * 0.3;
+        synthRef.current.triggerAttackRelease(note, "8n", time, velocity);
       }
-    }, pattern, "8n");
+    }, pattern, arrangement.style === "古典 Classical" ? "16n" : "8n");
   };
 
   const handleNoteClick = (note: string) => {
