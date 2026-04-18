@@ -81,6 +81,68 @@ sudo docker compose up -d --build
 
 ---
 
+## 6. 绑定域名 (可选但推荐)
+
+为了让用户通过您的域名（如 `www.yourdomain.com`）直接访问，且不需要输入 `:3000` 端口，建议使用 Nginx 进行反向代理。
+
+### 步骤 1：域名解析
+前往您购买域名的服务商（如阿里云、腾讯云）控制台，添加一条 **A 记录**，将其指向您的服务器 IP：`8.153.148.60`。
+
+### 步骤 2：安装 Nginx
+在您的服务器上执行：
+```bash
+sudo apt-get update
+sudo apt-get install nginx -y
+```
+
+### 步骤 3：配置 Nginx 反向代理
+1. 创建一个新的 Nginx 配置文件：
+```bash
+sudo nano /etc/nginx/sites-available/ai-music
+```
+
+2. 填入以下内容（**记得将 `yourdomain.com` 替换为您的实际域名**）：
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+3. 启用配置并重启 Nginx：
+```bash
+# 创建软链接启用配置
+sudo ln -s /etc/nginx/sites-available/ai-music /etc/nginx/sites-enabled/
+
+# 测试配置是否正确
+sudo nginx -t
+
+# 重启 Nginx
+sudo systemctl restart nginx
+```
+
+### 步骤 4：更新安全组
+现在您需要让公网能够访问 80 端口。请回到**阿里云安全组**，添加一条入方向规则：
+- **协议类型**: TCP
+- **端口范围**: 80/80
+- **授权对象**: 0.0.0.0/0
+
+完成以上步骤后，您就可以直接通过您的域名访问网站了！
+
+---
+
 ## 常用管理命令
 
 *   **查看运行状态**: `sudo docker compose ps`
