@@ -1,0 +1,467 @@
+"use client";
+import { useState, useEffect, useRef } from "react";
+import { Play, RotateCcw, Save, Sparkles, Music, Settings2, SlidersHorizontal, Volume2, Square } from "lucide-react";
+import * as Tone from "tone";
+
+const PIANO_KEYS = [
+  { note: "C", type: "white" },
+  { note: "C#", type: "black" },
+  { note: "D", type: "white" },
+  { note: "D#", type: "black" },
+  { note: "E", type: "white" },
+  { note: "F", type: "white" },
+  { note: "F#", type: "black" },
+  { note: "G", type: "white" },
+  { note: "G#", type: "black" },
+  { note: "A", type: "white" },
+  { note: "A#", type: "black" },
+  { note: "B", type: "white" },
+];
+
+const TIMBRES = ["🎹 三角钢琴", "🎵 木琴", "👦 童声", "🎸 吉他", "🪘 铃鼓"];
+const STYLES = ["流行 Pop", "古典 Classical", "电子 Electronic", "摇滚 Rock", "爵士 Jazz"];
+const EMOTIONS = ["欢快", "忧伤", "宁静", "激昂", "梦幻"];
+
+export default function ThreeKeys() {
+  const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
+  const [arrangement, setArrangement] = useState({
+    timbre: TIMBRES[0],
+    style: STYLES[0],
+    emotion: EMOTIONS[0],
+    tempo: 100,
+    divergence: 50,
+  });
+  const [appState, setAppState] = useState<"idle" | "generating" | "done">("idle");
+  const [progress, setProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Tone.js instances
+  const synthRef = useRef<Tone.PolySynth | any>(null);
+  const sequenceRef = useRef<Tone.Sequence | null>(null);
+
+  // Cleanup Tone.js when component unmounts
+  useEffect(() => {
+    return () => {
+      Tone.Transport.stop();
+      if (sequenceRef.current) sequenceRef.current.dispose();
+      if (synthRef.current) synthRef.current.dispose();
+    };
+  }, []);
+
+  const createSynth = () => {
+    if (synthRef.current) synthRef.current.dispose();
+    let synth;
+    
+    // Emotion affects Reverb amount
+    let reverbDecay = 2.5;
+    let reverbWet = 0.5;
+    
+    if (arrangement.emotion === "梦幻" || arrangement.emotion === "忧伤") {
+      reverbDecay = 4.0;
+      reverbWet = 0.8;
+    } else if (arrangement.emotion === "激昂" || arrangement.emotion === "欢快") {
+      reverbDecay = 1.5;
+      reverbWet = 0.3;
+    }
+
+    const reverb = new Tone.Reverb({ decay: reverbDecay, preDelay: 0.1, wet: reverbWet }).toDestination();
+    reverb.generate(); // Ensure it computes the IR
+
+    switch (arrangement.timbre) {
+      case "🎹 三角钢琴":
+        synth = new Tone.PolySynth(Tone.Synth, {
+          envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 1 },
+          oscillator: { type: "triangle" }
+        }).connect(reverb);
+        break;
+      case "🎵 木琴":
+        synth = new Tone.PolySynth(Tone.FMSynth, {
+          envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.5 },
+          modulationIndex: 2
+        }).connect(reverb);
+        break;
+      case "👦 童声":
+        synth = new Tone.PolySynth(Tone.AMSynth, {
+          envelope: { attack: 0.1, decay: 0.2, sustain: 0.8, release: 0.5 },
+          oscillator: { type: "sine" }
+        }).connect(reverb);
+        break;
+      case "🎸 吉他":
+        // PluckSynth is monophonic and tricky in PolySynth. Use a Synth with pluck-like envelope instead.
+        synth = new Tone.PolySynth(Tone.Synth, {
+          oscillator: { type: "pwm", modulationFrequency: 0.2 },
+          envelope: { attack: 0.01, decay: 0.4, sustain: 0.05, release: 1.2 }
+        }).connect(reverb);
+        break;
+      case "🪘 铃鼓":
+        synth = new Tone.PolySynth(Tone.MembraneSynth, {
+          envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.1 },
+          octaves: 2
+        }).connect(reverb);
+        break;
+      default:
+        synth = new Tone.PolySynth(Tone.Synth).connect(reverb);
+    }
+    return synth;
+  };
+
+  const generateSequence = (notes: string[]) => {
+    // Generate different octaves
+    const bass = notes.map(n => `${n}3`);
+    const mid = notes.map(n => `${n}4`);
+    const high = notes.map(n => `${n}5`);
+    
+    let pattern: any[] = [];
+    
+    // Apply Style logic with richer arrangements
+    switch (arrangement.style) {
+      case "流行 Pop":
+        // I - V - vi - IV progression feel (simplified using the 3 notes)
+        pattern = [
+          [mid[0], high[1]], mid[1], mid[2], [mid[0], high[2]], 
+          mid[2], mid[1], [mid[1], high[0]], mid[2]
+        ];
+        break;
+      case "古典 Classical":
+        // Alberti bass style mixed with melody
+        pattern = [
+          [bass[0], high[0]], mid[2], mid[1], mid[2],
+          [bass[1], high[1]], mid[0], mid[2], mid[0],
+          [bass[2], high[2]], mid[1], mid[0], mid[1],
+          [bass[0], high[1]], mid[2], mid[1], mid[2]
+        ];
+        break;
+      case "电子 Electronic":
+        // Syncopated and repetitive
+        pattern = [
+          bass[0], null, mid[0], bass[0],
+          high[1], mid[1], null, bass[2],
+          mid[2], bass[2], high[2], mid[2],
+          bass[0], mid[0], high[0], null
+        ];
+        break;
+      case "摇滚 Rock":
+        // Power chord feel (root + 5th usually, here we just stack)
+        pattern = [
+          [bass[0], mid[0]], null, [bass[0], mid[0]], [bass[1], mid[1]],
+          null, [bass[1], mid[1]], [bass[2], mid[2]], null,
+          [bass[0], mid[0]], [bass[0], mid[0]], null, [bass[2], mid[2]],
+          [bass[0], mid[0]], null, null, null
+        ];
+        break;
+      case "爵士 Jazz":
+        // Swing feel, lots of rests and complex chords
+        pattern = [
+          [bass[0], mid[1], high[2]], null, null, mid[2],
+          null, [bass[1], mid[2], high[0]], mid[1], null,
+          [bass[2], mid[0], high[1]], null, mid[0], null,
+          null, mid[1], [bass[0], mid[2], high[1]], null
+        ];
+        break;
+      default:
+        pattern = mid;
+    }
+
+    // Apply Emotion (Modify the sequence based on feeling)
+    if (arrangement.emotion === "忧伤") {
+      // Slower, more spaces, lower octave
+      pattern = pattern.map((n, i) => i % 2 !== 0 ? null : n);
+    } else if (arrangement.emotion === "激昂") {
+      // Fill spaces with extra notes
+      pattern = pattern.map(n => n === null ? mid[Math.floor(Math.random() * 3)] : n);
+    }
+
+    // Apply Divergence (if high, occasionally swap a note randomly)
+    if (arrangement.divergence > 60) {
+       pattern = pattern.map(n => Math.random() > (1 - arrangement.divergence / 200) ? high[Math.floor(Math.random() * 3)] : n);
+    }
+
+    if (sequenceRef.current) sequenceRef.current.dispose();
+    
+    sequenceRef.current = new Tone.Sequence((time, note) => {
+      if (note && synthRef.current) {
+        // Randomize velocity slightly for humanization
+        const velocity = 0.7 + Math.random() * 0.3;
+        synthRef.current.triggerAttackRelease(note, "8n", time, velocity);
+      }
+    }, pattern, arrangement.style === "古典 Classical" ? "16n" : "8n");
+  };
+
+  const handleNoteClick = (note: string) => {
+    if (selectedNotes.includes(note)) {
+      setSelectedNotes(selectedNotes.filter((n) => n !== note));
+    } else {
+      if (selectedNotes.length < 3) {
+        setSelectedNotes([...selectedNotes, note]);
+      }
+    }
+  };
+
+  const handleGenerate = async () => {
+    if (selectedNotes.length !== 3) return;
+    
+    // Setup Audio context and generator
+    await Tone.start();
+    synthRef.current = createSynth();
+    generateSequence(selectedNotes);
+    Tone.Transport.bpm.value = arrangement.tempo;
+
+    setAppState("generating");
+    setProgress(0);
+    
+    // Simulate generation loading
+    const interval = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          clearInterval(interval);
+          setAppState("done");
+          return 100;
+        }
+        return p + 5;
+      });
+    }, 150);
+  };
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      Tone.Transport.pause();
+      setIsPlaying(false);
+    } else {
+      if (sequenceRef.current) {
+        Tone.Transport.bpm.value = arrangement.tempo;
+        sequenceRef.current.start(0);
+        Tone.Transport.start();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6 items-center justify-center min-h-[70vh] pb-10">
+      {/* Header */}
+      <div className="bg-white rounded-3xl p-4 md:p-6 shadow-sm border-4 border-macaron-purple flex flex-col md:flex-row items-center justify-between w-full max-w-6xl gap-4 md:gap-0">
+        <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-macaron-purple rounded-full flex items-center justify-center text-2xl md:text-3xl flex-shrink-0 shadow-inner">
+            🎹
+          </div>
+          <div>
+            <h1 className="text-xl md:text-3xl font-bold text-purple-600">三键成曲</h1>
+            <p className="text-sm md:text-base text-gray-500 font-bold mt-1">选3个不同的音，变出一首属于你的伴奏曲子！</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
+        {/* Left Panel: Piano & Notes */}
+        <div className="flex-1 bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-purple-100 flex flex-col gap-8 relative overflow-hidden">
+          <div className="absolute top-10 right-10 text-4xl opacity-10 rotate-12">🎵</div>
+          
+          <div className="z-10">
+            <h2 className="text-xl font-bold text-gray-700 flex items-center gap-2 mb-6">
+              <span className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">1</span>
+              选择3个魔法音符
+            </h2>
+            
+            {/* Selected Notes Display */}
+            <div className="flex justify-center gap-4 mb-10">
+              {[0, 1, 2].map((i) => (
+                <div 
+                  key={i} 
+                  className={`w-20 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner border-4 transition-all ${
+                    selectedNotes[i] 
+                      ? 'bg-purple-100 border-purple-400 text-purple-700 scale-110' 
+                      : 'bg-gray-50 border-gray-200 text-gray-300'
+                  }`}
+                >
+                  {selectedNotes[i] || '?'}
+                </div>
+              ))}
+            </div>
+
+            {/* Piano Keyboard UI */}
+            <div className="relative h-48 md:h-56 flex justify-center bg-gray-100 p-4 rounded-3xl border-4 border-gray-300 shadow-inner overflow-x-auto">
+              <div className="flex relative">
+                {PIANO_KEYS.map((key, i) => {
+                  const isSelected = selectedNotes.includes(key.note);
+                  if (key.type === "white") {
+                    return (
+                      <button
+                        key={key.note}
+                        onClick={() => handleNoteClick(key.note)}
+                        className={`w-12 md:w-16 h-full border-2 border-gray-300 rounded-b-xl flex items-end justify-center pb-4 text-lg font-bold transition-all relative z-0 ${
+                          isSelected ? 'bg-purple-200 shadow-inner translate-y-1' : 'bg-white shadow-[0_4px_0_#d1d5db] hover:bg-gray-50'
+                        }`}
+                      >
+                        <span className={isSelected ? 'text-purple-700' : 'text-gray-400'}>{key.note}</span>
+                      </button>
+                    );
+                  } else {
+                    return (
+                      <button
+                        key={key.note}
+                        onClick={() => handleNoteClick(key.note)}
+                        className={`w-8 md:w-10 h-3/5 bg-gray-800 border-2 border-gray-900 rounded-b-lg absolute z-10 flex items-end justify-center pb-2 text-xs font-bold transition-all ${
+                          isSelected ? 'bg-purple-600 translate-y-1 shadow-inner' : 'shadow-[0_4px_0_#374151] hover:bg-gray-700'
+                        }`}
+                        style={{ marginLeft: '-1rem', left: `${(i / 2) * 3}rem` }} // Approximation for position
+                      >
+                        <span className="text-white opacity-80">{key.note}</span>
+                      </button>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+            <p className="text-center text-gray-400 font-bold mt-4">点击琴键选择音符</p>
+          </div>
+        </div>
+
+        {/* Right Panel: Arrangement Controls */}
+        <div className="flex-1 bg-white rounded-3xl p-6 md:p-8 shadow-md border-2 border-indigo-100 flex flex-col gap-6 relative z-10">
+          <h2 className="text-xl font-bold text-gray-700 flex items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">2</span>
+            魔法编曲设置
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Timbre */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-600 flex items-center gap-1"><Volume2 className="w-4 h-4"/> 音色选择</label>
+              <select 
+                value={arrangement.timbre}
+                onChange={(e) => setArrangement({...arrangement, timbre: e.target.value})}
+                className="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-indigo-400 focus:ring-0 outline-none font-bold text-gray-700"
+              >
+                {TIMBRES.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+
+            {/* Style */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-600 flex items-center gap-1"><Music className="w-4 h-4"/> 曲风</label>
+              <select 
+                value={arrangement.style}
+                onChange={(e) => setArrangement({...arrangement, style: e.target.value})}
+                className="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-indigo-400 focus:ring-0 outline-none font-bold text-gray-700"
+              >
+                {STYLES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+
+            {/* Emotion */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-600 flex items-center gap-1"><Sparkles className="w-4 h-4"/> 情绪</label>
+              <select 
+                value={arrangement.emotion}
+                onChange={(e) => setArrangement({...arrangement, emotion: e.target.value})}
+                className="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-indigo-400 focus:ring-0 outline-none font-bold text-gray-700"
+              >
+                {EMOTIONS.map(e => <option key={e} value={e}>{e}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-6 mt-2">
+            {/* Tempo */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-bold text-gray-600 flex items-center gap-1"><Settings2 className="w-4 h-4"/> 速度 (BPM): {arrangement.tempo}</label>
+                <span className="text-xs text-gray-400 font-bold">{arrangement.tempo < 80 ? '慢' : arrangement.tempo > 120 ? '快' : '中'}</span>
+              </div>
+              <input 
+                type="range" min="60" max="180" 
+                value={arrangement.tempo}
+                onChange={(e) => setArrangement({...arrangement, tempo: parseInt(e.target.value)})}
+                className="w-full h-3 bg-indigo-100 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              />
+            </div>
+
+            {/* Divergence */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-bold text-gray-600 flex items-center gap-1"><SlidersHorizontal className="w-4 h-4"/> AI 发散度: {arrangement.divergence}%</label>
+                <span className="text-xs text-gray-400 font-bold">{arrangement.divergence < 30 ? '保守' : arrangement.divergence > 70 ? '天马行空' : '适中'}</span>
+              </div>
+              <input 
+                type="range" min="0" max="100" 
+                value={arrangement.divergence}
+                onChange={(e) => setArrangement({...arrangement, divergence: parseInt(e.target.value)})}
+                className="w-full h-3 bg-pink-100 rounded-lg appearance-none cursor-pointer accent-pink-500"
+              />
+            </div>
+          </div>
+
+          {/* Action Area */}
+          <div className="mt-auto pt-6 border-t-2 border-gray-100">
+            {appState === "idle" && (
+              <button 
+                onClick={handleGenerate}
+                disabled={selectedNotes.length !== 3}
+                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-all ${
+                  selectedNotes.length === 3 
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white btn-bouncy hover:shadow-xl hover:scale-[1.02]' 
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                <Sparkles className="w-6 h-6" /> 
+                {selectedNotes.length === 3 ? '开始魔法编曲' : `请先选择3个音符 (${selectedNotes.length}/3)`}
+              </button>
+            )}
+
+            {appState === "generating" && (
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-full h-4 bg-gray-100 rounded-full overflow-hidden border border-gray-200 shadow-inner">
+                  <div 
+                    className="h-full bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-500 transition-all duration-150 ease-linear"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+                <p className="text-purple-600 font-bold animate-pulse flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" /> AI正在为你创作专属伴奏...
+                </p>
+              </div>
+            )}
+
+            {appState === "done" && (
+              <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="bg-indigo-50 p-4 rounded-2xl border-2 border-indigo-100 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center">
+                      <Music className="w-5 h-5 text-indigo-600" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-indigo-900 text-sm">你的魔法伴奏</p>
+                      <p className="text-xs text-indigo-600">{selectedNotes.join(' · ')} | {arrangement.style}</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={togglePlay}
+                    className="w-12 h-12 bg-white text-indigo-500 rounded-full shadow border-2 border-indigo-200 flex items-center justify-center hover:bg-indigo-50 btn-bouncy"
+                  >
+                    {isPlaying ? <Square className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-1" fill="currentColor" />}
+                  </button>
+                </div>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => { 
+                      setAppState("idle"); 
+                      setSelectedNotes([]);
+                      setIsPlaying(false);
+                      Tone.Transport.stop(); 
+                    }}
+                    className="flex-1 py-3 bg-white text-gray-600 rounded-xl font-bold border-2 border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2 text-sm"
+                  >
+                    <RotateCcw className="w-4 h-4" /> 重新创作
+                  </button>
+                  <button className="flex-1 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-xl font-bold shadow-md flex items-center justify-center gap-2 text-sm btn-bouncy">
+                    <Save className="w-4 h-4" /> 保存作品
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

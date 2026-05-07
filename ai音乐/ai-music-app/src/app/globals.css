@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+:root {
+  --app-background: #fdf6e3; /* Warm soft background */
+  --app-foreground: #4a4a4a; /* Soft dark text */
+  --color-macaron-pink: #FFB7B2;
+  --color-macaron-blue: #A2E1DB;
+  --color-macaron-yellow: #FFDAC1;
+  --color-macaron-green: #B5EAD7;
+  --color-macaron-purple: #C7CEEA;
+  
+  --font-round: "Quicksand", "Comic Sans MS", "Balsamiq Sans", sans-serif;
+}
+
+@theme inline {
+  --color-app-background: var(--app-background);
+  --color-app-foreground: var(--app-foreground);
+  --font-sans: var(--font-round);
+  
+  --color-macaron-pink: var(--color-macaron-pink);
+  --color-macaron-blue: var(--color-macaron-blue);
+  --color-macaron-yellow: var(--color-macaron-yellow);
+  --color-macaron-green: var(--color-macaron-green);
+  --color-macaron-purple: var(--color-macaron-purple);
+
+  /* Landing page config from code.html */
+  --color-primary-container: #0073e0;
+  --color-on-surface-variant: #414754;
+  --color-tertiary-container: #c15300;
+  --color-on-secondary-fixed: #171e00;
+  --color-on-tertiary-container: #fffbff;
+  --color-outline-variant: #c0c6d6;
+  --color-secondary: #536500;
+  --color-error-container: #ffdad6;
+  --color-surface-bright: #f9f9ff;
+  --color-on-secondary-container: #576a00;
+  --color-on-primary-fixed: #001b3d;
+  --color-background: #f9f9ff;
+  --color-inverse-surface: #2d3038;
+  --color-on-secondary-fixed-variant: #3e4c00;
+  --color-surface-container: #ebedf8;
+  --color-outline: #717785;
+  --color-on-error-container: #93000a;
+  --color-primary-fixed-dim: #a9c7ff;
+  --color-surface-container-high: #e5e8f2;
+  --color-surface-dim: #d7dae4;
+  --color-primary-fixed: #d6e3ff;
+  --color-on-primary-container: #fefcff;
+  --color-surface-container-low: #f1f3fe;
+  --color-secondary-fixed-dim: #b1d400;
+  --color-on-primary-fixed-variant: #00468c;
+  --color-on-secondary: #ffffff;
+  --color-tertiary: #9a4100;
+  --color-on-tertiary-fixed: #341100;
+  --color-surface-variant: #e0e2ec;
+  --color-on-error: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-tertiary-fixed-dim: #ffb691;
+  --color-on-tertiary-fixed-variant: #783100;
+  --color-secondary-container: #c8ef00;
+  --color-primary: #005bb3;
+  --color-surface-tint: #005db7;
+  --color-error: #ba1a1a;
+  --color-secondary-fixed: #caf204;
+  --color-surface-container-highest: #e0e2ec;
+  --color-on-surface: #181c23;
+  --color-on-background: #181c23;
+  --color-surface: #f9f9ff;
+  --color-on-tertiary: #ffffff;
+  --color-inverse-primary: #a9c7ff;
+  --color-on-primary: #ffffff;
+  --color-tertiary-fixed: #ffdbcb;
+  --color-inverse-on-surface: #eef0fb;
+
+  --font-display-xl: "Space Grotesk", sans-serif;
+  --font-body-sm: "Plus Jakarta Sans", sans-serif;
+  --font-body-lg: "Plus Jakarta Sans", sans-serif;
+  --font-headline-md: "Space Grotesk", sans-serif;
+  --font-headline-lg: "Space Grotesk", sans-serif;
+  --font-label-bold: "Space Grotesk", sans-serif;
+
+  --text-display-xl: 80px;
+  --text-display-xl--line-height: 1.0;
+  --text-display-xl--letter-spacing: -0.04em;
+  --text-display-xl--font-weight: 700;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
+  --text-body-sm--font-weight: 400;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 500;
+
+  --text-headline-md: 32px;
+  --text-headline-md--line-height: 1.2;
+  --text-headline-md--font-weight: 600;
+
+  --text-headline-lg: 48px;
+  --text-headline-lg--line-height: 1.1;
+  --text-headline-lg--font-weight: 700;
+
+  --text-label-bold: 16px;
+  --text-label-bold--line-height: 1.0;
+  --text-label-bold--font-weight: 700;
+
+  --spacing-stroke-thick: 3px;
+  --spacing-stroke-thin: 1.5px;
+  --spacing-section-gap: 120px;
+  --spacing-gutter: 24px;
+  --spacing-container-padding: 32px;
+  --spacing-base: 8px;
+  --border-width-stroke-thick: 3px;
+  --border-width-stroke-thin: 1.5px;
+}
+
+.app-body {
+  background: var(--app-background);
+  color: var(--app-foreground);
+  font-family: var(--font-sans);
+  background-image: radial-gradient(var(--color-macaron-yellow) 10%, transparent 10%);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+/* Landing page custom styles */
+.fluid-shape-1 { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+.fluid-shape-2 { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+.fluid-shape-3 { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-panel-dark {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 3px solid #000;
+}
+
+.brutalist-border {
+    border: 3px solid #000000;
+}
+
+.brutalist-border-white {
+    border: 3px solid #ffffff;
+}
+
+.brutalist-shadow-green {
+    box-shadow: 4px 4px 0px 0px #caf204;
+}
+
+.brutalist-shadow-blue {
+    box-shadow: 4px 4px 0px 0px #0073e0;
+}
+
+/* Bouncy animation for buttons */
+@keyframes bounce-sm {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Slide animation for progress bars */
+@keyframes slide {
+  from { background-position: 0 0; }
+  to { background-position: 20px 0; }
+}
+
+.btn-bouncy {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-bouncy:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(0,0,0,0.1);
+}
+.btn-bouncy:active {
+  transform: scale(0.95);
+}
