@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>科瑞特AI (Create AI) Innovation Training</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .fluid-shape-1 { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+        .fluid-shape-2 { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        .fluid-shape-3 { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel-dark {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 3px solid #000;
+        }
+
+        .brutalist-border {
+            border: 3px solid #000000;
+        }
+
+        .brutalist-border-white {
+            border: 3px solid #ffffff;
+        }
+        
+        .brutalist-shadow-green {
+            box-shadow: 4px 4px 0px 0px #caf204;
+        }
+
+        .brutalist-shadow-blue {
+            box-shadow: 4px 4px 0px 0px #0073e0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#0073e0",
+                      "on-surface-variant": "#414754",
+                      "tertiary-container": "#c15300",
+                      "on-secondary-fixed": "#171e00",
+                      "on-tertiary-container": "#fffbff",
+                      "outline-variant": "#c0c6d6",
+                      "secondary": "#536500",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f9f9ff",
+                      "on-secondary-container": "#576a00",
+                      "on-primary-fixed": "#001b3d",
+                      "background": "#f9f9ff",
+                      "inverse-surface": "#2d3038",
+                      "on-secondary-fixed-variant": "#3e4c00",
+                      "surface-container": "#ebedf8",
+                      "outline": "#717785",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#a9c7ff",
+                      "surface-container-high": "#e5e8f2",
+                      "surface-dim": "#d7dae4",
+                      "primary-fixed": "#d6e3ff",
+                      "on-primary-container": "#fefcff",
+                      "surface-container-low": "#f1f3fe",
+                      "secondary-fixed-dim": "#b1d400",
+                      "on-primary-fixed-variant": "#00468c",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#9a4100",
+                      "on-tertiary-fixed": "#341100",
+                      "surface-variant": "#e0e2ec",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb691",
+                      "on-tertiary-fixed-variant": "#783100",
+                      "secondary-container": "#c8ef00",
+                      "primary": "#005bb3",
+                      "surface-tint": "#005db7",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#caf204",
+                      "surface-container-highest": "#e0e2ec",
+                      "on-surface": "#181c23",
+                      "on-background": "#181c23",
+                      "surface": "#f9f9ff",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#a9c7ff",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#ffdbcb",
+                      "inverse-on-surface": "#eef0fb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stroke-thick": "3px",
+                      "stroke-thin": "1.5px",
+                      "section-gap": "120px",
+                      "gutter": "24px",
+                      "container-padding": "32px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "display-xl": [
+                              "Space Grotesk"
+                      ],
+                      "body-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Space Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Space Grotesk"
+                      ],
+                      "label-bold": [
+                              "Space Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "display-xl": [
+                              "80px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased selection:bg-secondary-fixed selection:text-black">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-primary-container/40 dark:bg-primary-container/40 backdrop-blur-xl border-b-stroke-thick border-on-surface fixed top-0 w-full z-50 rounded-b-[8px]">
+<div class="flex justify-between items-center px-4 md:px-gutter py-base max-w-full mx-auto">
+<div class="flex items-center gap-4 md:gap-8">
+<a class="flex items-center gap-2 md:gap-3" href="#">
+<img alt="Create AI Logo" class="h-8 md:h-10 object-contain" data-alt="The exact brand logo image of Create AI (科瑞特) featuring a modern, bold typographic design suitable for an AI innovation training brand. High contrast, crisp edges, energetic aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ugPV4DfOAxVDxlOGXyxHHb81Px1bJji-OC2bk0zCBbpWLBp6T2Pjnk_ZVZc-j4HxTnXAF4YcKtzryfMbjO4u9znk1ZhWYKNqJMg6CRYedoUnJ_iYm5mujwGdBY2V2b8BXLSrY5W9dToPSw0nOE1T6isDhuySwhvr3MbbMngSly9lSJTJldCp6cpo5ZzxcgqGNeYmnO3Kixd_gjAy4NxKrmdNVTdVqXlelbtkYrMCdm-g3tZLqm6KLRDkguVxYcC1cVVOyfUznbHHg"/>
+<span class="font-display-xl text-2xl md:text-headline-md font-black tracking-tighter text-on-primary-container sr-only">Create AI (科瑞特)</span>
+</a>
+<div class="hidden md:flex items-center gap-6" id="nav-menu">
+<a class="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-1 hover:scale-105 transition-transform duration-200" href="#">课程培训</a>
+<a class="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="#">科创活动</a>
+<a class="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="#">成功案例</a>
+<a class="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="#">关于我们</a>
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="hidden sm:block px-4 py-2 md:px-6 md:py-3 font-label-bold text-sm md:text-label-bold text-on-primary-container brutalist-border-white rounded-full hover:bg-white/10 transition-colors">
+                    登录
+                </button>
+<button class="px-4 py-2 md:px-6 md:py-3 font-label-bold text-sm md:text-label-bold bg-secondary-fixed text-black brutalist-border rounded-full brutalist-shadow-blue hover:-translate-y-1 hover:translate-x-1 transition-all">
+                    注册
+                </button>
+<button class="md:hidden p-2 text-on-primary-container focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+    <span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</div>
+</div>
+<!-- Mobile Menu -->
+<div class="hidden md:hidden bg-primary-container border-t-stroke-thick border-on-surface w-full" id="mobile-menu">
+    <div class="flex flex-col px-4 py-4 gap-4">
+        <a class="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-2 w-max" href="#">课程培训</a>
+        <a class="text-on-primary-container/80 font-medium pb-2" href="#">科创活动</a>
+        <a class="text-on-primary-container/80 font-medium pb-2" href="#">成功案例</a>
+        <a class="text-on-primary-container/80 font-medium pb-2" href="#">关于我们</a>
+        <button class="w-full mt-2 px-4 py-3 font-label-bold text-on-primary-container brutalist-border-white rounded-full hover:bg-white/10 transition-colors text-center">
+            登录
+        </button>
+    </div>
+</div>
+</nav>
+<main class="flex flex-col">
+<!-- Section 1: Hero -->
+<section class="relative w-full min-h-screen bg-primary-container overflow-hidden flex items-center pt-32 pb-20 md:py-24 snap-start">
+<!-- Fluid Shape -->
+<div class="absolute bottom-[-10%] left-[-10%] w-[60%] h-[50%] bg-secondary-fixed blur-[8px] fluid-shape-1 opacity-80 z-0"></div>
+<div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-container-padding flex flex-col lg:flex-row items-center gap-12">
+<!-- Left Content -->
+<div class="w-full lg:w-[60%] flex flex-col gap-6 md:gap-8 mt-10 md:mt-0">
+<div class="flex flex-col gap-4">
+<h1 class="font-display-xl text-5xl md:text-display-xl text-on-primary-container relative inline-block max-w-full leading-tight">
+                            科瑞特AI科创
+                            <div class="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[20px] bg-secondary-fixed z-[-1]"></div>
+</h1>
+<p class="font-body-lg text-xl md:text-headline-md text-on-primary-container/90 max-w-2xl mt-2 md:mt-4">
+                            激发未来创造力，融合AI机器人与青少年科技教育的前沿阵地。打破常规，探索未知的智能世界。
+                        </p>
+</div>
+<div class="flex flex-wrap gap-3 md:gap-4">
+<span class="px-4 py-2 md:px-6 md:py-2 bg-black text-secondary-fixed font-label-bold text-sm md:text-label-bold rounded-full brutalist-border">AI机器人编程</span>
+<span class="px-4 py-2 md:px-6 md:py-2 bg-black text-secondary-fixed font-label-bold text-sm md:text-label-bold rounded-full brutalist-border">科创赛事孵化</span>
+</div>
+<div class="flex flex-wrap gap-4 md:gap-6 mt-6 md:mt-8">
+<button class="px-6 py-3 md:px-8 md:py-4 bg-secondary-fixed text-black font-label-bold text-lg md:text-headline-md rounded-full brutalist-border brutalist-shadow-blue hover:-translate-y-1 hover:translate-x-1 transition-all">
+                            立即咨询
+                        </button>
+<button class="px-6 py-3 md:px-8 md:py-4 bg-transparent text-on-primary-container font-label-bold text-lg md:text-headline-md rounded-full brutalist-border-white hover:bg-white/10 transition-all">
+                            课程体系
+                        </button>
+</div>
+</div>
+<!-- Right Content -->
+<div class="w-full lg:w-[40%] flex justify-center items-center relative mt-8 lg:mt-0">
+<div class="absolute inset-0 bg-secondary-fixed/20 blur-3xl rounded-full"></div>
+<img alt="AI Robot Hero Illustration" class="w-auto h-auto max-w-[90%] lg:max-w-[480px] max-h-[50vh] md:max-h-[75vh] object-cover rounded-[24px] md:rounded-[40px] brutalist-border fluid-shape-2 z-10" data-alt="A striking vector illustration of a flat-styled AI robot floating in mid-air, designed with vibrant lime green, stark white, and deep blue colors. The robot emits a subtle, energetic glow, embodying a high-tech yet approachable and youthful neo-brutalist aesthetic. The background is slightly blurred to emphasize the crisp, bold lines of the character." src="./haibao1.png"/>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+<span class="material-symbols-outlined text-on-primary-container text-[48px]" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</div>
+</section>
+<!-- Section 2: AI Music -->
+<section class="relative w-full min-h-[90vh] bg-secondary-fixed overflow-hidden flex items-center py-16 md:py-20">
+<!-- Fluid Shape -->
+<div class="absolute top-[-20%] right-[-10%] w-[50%] h-[60%] bg-primary-container blur-[12px] fluid-shape-3 opacity-90 z-0"></div>
+<div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-container-padding flex flex-col gap-8 md:gap-10">
+<!-- Header -->
+<div class="text-center flex flex-col items-center gap-4">
+<div class="w-16 h-16 md:w-20 md:h-20 bg-black rounded-full flex items-center justify-center brutalist-border">
+<span class="material-symbols-outlined text-secondary-fixed text-[32px] md:text-[40px]" data-icon="music_note" data-weight="fill">music_note</span>
+</div>
+<h2 class="font-display-xl text-3xl md:text-headline-lg text-black bg-white px-6 md:px-8 py-2 brutalist-border rounded-xl -rotate-2">
+                        AI音乐创作营
+                    </h2>
+</div>
+<!-- Content Grid -->
+<div class="flex flex-col lg:flex-row gap-6 items-stretch">
+<!-- Left Card -->
+<div class="w-full lg:w-1/2 glass-panel-dark rounded-[24px] p-6 flex flex-col gap-4 relative overflow-hidden brutalist-shadow-blue cursor-pointer hover:scale-[1.02] transition-transform" onclick="window.location.href='http://localhost:3000'">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container blur-2xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+<div class="h-[160px] md:h-[200px] w-full rounded-2xl brutalist-border overflow-hidden relative">
+<img alt="AI DJ Robot" class="w-full h-full object-cover" data-alt="A dynamic, high-energy illustration of an AI robot acting as a DJ, surrounded by stylized digital soundwaves. The color palette is dominated by intense blue hues with stark black and white contrasts. The composition is loud and bold, fitting a neo-brutalist, youth-oriented tech education brand." src="./tu1.jpg"/>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="font-headline-md text-2xl md:text-headline-md text-secondary-fixed">触手可及的音乐魔力</h3>
+<p class="text-on-primary-container text-body-sm">通过AI算法辅助，让零基础的孩子也能编织动人旋律，体验前所未有的创作乐趣。</p>
+</div>
+</div>
+<!-- Right Grid -->
+<div class="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="bg-primary-container/80 backdrop-blur-md rounded-[20px] p-4 brutalist-border flex flex-col justify-center items-center text-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-[32px] md:text-[36px] mb-2" data-icon="auto_awesome">auto_awesome</span>
+<h4 class="font-headline-md text-base md:text-body-lg font-bold text-white">AI旋律生成</h4>
+</div>
+<div class="bg-primary-container/80 backdrop-blur-md rounded-[20px] p-4 brutalist-border flex flex-col justify-center items-center text-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-[32px] md:text-[36px] mb-2" data-icon="code">code</span>
+<h4 class="font-headline-md text-base md:text-body-lg font-bold text-white">音乐编程入门</h4>
+</div>
+<div class="bg-primary-container/80 backdrop-blur-md rounded-[20px] p-4 brutalist-border flex flex-col justify-center items-center text-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-[32px] md:text-[36px] mb-2" data-icon="album">album</span>
+<h4 class="font-headline-md text-base md:text-body-lg font-bold text-white">原创作品孵化</h4>
+</div>
+<div class="bg-primary-container/80 backdrop-blur-md rounded-[20px] p-4 brutalist-border flex flex-col justify-center items-center text-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-[32px] md:text-[36px] mb-2" data-icon="emoji_events">emoji_events</span>
+<h4 class="font-headline-md text-base md:text-body-lg font-bold text-white">科创赛事适配</h4>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-6">
+<button class="px-6 py-3 md:px-8 md:py-3 bg-primary-container text-white font-label-bold text-base md:text-body-lg rounded-full brutalist-border brutalist-shadow-green hover:-translate-y-1 hover:translate-x-1 transition-all" onclick="window.location.href='http://localhost:3000'">
+                        查看课程详情
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section 3: AI Art -->
+<section class="relative w-full min-h-screen bg-primary-container overflow-hidden flex items-center py-16 md:py-20 snap-start">
+<!-- Scattered Fluid Shapes -->
+<div class="absolute top-[10%] left-[5%] w-[20%] h-[20%] bg-secondary-fixed blur-[8px] rounded-full opacity-60"></div>
+<div class="absolute bottom-[20%] right-[15%] w-[30%] h-[25%] bg-secondary-fixed blur-[12px] fluid-shape-1 opacity-70"></div>
+<div class="absolute top-[40%] right-[50%] w-[15%] h-[15%] bg-secondary-fixed blur-[5px] fluid-shape-2 opacity-50"></div>
+<div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-container-padding flex flex-col gap-8 md:gap-16">
+<!-- Header -->
+<div class="flex items-center gap-4 md:gap-6 justify-start">
+<div class="w-16 h-16 md:w-24 md:h-24 bg-secondary-fixed rounded-full flex items-center justify-center brutalist-border rotate-12 shrink-0">
+<span class="material-symbols-outlined text-black text-[48px] md:text-[64px]" data-icon="brush" data-weight="fill">brush</span>
+</div>
+<h2 class="font-display-xl text-4xl md:text-display-xl text-white tracking-tighter drop-shadow-[2px_2px_0_rgba(0,0,0,1)] md:drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">
+                         AI绘画
+                     </h2>
+</div>
+<div class="flex flex-col lg:flex-row gap-8 md:gap-12 items-start mt-4 md:mt-8">
+<!-- Left Content -->
+<div class="w-full lg:w-[35%] bg-black rounded-[24px] md:rounded-[32px] p-6 md:p-8 brutalist-border shadow-[4px_4px_0_0_#caf204] md:shadow-[8px_8px_0_0_#caf204] flex flex-col gap-6 md:gap-8">
+<h3 class="font-headline-lg text-2xl md:text-headline-md text-white border-b-stroke-thick border-secondary-fixed pb-4">课程核心收获</h3>
+<ul class="flex flex-col gap-4 md:gap-6">
+<li class="flex items-start gap-3 md:gap-4">
+<div class="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+<span class="material-symbols-outlined text-black text-[16px] md:text-[20px]" data-icon="check">check</span>
+</div>
+<span class="text-white text-base md:text-body-lg font-medium">掌握主流AI绘画工具指令构架</span>
+</li>
+<li class="flex items-start gap-3 md:gap-4">
+<div class="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+<span class="material-symbols-outlined text-black text-[16px] md:text-[20px]" data-icon="check">check</span>
+</div>
+<span class="text-white text-base md:text-body-lg font-medium">突破传统美术技法瓶颈限制</span>
+</li>
+<li class="flex items-start gap-3 md:gap-4">
+<div class="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+<span class="material-symbols-outlined text-black text-[16px] md:text-[20px]" data-icon="check">check</span>
+</div>
+<span class="text-white text-base md:text-body-lg font-medium">构建跨学科的视觉叙事能力</span>
+</li>
+<li class="flex items-start gap-3 md:gap-4">
+<div class="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+<span class="material-symbols-outlined text-black text-[16px] md:text-[20px]" data-icon="check">check</span>
+</div>
+<span class="text-white text-base md:text-body-lg font-medium">产出具有商业潜力的IP视觉方案</span>
+</li>
+</ul>
+<button class="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-secondary-fixed text-black font-label-bold text-lg md:text-headline-md rounded-full border-2 border-transparent hover:bg-white hover:border-black transition-colors">
+                             解锁创意课程
+                         </button>
+</div>
+<!-- Right Grid -->
+<div class="w-full lg:w-[65%] flex items-stretch relative mt-8 lg:mt-0">
+<!-- Glow Behind Grid -->
+<div class="absolute inset-0 bg-primary-container blur-[40px] z-[-1] opacity-50"></div>
+<div class="w-full min-h-[300px] md:min-h-[400px] lg:h-auto bg-black rounded-[24px] md:rounded-[32px] border-[4px] md:border-[6px] border-secondary-fixed overflow-hidden group shadow-[4px_4px_0_0_#caf204] md:shadow-[8px_8px_0_0_#caf204]">
+<img alt="AI Art Frame Robot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vivid, generative AI artwork showing a robotic character integrated into a cyberpunk aesthetic. The scene is lit with intense neon greens and deep blues, characterized by high contrast, thick graphic outlines, and a bold neo-brutalist visual style appropriate for a tech education gallery." src="./tu2.png"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-inverse-surface dark:bg-surface-container-lowest w-full border-t-stroke-thick border-on-surface snap-start">
+<div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-container-padding py-12 md:py-section-gap w-full max-w-7xl mx-auto gap-8">
+<div class="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
+        <img alt="Create AI Logo" class="h-10 md:h-12 object-contain bg-white px-3 py-1 rounded-lg" src="./logo2.png"/>
+        <p class="font-body-sm text-body-sm text-white">
+                            © 2024 科瑞特AI科创. 保留所有权利。
+                        </p>
+        </div>
+        <div class="flex flex-wrap gap-4 md:gap-6 justify-center">
+        <a class="font-body-sm text-body-sm text-white hover:text-primary-fixed-dim hover:underline decoration-stroke-thin transition-colors" href="#">隐私政策</a>
+        <a class="font-body-sm text-body-sm text-white hover:text-primary-fixed-dim hover:underline decoration-stroke-thin transition-colors" href="#">服务条款</a>
+        <a class="font-body-sm text-body-sm text-white hover:text-primary-fixed-dim hover:underline decoration-stroke-thin transition-colors" href="#">AI伦理</a>
+        <a class="font-body-sm text-body-sm text-white hover:text-primary-fixed-dim hover:underline decoration-stroke-thin transition-colors" href="#">联系我们</a>
+        </div>
+</div>
+</footer>
+</body></html>
