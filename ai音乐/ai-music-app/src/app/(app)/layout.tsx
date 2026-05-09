@@ -4,7 +4,7 @@ import { Music, Star, Home, Play } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "AI音乐创作魔法学院",
+  title: "AI科瑞特",
   description: "专为小学生设计的AI音乐创作网页应用",
 };
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "科瑞特AI (Create AI) Innovation Training",
+  title: "AI科瑞特",
   description: "激发未来创造力，融合AI机器人与青少年科技教育的前沿阵地。",
 };
 
