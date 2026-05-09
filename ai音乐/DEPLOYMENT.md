@@ -1,4 +1,4 @@
-# 部署指南 - 阿里云 ECS 实例 (8.153.148.60)
+# 部署指南 - 阿里云 ECS 实例 (47.111.227.165)
 
 本项目已配置好 Docker 化部署环境。请按照以下步骤在您的阿里云服务器上进行部署。
 
@@ -6,7 +6,7 @@
 
 登录您的服务器（使用 SSH）：
 ```bash
-ssh root@8.153.148.60
+ssh root@47.111.227.165
 ```
 
 ### 安装 Docker
@@ -49,7 +49,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 **方式 B: SCP 上传**
 在您的本地电脑运行：
 ```bash
-scp -r . root@8.153.148.60:/root/ai-music
+scp -r . root@47.111.227.165:/root/ai-music
 ```
 
 ## 3. 部署应用
@@ -66,7 +66,7 @@ sudo docker compose up -d --build
 为了让外网能够访问您的网站，您需要前往阿里云控制台配置**安全组规则**：
 
 1. 登录 [阿里云控制台](https://ecs.console.aliyun.com/)。
-2. 找到您的实例 `8.153.148.60`。
+2. 找到您的实例 `47.111.227.165`。
 3. 点击 **安全组** -> **配置规则**。
 4. 添加一条**入方向**规则：
    - **协议类型**: TCP
@@ -77,7 +77,7 @@ sudo docker compose up -d --build
 ## 5. 验证部署
 
 部署完成后，您可以直接在浏览器访问：
-`http://8.153.148.60:3000`
+`http://47.111.227.165:3000`
 
 ---
 
