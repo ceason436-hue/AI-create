@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    env_file:
-      - .env
     environment:
       - NODE_ENV=production
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL}
