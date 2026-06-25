@@ -185,6 +185,132 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* Section 3.5: AI Programming */}
+        <section className="relative w-full min-h-screen bg-black overflow-hidden flex items-center py-16 md:py-20 snap-start">
+          <div className="absolute top-[20%] left-[-10%] w-[40%] h-[50%] bg-primary-container blur-[40px] opacity-30 z-0"></div>
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-container-padding flex flex-col gap-8 md:gap-16">
+            <div className="flex items-center gap-4 md:gap-6 justify-center">
+              <h2 className="font-display-xl text-4xl md:text-display-xl text-white tracking-tighter drop-shadow-[2px_2px_0_rgba(202,242,4,1)]">
+                AI编程
+              </h2>
+              <div className="w-16 h-16 md:w-24 md:h-24 bg-primary-container rounded-full flex items-center justify-center brutalist-border rotate-12 shrink-0">
+                <span className="material-symbols-outlined text-white text-[48px] md:text-[64px]">code_blocks</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-stretch mt-4 md:mt-8">
+              {/* Image / Visual Area */}
+              <div className="w-full lg:w-[60%] flex items-stretch relative">
+                <Link href="/ai-programming" className="w-full min-h-[300px] md:min-h-[400px] lg:h-auto bg-white rounded-[24px] md:rounded-[32px] border-[4px] md:border-[6px] border-secondary-fixed overflow-hidden group shadow-[4px_4px_0_0_#caf204] md:shadow-[8px_8px_0_0_#caf204] cursor-pointer block relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent z-10 pointer-events-none"></div>
+                  {/* Using an Unsplash placeholder for coding context */}
+                  <img alt="AI Programming Frame" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop" />
+                  <div className="absolute bottom-6 left-6 right-6 z-20 flex justify-between items-end">
+                     <div className="bg-black/80 backdrop-blur-md px-4 py-2 rounded-xl border border-secondary-fixed inline-block">
+                        <span className="text-secondary-fixed font-bold text-lg md:text-xl">对话即开发，创意秒变现实</span>
+                     </div>
+                  </div>
+                </Link>
+              </div>
+              
+              {/* Content Area */}
+              <div className="w-full lg:w-[40%] bg-secondary-fixed rounded-[24px] md:rounded-[32px] p-6 md:p-8 brutalist-border shadow-[4px_4px_0_0_#ffffff] md:shadow-[8px_8px_0_0_#ffffff] flex flex-col gap-6 md:gap-8 justify-center">
+                <h3 className="font-headline-lg text-2xl md:text-headline-md text-black border-b-stroke-thick border-black pb-4">课程核心收获</h3>
+                <ul className="flex flex-col gap-4 md:gap-6">
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-primary-container rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-white text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-black text-base md:text-body-lg font-bold">零基础自然语言编程体验</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-primary-container rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-white text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-black text-base md:text-body-lg font-bold">实时预览与源码双视图切换</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-primary-container rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-white text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-black text-base md:text-body-lg font-bold">培养计算思维与工程化逻辑</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-primary-container rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-white text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-black text-base md:text-body-lg font-bold">一键导出作品，成就感拉满</span>
+                  </li>
+                </ul>
+                <Link href="/ai-programming" className="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-black text-secondary-fixed font-label-bold text-lg md:text-headline-md rounded-full border-2 border-transparent hover:bg-white hover:text-black hover:border-black transition-colors inline-block text-center cursor-pointer">
+                  进入编程空间
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: AI Reading */}
+        <section className="relative w-full min-h-screen bg-secondary-fixed overflow-hidden flex items-center py-16 md:py-20 snap-start">
+          <div className="absolute top-[20%] left-[-10%] w-[40%] h-[50%] bg-primary-container blur-[12px] fluid-shape-3 opacity-90 z-0"></div>
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-container-padding flex flex-col gap-8 md:gap-16">
+            <div className="flex items-center gap-4 md:gap-6 justify-end">
+              <h2 className="font-display-xl text-4xl md:text-display-xl text-black tracking-tighter">
+                AI阅读
+              </h2>
+              <div className="w-16 h-16 md:w-24 md:h-24 bg-primary-container rounded-full flex items-center justify-center brutalist-border -rotate-12 shrink-0">
+                <span className="material-symbols-outlined text-white text-[48px] md:text-[64px]">book_4</span>
+              </div>
+            </div>
+            <div className="flex flex-col-reverse lg:flex-row gap-8 md:gap-12 items-start mt-4 md:mt-8">
+              <div className="w-full lg:w-[65%] flex items-stretch relative mt-8 lg:mt-0">
+                <Link href="/ai-reading" className="w-full min-h-[300px] md:min-h-[400px] lg:h-auto bg-black rounded-[24px] md:rounded-[32px] border-[4px] md:border-[6px] border-primary-container overflow-hidden group shadow-[4px_4px_0_0_#0073e0] md:shadow-[8px_8px_0_0_#0073e0] cursor-pointer block relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-transparent z-10 pointer-events-none"></div>
+                  {/* Using a placeholder unsplash image for reading context since no specific local image is available */}
+                  <img alt="AI Reading Frame" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90" src="https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=1200&auto=format&fit=crop" />
+                  <div className="absolute bottom-6 left-6 right-6 z-20 flex justify-between items-end">
+                     <div className="glass-panel-dark px-4 py-2 rounded-xl inline-block">
+                        <span className="text-secondary-fixed font-bold text-lg md:text-xl">边读边画，创作专属绘本</span>
+                     </div>
+                  </div>
+                </Link>
+              </div>
+              <div className="w-full lg:w-[35%] bg-primary-container rounded-[24px] md:rounded-[32px] p-6 md:p-8 brutalist-border shadow-[4px_4px_0_0_#000000] md:shadow-[8px_8px_0_0_#000000] flex flex-col gap-6 md:gap-8">
+                <h3 className="font-headline-lg text-2xl md:text-headline-md text-white border-b-stroke-thick border-secondary-fixed pb-4">课程核心收获</h3>
+                <ul className="flex flex-col gap-4 md:gap-6">
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-black text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-white text-base md:text-body-lg font-medium">沉浸式的逐段阅读体验</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-black text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-white text-base md:text-body-lg font-medium">培养抓取文章关键词与结构化思维</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-black text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-white text-base md:text-body-lg font-medium">AI 问答互动提升阅读理解力</span>
+                  </li>
+                  <li className="flex items-start gap-3 md:gap-4">
+                    <div className="mt-1 bg-secondary-fixed rounded-full p-1 border-2 border-black">
+                      <span className="material-symbols-outlined text-black text-[16px] md:text-[20px]">check</span>
+                    </div>
+                    <span className="text-white text-base md:text-body-lg font-medium">结合文生图，打造属于自己的故事绘本</span>
+                  </li>
+                </ul>
+                <Link href="/ai-reading" className="mt-4 md:mt-8 px-6 py-3 md:px-8 md:py-4 bg-white text-black font-label-bold text-lg md:text-headline-md rounded-full border-2 border-transparent hover:bg-secondary-fixed hover:border-black transition-colors inline-block text-center cursor-pointer">
+                  开启阅读之旅
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer (Shared Component) */}

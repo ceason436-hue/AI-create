@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { messages, model = "abab6.5s-chat" } = body;
+    const { messages, model = "abab6.5s-chat", tools } = body;
 
     const apiKey = process.env.MINIMAX_API_KEY;
     const groupId = process.env.MINIMAX_GROUP_ID;
@@ -15,10 +15,24 @@ export async function POST(req: Request) {
     const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
     const url = `${baseUrl}/v1/text/chatcompletion_v2`;
     
-    const payload = {
-      model: model,
-      messages: messages
+    const payload: any = {
+      model,
+      messages,
+      bot_setting: [
+        {
+          bot_name: "MM智能助理",
+          content: "MM智能助理是一款由MiniMax自研的，没有调用其他产品的接口的大型语言模型。MiniMax是一家中国科技公司，一直致力于进行大模型相关的研究。当你需要获取实时信息或事实性知识时，请务必使用联网搜索工具。"
+        }
+      ],
+      reply_constraints: {
+        sender_type: "BOT",
+        sender_name: "MM智能助理"
+      }
     };
+
+    if (tools) {
+      payload.tools = tools;
+    }
 
     const headers: Record<string, string> = {
       'Authorization': `Bearer ${apiKey}`,

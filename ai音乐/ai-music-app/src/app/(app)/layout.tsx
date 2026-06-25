@@ -24,7 +24,7 @@ export default function RootLayout({
 
         <div className="min-h-screen flex flex-col overflow-x-hidden">
           {/* Top Navigation */}
-          <header className="bg-primary-container/40 backdrop-blur-xl fixed top-0 w-full z-50 shadow-none border-none">
+          <header className="bg-primary-container/40 backdrop-blur-xl fixed top-0 w-full z-[40] shadow-none border-none">
             <div className="flex justify-between items-center px-4 md:px-gutter py-base max-w-7xl mx-auto">
               <div className="flex items-center gap-4 md:gap-8">
                 <Link className="flex items-center gap-2 md:gap-3" href="/">
@@ -38,7 +38,10 @@ export default function RootLayout({
                   </span>
                 </Link>
                 <div className="hidden md:flex items-center gap-6">
-                  <Link className="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-1 hover:scale-105 transition-transform duration-200" href="/ai-music">AI 音乐</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-music">AI 音乐</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-art">AI 绘画</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-programming">AI 编程</Link>
+                  <Link className="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-1 hover:scale-105 transition-transform duration-200" href="/ai-reading">AI 阅读</Link>
                   <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="#">课程培训</Link>
                 </div>
               </div>

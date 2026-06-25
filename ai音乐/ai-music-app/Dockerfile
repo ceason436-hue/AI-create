@@ -25,6 +25,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Optional: Copy .env if you are using it in standalone mode (Though we prefer passing via docker-compose)
+# COPY --from=builder /app/.env* ./
+
 USER nextjs
 
 EXPOSE 3000
