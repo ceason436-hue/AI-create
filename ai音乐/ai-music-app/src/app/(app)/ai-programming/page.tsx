@@ -77,21 +77,24 @@ export default function AIProgrammingPage() {
   }, [isFullscreen]);
 
   const extractHtml = (text: string) => {
+    // 首先移除 <think>...</think> 块，避免误匹配其中的代码
+    const textWithoutThink = text.replace(/<think>[\s\S]*?<\/think>/g, '');
+
     // 尝试提取 markdown 代码块中的 HTML (处理不区分大小写的 html 标签，以及可选的额外空格)
-    const htmlMatch = text.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
+    const htmlMatch = textWithoutThink.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
     if (htmlMatch && htmlMatch[1]) {
       return htmlMatch[1].trim();
     }
     
     // 回退机制1：尝试匹配 <html> 到 </html> 之间的内容
-    const rawHtmlMatch = text.match(/(<!DOCTYPE html>[\s\S]*?<\/html>)/i);
+    const rawHtmlMatch = textWithoutThink.match(/(<!DOCTYPE html>[\s\S]*?<\/html>)/i);
     if (rawHtmlMatch && rawHtmlMatch[1]) {
       return rawHtmlMatch[1].trim();
     }
 
     // 回退机制2：如果没有用代码块包裹，检查是否包含 <html 或 <div 标签，且尝试暴力清理首尾
-    if (text.includes("<html") || text.includes("<div")) {
-      let cleanedText = text.replace(/^[\s\S]*?(?=<!DOCTYPE|<html|<div)/i, ''); // 截断开头的乱七八糟文字
+    if (textWithoutThink.includes("<html") || textWithoutThink.includes("<div")) {
+      let cleanedText = textWithoutThink.replace(/^[\s\S]*?(?=<!DOCTYPE|<html|<div)/i, ''); // 截断开头的乱七八糟文字
       cleanedText = cleanedText.replace(/(<\/html>|<\/div>)(?![\s\S]*(<\/html>|<\/div>))[\s\S]*$/i, '$1'); // 截断结尾的乱七八糟文字
       return cleanedText.trim();
     }
@@ -177,10 +180,15 @@ export default function AIProgrammingPage() {
       return content;
     }
     
+    // 移除 <think> 块，因为前端不需要展示思考过程
+    let displayContent = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    // 移除 markdown 中的 ** 和 *
+    displayContent = displayContent.replace(/\*\*/g, '').replace(/\*/g, '');
+    
     // 如果是 AI 回复，过滤掉包裹的代码块，并替换为美观的提示卡片
     const codeBlockRegex = /```(?:html|HTML)?\s*[\s\S]*?```/g;
-    if (codeBlockRegex.test(content)) {
-      const parts = content.split(codeBlockRegex);
+    if (codeBlockRegex.test(displayContent)) {
+      const parts = displayContent.split(codeBlockRegex);
       return (
         <div className="flex flex-col gap-2">
           {parts.map((part, index) => {
@@ -224,8 +232,8 @@ export default function AIProgrammingPage() {
     
     // 回退机制：如果直接包含了 <!DOCTYPE html>
     const rawHtmlRegex = /(<!DOCTYPE html>[\s\S]*?<\/html>)/i;
-    if (rawHtmlRegex.test(content)) {
-      const parts = content.split(rawHtmlRegex);
+    if (rawHtmlRegex.test(displayContent)) {
+      const parts = displayContent.split(rawHtmlRegex);
       return (
         <div className="flex flex-col gap-2">
           {parts[0] && parts[0].trim() && <div className="whitespace-pre-wrap">{parts[0].trim()}</div>}
@@ -240,7 +248,7 @@ export default function AIProgrammingPage() {
       );
     }
 
-    return <div className="whitespace-pre-wrap">{content}</div>;
+    return <div className="whitespace-pre-wrap">{displayContent}</div>;
   };
 
   const getPreviewCode = () => {
