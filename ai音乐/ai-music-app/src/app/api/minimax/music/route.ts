@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const url = `${baseUrl}/v1/music_generation`;
     
     const payload: any = {
-      model: "music-2.6",
+      model: "music-2.6-free",
       prompt: prompt || "流行音乐", 
       output_format: "url"
     };
