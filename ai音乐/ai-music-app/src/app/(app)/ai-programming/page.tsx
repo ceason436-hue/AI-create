@@ -136,7 +136,14 @@ export default function AIProgrammingPage() {
         data = JSON.parse(responseText);
       } catch (e) {
         console.error("Frontend received non-JSON:", responseText.substring(0, 200));
-        throw new Error('服务器连接超时或响应异常，请稍后重试');
+        // 如果后端被 Nginx 拦截返回了 HTML，且恰好包含了代码片段，尝试抢救
+        if (responseText.includes("```html")) {
+          data = {
+            choices: [{ message: { content: responseText } }]
+          };
+        } else {
+          throw new Error('服务器连接超时或响应异常，请稍后重试');
+        }
       }
 
       if (!response.ok) {

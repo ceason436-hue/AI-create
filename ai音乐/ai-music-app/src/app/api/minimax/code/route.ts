@@ -71,9 +71,17 @@ export async function POST(req: Request) {
       data = JSON.parse(responseText);
     } catch (e) {
       console.error("Minimax Code API returned non-JSON:", responseText.substring(0, 200));
-      return NextResponse.json({ 
-        error: 'AI 生成代码时间较长，导致请求超时或服务器返回了异常响应，请稍后重试或尝试简化需求。' 
-      }, { status: 502 });
+      // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码（比如网关直接透传了部分内容）
+      if (responseText.includes("```html")) {
+        data = {
+          base_resp: { status_code: 0 },
+          choices: [{ message: { content: responseText } }]
+        };
+      } else {
+        return NextResponse.json({ 
+          error: 'AI 生成代码时间较长，导致请求超时或服务器返回了异常响应，请稍后重试或尝试简化需求。' 
+        }, { status: 502 });
+      }
     }
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
