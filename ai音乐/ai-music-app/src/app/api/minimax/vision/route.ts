@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const maxDuration = 120; // 允许最长 120 秒执行时间
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -77,7 +79,16 @@ export async function POST(req: Request) {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error("Minimax Vision API returned non-JSON:", responseText.substring(0, 200));
+      return NextResponse.json({ 
+        error: 'AI 识别图片时间较长，导致请求超时或服务器返回了异常响应，请稍后重试。' 
+      }, { status: 502 });
+    }
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
       console.error("Minimax Vision API Error:", data);

@@ -127,7 +127,14 @@ export default function AIProgrammingPage() {
         body: JSON.stringify({ messages: apiMessages })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Frontend received non-JSON:", responseText.substring(0, 200));
+        throw new Error('服务器连接超时或响应异常，请稍后重试');
+      }
 
       if (!response.ok) {
         throw new Error(data.error || '生成失败');
