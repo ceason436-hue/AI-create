@@ -71,8 +71,9 @@ export async function POST(req: Request) {
       data = JSON.parse(responseText);
     } catch (e) {
       console.error("Minimax Code API returned non-JSON:", responseText.substring(0, 200));
-      // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码（比如网关直接透传了部分内容）
-      if (responseText.includes("```html")) {
+      // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码
+      const htmlMatch = responseText.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
+      if (htmlMatch || responseText.includes("<!DOCTYPE html>")) {
         data = {
           base_resp: { status_code: 0 },
           choices: [{ message: { content: responseText } }]

@@ -136,8 +136,9 @@ export default function AIProgrammingPage() {
         data = JSON.parse(responseText);
       } catch (e) {
         console.error("Frontend received non-JSON:", responseText.substring(0, 200));
-        // 如果后端被 Nginx 拦截返回了 HTML，且恰好包含了代码片段，尝试抢救
-        if (responseText.includes("```html")) {
+        // 尝试看看有没有 HTML 代码
+        const htmlMatch = responseText.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
+        if (htmlMatch || responseText.includes("<!DOCTYPE html>")) {
           data = {
             choices: [{ message: { content: responseText } }]
           };
