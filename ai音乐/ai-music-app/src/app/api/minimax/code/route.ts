@@ -13,8 +13,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
-    const url = `${baseUrl}/v1/text/chatcompletion_v2`;
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
+    const url = `${baseUrl}/v1/chat/completions`;
     
     // 强制插入系统提示词，确保输出的代码是我们需要的格式
     const systemPrompt = {

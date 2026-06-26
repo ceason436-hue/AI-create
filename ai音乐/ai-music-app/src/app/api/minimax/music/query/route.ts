@@ -16,7 +16,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
     const url = `${baseUrl}/v1/query/music_generation?task_id=${taskId}`;
 
     const headers: Record<string, string> = {

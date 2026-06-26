@@ -12,7 +12,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    let url = 'https://api.minimax.chat/v1/image_generation';
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
+    let url = `${baseUrl}/v1/image_generation`;
     
     // 如果存在专门的图生图接口，可以在这里覆盖
     // url = mode === 'img2img' ? 'https://api.minimax.chat/v1/image_generation_i2i' : url;

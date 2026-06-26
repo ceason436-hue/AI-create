@@ -12,22 +12,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
-    const url = `${baseUrl}/v1/text/chatcompletion_v2`;
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
+    const url = `${baseUrl}/v1/chat/completions`;
     
+    let finalModel = model;
+    // 如果客户端传了旧模型，自动映射到新模型
+    if (model.includes("abab")) {
+      finalModel = "MiniMax-M2.7";
+    }
+
+    const systemContent = "MM智能助理是一款由MiniMax自研的，没有调用其他产品的接口的大型语言模型。MiniMax是一家中国科技公司，一直致力于进行大模型相关的研究。当你需要获取实时信息或事实性知识时，请务必使用联网搜索工具。";
+    
+    const finalMessages = [...messages];
+    if (finalMessages.length > 0 && finalMessages[0].role !== 'system') {
+      finalMessages.unshift({ role: 'system', content: systemContent });
+    }
+
     const payload: any = {
-      model,
-      messages,
-      bot_setting: [
-        {
-          bot_name: "MM智能助理",
-          content: "MM智能助理是一款由MiniMax自研的，没有调用其他产品的接口的大型语言模型。MiniMax是一家中国科技公司，一直致力于进行大模型相关的研究。当你需要获取实时信息或事实性知识时，请务必使用联网搜索工具。"
-        }
-      ],
-      reply_constraints: {
-        sender_type: "BOT",
-        sender_name: "MM智能助理"
-      }
+      model: finalModel,
+      messages: finalMessages
     };
 
     if (tools) {

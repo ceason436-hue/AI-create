@@ -12,11 +12,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
     const url = `${baseUrl}/v1/music_generation`;
     
     const payload: any = {
-      model: "music-2.6-free", // 使用 user 指定的 music-2.6-free 模型
+      model: "music-2.6",
       prompt: prompt || "流行音乐", 
       output_format: "url"
     };

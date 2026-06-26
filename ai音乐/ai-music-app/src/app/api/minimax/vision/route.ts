@@ -11,8 +11,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
     }
 
-    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimax.io';
-    const url = `${baseUrl}/v1/text/chatcompletion_v2`;
+    const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
+    const url = `${baseUrl}/v1/chat/completions`;
 
     const systemPrompt = `你是一位温柔、有耐心的小学语文老师。
 请仔细观察学生根据课文画的插图，并进行客观且鼓励的点评。
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     }
 
     const payload = {
-      model: "abab6.5s-chat", // or abab6.5g-chat if vision is required
+      model: "MiniMax-M3", // M3 supports vision
       messages: [
         {
           role: "user",
