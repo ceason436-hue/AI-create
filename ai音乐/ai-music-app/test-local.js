@@ -16,7 +16,7 @@ async function test() {
   });
   const text = await response.text();
   console.log("Status:", response.status);
-  console.log("Response text:", text.substring(0, 500));
+  console.log("Response text:", text);
 }
 
 test();

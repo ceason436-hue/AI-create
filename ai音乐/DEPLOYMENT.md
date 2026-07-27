@@ -117,6 +117,11 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+![alt text![alt text](image-1.png)](image.png)        
+        # 增加超时时间以防止 AI 接口长时间生成时 504 Timeout
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+        proxy_send_timeout 300;
     }
 }
 ```

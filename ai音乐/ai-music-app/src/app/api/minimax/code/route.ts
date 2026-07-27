@@ -68,20 +68,26 @@ export async function POST(req: Request) {
     const responseText = await response.text();
     let data;
     try {
+      // 尝试解析 JSON。如果网关超时（如 504），返回的是 HTML，这里会抛出异常
       data = JSON.parse(responseText);
     } catch (e) {
       console.error("Minimax Code API returned non-JSON:", responseText.substring(0, 200));
-      // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码
+      
+      // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码（AI成功返回的代码）
       const htmlMatch = responseText.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
       if (htmlMatch || responseText.includes("<!DOCTYPE html>")) {
+        // 如果虽然非标准 JSON 但包含有效代码，尝试补救
         data = {
           base_resp: { status_code: 0 },
           choices: [{ message: { content: responseText } }]
         };
       } else {
-        return NextResponse.json({ 
-          error: 'AI 生成代码时间较长，导致请求超时或服务器返回了异常响应，请稍后重试或尝试简化需求。' 
-        }, { status: 502 });
+        // 如果是纯 HTML 报错页面（比如 504 Gateway Time-out 页面）
+        let errorMsg = 'AI 生成代码时间较长，导致请求超时，请稍后重试或尝试简化需求。';
+        if (responseText.includes("504 Gateway Time-out")) {
+           errorMsg = 'Nginx 网关连接超时 (504 Gateway Time-out)。请联系管理员检查服务器部署配置中的 proxy_read_timeout。';
+        }
+        return NextResponse.json({ error: errorMsg }, { status: 504 });
       }
     }
 

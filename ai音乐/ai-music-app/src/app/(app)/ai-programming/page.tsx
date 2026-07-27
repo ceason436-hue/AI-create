@@ -143,7 +143,12 @@ export default function AIProgrammingPage() {
             choices: [{ message: { content: responseText } }]
           };
         } else {
-          throw new Error('服务器连接超时或响应异常，请稍后重试');
+          // 提供更具体的错误信息给用户
+          if (responseText.includes("504 Gateway Time-out")) {
+            throw new Error('服务器 Nginx 网关连接超时 (504)，请检查服务器网关配置。');
+          } else {
+            throw new Error('服务器连接超时或响应异常，请稍后重试。');
+          }
         }
       }
 
@@ -445,7 +450,7 @@ export default function AIProgrammingPage() {
                   srcDoc={getPreviewCode()}
                   className="w-full h-full border-none bg-white"
                   title="预览窗口"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+                  sandbox="allow-scripts allow-forms allow-popups allow-modals"
                   style={{ display: 'block', pointerEvents: 'auto' }}
                 />
               </div>

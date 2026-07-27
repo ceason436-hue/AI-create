@@ -1,6 +1,6 @@
 async function test() {
   const url = 'https://api.minimaxi.com/v1/chat/completions';
-  const apiKey = 'sk-api-SEHXU_1XIX45FXrgv6RYmZCfR1Q9NdS1_THJcfjqY1gxb51P1w7826058HeJEOWUlzerN487AOMkbHpPPKCErG7M9GB_TOQPNf4Y-FErAC9BHF1L3-AEuik';
+  const apiKey = 'sk-api-BwkioMIw9ejuI7XECpDCwyPr3G5oSuiEbDm98ZzylwS4bOqnFWkIDkWg-Q598HryOeqcUUT8kbp-zbRQB994w3Bwydi9KfB9jPnL9VW329BiaeIxyCccLW0';
   const payload = {
     model: "MiniMax-M2.7",
     messages: [
