@@ -6,10 +6,11 @@ export const ANONYMOUS_ID_COOKIE = "krt_anonymous_id";
 export const TRIAL_CONSENT_COOKIE = "krt_trial_consent";
 export const ANONYMOUS_TRIAL_LIMIT = 5;
 
-function nextMidnightSeconds() {
-  const next = new Date();
-  next.setHours(24, 0, 0, 0);
-  return Math.max(60, Math.ceil((next.getTime() - Date.now()) / 1000));
+function trialDay() {
+  const timeZone = process.env.AI_TRIAL_TIMEZONE || "Asia/Shanghai";
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 export async function hasTrialConsent() {
@@ -57,7 +58,7 @@ export async function getAnonymousTrialStatus(tool: string) {
   if (!id) return { remaining: ANONYMOUS_TRIAL_LIMIT, used: 0 };
   try {
     const redis = await getRedis();
-    const key = `krt:ai:trial:${id}:${tool}:${new Date().toISOString().slice(0, 10)}`;
+    const key = `krt:ai:trial:${id}:${tool}:${trialDay()}`;
     const used = Number(await redis.get(key) ?? 0);
     return { remaining: Math.max(0, ANONYMOUS_TRIAL_LIMIT - used), used };
   } catch {
@@ -67,8 +68,8 @@ export async function getAnonymousTrialStatus(tool: string) {
 
 export async function consumeAnonymousTrial(id: string, tool: string) {
   const redis = await getRedis();
-  const key = `krt:ai:trial:${id}:${tool}:${new Date().toISOString().slice(0, 10)}`;
+  const key = `krt:ai:trial:${id}:${tool}:${trialDay()}`;
   const used = await redis.incr(key);
-  if (used === 1) await redis.expire(key, nextMidnightSeconds());
+  if (used === 1) await redis.expire(key, 60 * 60 * 48);
   return { ok: used <= ANONYMOUS_TRIAL_LIMIT, used, key };
 }
