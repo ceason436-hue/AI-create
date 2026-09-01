@@ -1,0 +1,8 @@
+import { z } from "zod";
+import { requireAdminResponse } from "@/lib/admin-access";
+import { db } from "@/lib/db";
+import { internalError } from "@/lib/http";
+
+const schema = z.object({ name: z.string().trim().min(1).max(120), slug: z.string().trim().toLowerCase().regex(/^[a-z0-9-]{2,140}$/), description: z.string().trim().max(500).optional(), parentId: z.string().optional(), sortOrder: z.number().int().min(0).max(9999).optional(), status: z.enum(["ACTIVE", "ARCHIVED"]).default("ACTIVE") });
+export async function GET() { const access = await requireAdminResponse(); if ("response" in access) return access.response; try { const categories = await db.courseCategory.findMany({ include: { _count: { select: { courses: true } } }, orderBy: [{ sortOrder: "asc" }, { name: "asc" }] }); return Response.json({ categories }); } catch { return internalError(); } }
+export async function POST(request: Request) { const access = await requireAdminResponse(); if ("response" in access) return access.response; const parsed = schema.safeParse(await request.json().catch(() => null)); if (!parsed.success) return Response.json({ error: "课程分类信息无效。" }, { status: 400 }); try { const category = await db.courseCategory.create({ data: parsed.data }); await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_CATEGORY_CREATED", targetType: "COURSE_CATEGORY", targetId: category.id, result: "SUCCEEDED", after: { name: category.name, slug: category.slug } } }); return Response.json({ category }, { status: 201 }); } catch (error) { if (error instanceof Error && error.message.includes("Unique constraint")) return Response.json({ error: "分类 slug 已存在。" }, { status: 409 }); return internalError(); } }

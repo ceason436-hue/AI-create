@@ -203,7 +203,7 @@ function AIReadingWorkspaceContent() {
 
           const res = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", name: "User", content: prompt }],
           model: "MiniMax-Text-01",
@@ -257,7 +257,7 @@ ${fullText}`;
 
       const res = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", name: "User", content: prompt }],
           model: "MiniMax-Text-01" // 采用 MiniMax m2.7 高阶模型
@@ -374,7 +374,7 @@ ${historyContext}
 
       const res = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", name: "User", content: prompt }],
           model: "MiniMax-Text-01" // 同样采用 MiniMax m2.7
@@ -467,7 +467,7 @@ ${historyContext}
       // call minimax image generation api
       const res = await fetch('/api/minimax/image', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           mode: 'text2img',
           prompt: finalImagePrompt,

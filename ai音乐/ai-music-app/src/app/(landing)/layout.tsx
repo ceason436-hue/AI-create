@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import { AiTrialConsent } from "@/components/ai-trial-consent";
 
 export const metadata: Metadata = {
   title: "AI科瑞特",
@@ -21,6 +22,7 @@ export default function LandingLayout({
       </head>
       <body className="bg-background text-on-background font-body-lg antialiased selection:bg-secondary-fixed selection:text-black">
         {children}
+        <AiTrialConsent />
       </body>
     </html>
   );

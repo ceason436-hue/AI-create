@@ -262,7 +262,7 @@ export default function MusicCreationPage() {
         
       const response = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", content: userPrompt }]
         })
@@ -291,7 +291,7 @@ export default function MusicCreationPage() {
         
       const response = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", content: userPrompt }]
         })
@@ -320,7 +320,7 @@ export default function MusicCreationPage() {
         
       const response = await fetch('/api/minimax/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           messages: [{ role: "user", content: userPrompt }]
         })
@@ -381,7 +381,7 @@ export default function MusicCreationPage() {
     try {
       const createRes = await fetch("/api/minimax/music", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": crypto.randomUUID() },
         body: JSON.stringify({
           prompt: style,
           lyrics: lyrics,

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { 
   Send, Code2, MonitorPlay, Smartphone, Tablet, Monitor, 
-  Copy, Download, History, Sparkles, AlertCircle, Maximize2, Minimize2
+  Copy, Download, Sparkles, AlertCircle, Maximize2, Minimize2
 } from "lucide-react";
 
 type Message = {
@@ -102,6 +102,22 @@ export default function AIProgrammingPage() {
     return null;
   };
 
+  const savePersonalCodeWork = async (html: string, title: string) => {
+    const bytes = new TextEncoder().encode(html);
+    let binary = "";
+    bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
+    try {
+      const response = await fetch("/api/works", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "CODE", title: title.slice(0, 200), mimeType: "text/html", contentBase64: btoa(binary) }),
+      });
+      if (!response.ok && response.status !== 403) console.error("Cloud code save failed", { status: response.status });
+    } catch {
+      console.error("Cloud code save request failed");
+    }
+  };
+
   const handleSend = async (forcedInput?: string) => {
     const userMsg = forcedInput || input;
     if (!userMsg.trim() || isGenerating) return;
@@ -126,7 +142,7 @@ export default function AIProgrammingPage() {
 
       const response = await fetch('/api/minimax/code', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({ messages: apiMessages })
       });
 
@@ -134,7 +150,7 @@ export default function AIProgrammingPage() {
       let data;
       try {
         data = JSON.parse(responseText);
-      } catch (e) {
+      } catch {
         console.error("Frontend received non-JSON:", responseText.substring(0, 200));
         // 尝试看看有没有 HTML 代码
         const htmlMatch = responseText.match(/```(?:html|HTML)?\s*([\s\S]*?)```/);
@@ -165,11 +181,12 @@ export default function AIProgrammingPage() {
 
       if (newHtml) {
         setCode(newHtml);
+        void savePersonalCodeWork(newHtml, userMsg || "AI 编程作品");
       }
 
-    } catch (err: any) {
+    } catch (err) {
       console.error("Generate error:", err);
-      setError(err.message || "请求发生错误");
+      setError(err instanceof Error ? err.message : "请求发生错误");
       setMessages(prev => [...prev, { role: "ai", content: "抱歉，代码生成失败了，请重试。" }]);
     } finally {
       setIsGenerating(false);
@@ -204,41 +221,21 @@ export default function AIProgrammingPage() {
       const parts = displayContent.split(codeBlockRegex);
       return (
         <div className="flex flex-col gap-2">
-          {parts.map((part, index) => {
+          {parts.flatMap((part, index) => {
             const trimmed = part.trim();
-            if (!trimmed) return null;
-            return <div key={`text-${index}`} className="whitespace-pre-wrap">{trimmed}</div>;
-          }).reduce((prev, curr, index) => {
-            if (!prev && !curr) return null;
-            if (!prev) return [
-              <div key={`badge-${index}`} className="bg-blue-50 text-blue-700 px-3 py-2.5 rounded-xl text-xs font-bold my-1 border border-blue-200 flex items-center gap-2 shadow-sm w-fit">
-                <div className="bg-blue-600 p-1.5 rounded-lg text-white">
-                  <Code2 className="w-3.5 h-3.5" />
-                </div>
-                网页代码已生成并更新至右侧预览区 ✨
-              </div>,
-              curr
-            ];
-            if (!curr) return [
-              prev,
-              <div key={`badge-${index}`} className="bg-blue-50 text-blue-700 px-3 py-2.5 rounded-xl text-xs font-bold my-1 border border-blue-200 flex items-center gap-2 shadow-sm w-fit">
-                <div className="bg-blue-600 p-1.5 rounded-lg text-white">
-                  <Code2 className="w-3.5 h-3.5" />
-                </div>
-                网页代码已生成并更新至右侧预览区 ✨
-              </div>
-            ];
+            if (!trimmed) return [];
+            const text = <div key={`text-${index}`} className="whitespace-pre-wrap">{trimmed}</div>;
+            if (index === 0) return [text];
             return [
-              prev,
               <div key={`badge-${index}`} className="bg-blue-50 text-blue-700 px-3 py-2.5 rounded-xl text-xs font-bold my-1 border border-blue-200 flex items-center gap-2 shadow-sm w-fit">
                 <div className="bg-blue-600 p-1.5 rounded-lg text-white">
                   <Code2 className="w-3.5 h-3.5" />
                 </div>
                 网页代码已生成并更新至右侧预览区 ✨
               </div>,
-              curr
+              text,
             ];
-          }, null as any)}
+          })}
         </div>
       );
     }

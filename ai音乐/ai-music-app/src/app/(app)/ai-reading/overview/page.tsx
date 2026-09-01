@@ -70,7 +70,7 @@ function OverviewContent() {
     try {
       const res = await fetch('/api/minimax/vision', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           imageUrl: seg.image,
           prompt: seg.text,

@@ -1,0 +1,726 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  ADMIN
+  SCHOOL_SHARED
+  PERSONAL
+}
+enum AccountSource {
+  TRAINING_INVITE
+  PUBLIC_SIGNUP
+  ADMIN_CREATED
+  SCHOOL_SETUP
+}
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  LOCKED
+  DELETED
+}
+enum OrganizationType {
+  SCHOOL
+  TRAINING
+}
+enum OrganizationStatus {
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+}
+enum InvitationStatus {
+  DRAFT
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  EXHAUSTED
+  REVOKED
+}
+enum EntitlementSource {
+  SCHOOL_CONTRACT
+  TRAINING_INVITE
+  FREE_PLAN
+  PAID_PLAN
+  CREDIT_PACK
+  ADMIN_GRANT
+}
+enum EntitlementStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+enum WorkType {
+  IMAGE
+  MUSIC
+  CODE
+  READING
+  VISUAL_REVIEW
+}
+enum WorkStatus {
+  ACTIVE
+  READ_ONLY
+  EXPIRING
+  DELETING
+  DELETED
+  FAILED
+}
+enum OrderChannel {
+  MANUAL
+  WECHAT
+  ALIPAY
+}
+enum OrderStatus {
+  DRAFT
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+  FAILED
+}
+enum RequestStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  RELEASED
+  REJECTED
+}
+enum UsageStatus {
+  RESERVED
+  SUCCEEDED
+  FAILED
+  RELEASED
+}
+
+model Account {
+  id String @id @default(cuid())
+  type AccountType
+  source AccountSource
+  loginIdentifier String @unique @db.VarChar(64)
+  passwordHash String
+  status AccountStatus @default(PENDING)
+  lastLoginAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile PersonalProfile?
+  roles AccountRole[]
+  sessions Session[]
+  entitlements Entitlement[]
+  wallet CreditWallet?
+  works Work[]
+  usages UsageEvent[]
+  aiRequests AiRequest[]
+  organizationLinks OrganizationAccount[]
+  cohortMemberships CohortMember[]
+  invitationRedemptions InvitationRedemption[]
+  orders Order[]
+  auditActions AuditLog[] @relation("AuditActor")
+  enrollments Enrollment[]
+  coursewareAccessLogs CoursewareAccessLog[]
+}
+
+model PersonalProfile {
+  id String @id @default(cuid())
+  accountId String @unique
+  displayName String? @db.VarChar(80)
+  mobile String? @unique @db.VarChar(32)
+  mobileVerifiedAt DateTime?
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id String @id @default(cuid())
+  key String @unique @db.VarChar(64)
+  name String @db.VarChar(80)
+  accounts AccountRole[]
+}
+
+model AccountRole {
+  accountId String
+  roleId String
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  @@id([accountId, roleId])
+}
+
+model Organization {
+  id String @id @default(cuid())
+  type OrganizationType
+  name String @db.VarChar(160)
+  code String @unique @db.VarChar(32)
+  status OrganizationStatus @default(ACTIVE)
+  notes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  accounts OrganizationAccount[]
+  cohorts Cohort[]
+}
+
+model OrganizationAccount {
+  id String @id @default(cuid())
+  organizationId String
+  accountId String @unique
+  validFrom DateTime?
+  validTo DateTime?
+  allowedTools String[]
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Cohort {
+  id String @id @default(cuid())
+  organizationId String
+  name String @db.VarChar(160)
+  startsAt DateTime?
+  endsAt DateTime?
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members CohortMember[]
+  invitations InvitationCode[]
+}
+
+model CohortMember {
+  cohortId String
+  accountId String
+  status String @default("ACTIVE") @db.VarChar(32)
+  joinedAt DateTime @default(now())
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  @@id([cohortId, accountId])
+}
+
+model Plan {
+  id String @id @default(cuid())
+  code String @db.VarChar(32)
+  version Int
+  name String @db.VarChar(80)
+  storageLimitBytes BigInt
+  monthlyCredits Int @default(0)
+  allowedTools String[]
+  status String @default("ACTIVE") @db.VarChar(32)
+  createdAt DateTime @default(now())
+  entitlements Entitlement[]
+  invitations InvitationCode[]
+  orders Order[]
+  @@unique([code, version])
+}
+
+model InvitationCode {
+  id String @id @default(cuid())
+  codeHash String @unique
+  cohortId String
+  planId String?
+  status InvitationStatus @default(DRAFT)
+  maxUses Int
+  usedCount Int @default(0)
+  validFrom DateTime?
+  expiresAt DateTime?
+  entitlementDays Int?
+  createdById String?
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  plan Plan? @relation(fields: [planId], references: [id])
+  redemptions InvitationRedemption[]
+}
+
+model InvitationRedemption {
+  invitationId String
+  accountId String
+  redeemedAt DateTime @default(now())
+  invitation InvitationCode @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  @@id([invitationId, accountId])
+}
+
+model Entitlement {
+  id String @id @default(cuid())
+  accountId String
+  source EntitlementSource
+  status EntitlementStatus @default(ACTIVE)
+  planId String?
+  startsAt DateTime
+  endsAt DateTime?
+  metadata Json?
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  plan Plan? @relation(fields: [planId], references: [id])
+  @@index([accountId, status, startsAt, endsAt])
+}
+
+model CreditWallet {
+  accountId String @id
+  balance Int @default(0)
+  reservedBalance Int @default(0)
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  ledger CreditLedger[]
+}
+
+model CreditLedger {
+  id String @id @default(cuid())
+  accountId String
+  delta Int
+  reason String @db.VarChar(64)
+  referenceType String? @db.VarChar(64)
+  referenceId String? @db.VarChar(128)
+  createdAt DateTime @default(now())
+  wallet CreditWallet @relation(fields: [accountId], references: [accountId], onDelete: Cascade)
+  @@index([accountId, createdAt])
+}
+
+model Work {
+  id String @id @default(cuid())
+  ownerId String
+  type WorkType
+  title String @db.VarChar(200)
+  status WorkStatus @default(ACTIVE)
+  sizeBytes BigInt @default(0)
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner Account @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  assets WorkAsset[]
+  retentionJobs RetentionJob[]
+  @@index([ownerId, status, expiresAt])
+}
+
+model WorkAsset {
+  id String @id @default(cuid())
+  workId String
+  objectKey String @unique @db.VarChar(512)
+  mimeType String @db.VarChar(128)
+  sizeBytes BigInt
+  checksum String? @db.VarChar(128)
+  createdAt DateTime @default(now())
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id String @id @default(cuid())
+  accountId String
+  planId String?
+  channel OrderChannel
+  status OrderStatus @default(DRAFT)
+  amountCents Int
+  idempotencyKey String @unique
+  operatorNote String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account Account @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  plan Plan? @relation(fields: [planId], references: [id])
+  payments Payment[]
+}
+
+model Payment {
+  id String @id @default(cuid())
+  orderId String
+  providerTradeNo String? @unique
+  status String @db.VarChar(32)
+  rawEventRef String? @db.VarChar(256)
+  createdAt DateTime @default(now())
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model AiRequest {
+  id String @id @default(cuid())
+  requestId String @unique @default(cuid())
+  accountId String
+  tool String @db.VarChar(64)
+  idempotencyKey String
+  status RequestStatus @default(PENDING)
+  reservedCredits Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account Account @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  @@unique([accountId, idempotencyKey])
+}
+
+model UsageEvent {
+  id String @id @default(cuid())
+  accountId String
+  tool String @db.VarChar(64)
+  status UsageStatus
+  units Int @default(0)
+  estimatedCost Decimal? @db.Decimal(12, 6)
+  requestId String? @db.VarChar(128)
+  occurredAt DateTime @default(now())
+  account Account @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  @@index([accountId, occurredAt])
+}
+
+model Session {
+  id String @id @default(cuid())
+  tokenHash String @unique
+  accountId String
+  expiresAt DateTime
+  revokedAt DateTime?
+  deviceSummary String? @db.VarChar(300)
+  createdAt DateTime @default(now())
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  @@index([accountId, expiresAt])
+}
+
+model AuditLog {
+  id String @id @default(cuid())
+  actorId String?
+  action String @db.VarChar(128)
+  targetType String @db.VarChar(64)
+  targetId String? @db.VarChar(128)
+  result String @db.VarChar(32)
+  before Json?
+  after Json?
+  createdAt DateTime @default(now())
+  actor Account? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  @@index([actorId, createdAt])
+}
+
+model SystemSetting {
+  key String @id @db.VarChar(128)
+  value Json
+  version Int @default(1)
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+}
+
+model RetentionJob {
+  id String @id @default(cuid())
+  workId String
+  scheduledAt DateTime
+  status String @default("PENDING") @db.VarChar(32)
+  attempts Int @default(0)
+  lastError String?
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+  @@index([status, scheduledAt])
+}
+
+model CourseCategory {
+  id String @id @default(cuid())
+  parentId String?
+  name String @db.VarChar(120)
+  slug String @unique @db.VarChar(140)
+  description String?
+  coverAssetId String?
+  sortOrder Int @default(0)
+  status String @default("ACTIVE") @db.VarChar(32)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parent CourseCategory? @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children CourseCategory[] @relation("CategoryTree")
+  courses Course[]
+}
+
+model Course {
+  id String @id @default(cuid())
+  categoryId String
+  name String @db.VarChar(180)
+  slug String @unique @db.VarChar(180)
+  shortDescription String @db.VarChar(500)
+  fullDescription String?
+  targetAudience String?
+  ageMin Int?
+  ageMax Int?
+  gradeRange String?
+  difficulty String? @db.VarChar(32)
+  deliveryModes String[]
+  totalLessons Int @default(0)
+  durationText String? @db.VarChar(80)
+  enrollmentStatus String @default("OPEN") @db.VarChar(32)
+  coverAssetId String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  publishedAt DateTime?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  category CourseCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  modules CourseModule[]
+  enrollments Enrollment[]
+  toolBindings CourseToolBinding[]
+  courseware CoursewareAsset[]
+  @@index([categoryId, publishStatus, enrollmentStatus])
+}
+
+model CourseModule {
+  id String @id @default(cuid())
+  courseId String
+  title String @db.VarChar(180)
+  description String?
+  sortOrder Int @default(0)
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons Lesson[]
+  @@index([courseId, sortOrder])
+}
+
+model Lesson {
+  id String @id @default(cuid())
+  moduleId String
+  title String @db.VarChar(180)
+  summary String?
+  content String?
+  sortOrder Int @default(0)
+  estimatedMinutes Int @default(45)
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  module CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  courseware CoursewareAsset[]
+  toolBindings CourseToolBinding[]
+  progress LearningProgress[]
+  @@index([moduleId, sortOrder])
+}
+
+model Enrollment {
+  id String @id @default(cuid())
+  accountId String
+  courseId String
+  source String @default("ADMIN") @db.VarChar(32)
+  status String @default("ACTIVE") @db.VarChar(32)
+  startsAt DateTime
+  endsAt DateTime?
+  progressPercent Int @default(0)
+  lastLessonId String?
+  createdBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress LearningProgress[]
+  @@unique([accountId, courseId])
+  @@index([accountId, status, startsAt, endsAt])
+}
+
+model LearningProgress {
+  id String @id @default(cuid())
+  enrollmentId String
+  lessonId String
+  completedAt DateTime?
+  lastViewedAt DateTime @default(now())
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  @@unique([enrollmentId, lessonId])
+}
+
+model CourseToolBinding {
+  id String @id @default(cuid())
+  courseId String
+  lessonId String?
+  toolKey String @db.VarChar(64)
+  accessMode String @default("COURSE") @db.VarChar(32)
+  presetConfig Json?
+  sortOrder Int @default(0)
+  status String @default("ACTIVE") @db.VarChar(32)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  @@index([courseId, status, sortOrder])
+}
+
+model CoursewareAsset {
+  id String @id @default(cuid())
+  courseId String
+  lessonId String?
+  title String @db.VarChar(180)
+  assetType String @db.VarChar(32)
+  originalObjectKey String?
+  previewObjectKey String?
+  thumbnailObjectKey String?
+  originalMimeType String? @db.VarChar(128)
+  previewMimeType String? @db.VarChar(128)
+  sizeBytes BigInt @default(0)
+  pageCount Int?
+  aspectRatio String? @db.VarChar(32)
+  checksum String? @db.VarChar(128)
+  conversionStatus String @default("PENDING") @db.VarChar(32)
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  version Int @default(1)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  jobs CoursewareJob[]
+  accessLogs CoursewareAccessLog[]
+  @@index([courseId, publishStatus])
+}
+
+model CoursewareJob {
+  id String @id @default(cuid())
+  assetId String
+  jobType String @db.VarChar(32)
+  status String @default("PENDING") @db.VarChar(32)
+  attempts Int @default(0)
+  errorCode String? @db.VarChar(64)
+  errorDetail String?
+  startedAt DateTime?
+  finishedAt DateTime?
+  createdAt DateTime @default(now())
+  asset CoursewareAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  @@index([status, createdAt])
+}
+
+model CoursewareAccessLog {
+  id String @id @default(cuid())
+  assetId String
+  accountId String
+  enrollmentId String?
+  sessionId String?
+  ipHash String? @db.VarChar(128)
+  deviceSummary String? @db.VarChar(300)
+  accessedAt DateTime @default(now())
+  asset CoursewareAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  account Account @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  @@index([assetId, accessedAt])
+}
+
+model Activity {
+  id String @id @default(cuid())
+  slug String @unique @db.VarChar(180)
+  title String @db.VarChar(180)
+  summary String @db.VarChar(500)
+  content String?
+  activityType String? @db.VarChar(64)
+  startsAt DateTime?
+  endsAt DateTime?
+  location String? @db.VarChar(180)
+  coverAssetId String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  publishedAt DateTime?
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Achievement {
+  id String @id @default(cuid())
+  slug String @unique @db.VarChar(180)
+  title String @db.VarChar(180)
+  summary String @db.VarChar(500)
+  content String?
+  achievementType String @default("PROJECT") @db.VarChar(64)
+  proofNote String?
+  coverAssetId String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  publishedAt DateTime?
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeacherProfile {
+  id String @id @default(cuid())
+  name String @db.VarChar(120)
+  title String? @db.VarChar(120)
+  bio String?
+  avatarAssetId String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Campus {
+  id String @id @default(cuid())
+  name String @db.VarChar(160)
+  address String?
+  description String?
+  coverAssetId String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PartnerSchool {
+  id String @id @default(cuid())
+  name String @db.VarChar(160)
+  logoAssetId String?
+  description String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id String @id @default(cuid())
+  inquiryType String @db.VarChar(32)
+  name String @db.VarChar(80)
+  contact String @db.VarChar(160)
+  grade String? @db.VarChar(80)
+  courseInterest String? @db.VarChar(180)
+  region String? @db.VarChar(120)
+  note String?
+  status String @default("NEW") @db.VarChar(32)
+  handledBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status, createdAt])
+}
+
+model SitePage {
+  id String @id @default(cuid())
+  pageKey String @unique @db.VarChar(80)
+  title String @db.VarChar(180)
+  description String?
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  publishedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sections PageSection[]
+}
+
+model PageSection {
+  id String @id @default(cuid())
+  pageId String
+  sectionType String @db.VarChar(64)
+  title String? @db.VarChar(180)
+  sortOrder Int @default(0)
+  theme String? @db.VarChar(32)
+  payload Json
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  page SitePage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  revisions ContentRevision[]
+  @@index([pageId, publishStatus, sortOrder])
+}
+
+model ContentRevision {
+  id String @id @default(cuid())
+  sectionId String
+  version Int
+  payload Json
+  createdBy String?
+  createdAt DateTime @default(now())
+  section PageSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  @@unique([sectionId, version])
+}
+
+model MediaAsset {
+  id String @id @default(cuid())
+  sourceType String @default("PLACEHOLDER") @db.VarChar(32)
+  objectKey String?
+  publicUrl String?
+  title String? @db.VarChar(180)
+  altText String? @db.VarChar(300)
+  mimeType String? @db.VarChar(128)
+  width Int?
+  height Int?
+  licenseNote String?
+  status String @default("ACTIVE") @db.VarChar(32)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaSlot {
+  id String @id @default(cuid())
+  slotKey String @unique @db.VarChar(120)
+  title String @db.VarChar(180)
+  description String?
+  aspectRatio String? @db.VarChar(32)
+  status String @default("PLACEHOLDER") @db.VarChar(32)
+  assetId String?
+  mobileAssetId String?
+  focalPoint String? @db.VarChar(64)
+  updatedAt DateTime @updatedAt
+}

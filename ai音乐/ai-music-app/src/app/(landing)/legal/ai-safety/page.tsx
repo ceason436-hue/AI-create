@@ -1,0 +1,2 @@
+import { PublicPage } from "@/components/public-page";
+export default function AiSafetyPage() { return <PublicPage eyebrow="RESPONSIBLE AI" title="AI 使用与内容安全" intro="AI 是创作工具，不是事实证明。使用时请核验信息、尊重他人权利，并保留自己的创作判断。"><section className="public-content legal-copy"><h2>使用原则</h2><ul><li>不要提交密码、身份证号、未公开联系方式或其他敏感信息。</li><li>AI 输出可能不准确，课程与公开内容中的事实需要人工核验。</li><li>不要使用 AI 生成图冒充真实教师、学校、课堂、获奖或学员成果。</li><li>平台会对请求进行权限、频率、并发和成本控制，并按规则记录必要的脱敏审计信息。</li></ul></section></PublicPage>; }

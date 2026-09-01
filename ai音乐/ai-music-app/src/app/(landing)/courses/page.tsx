@@ -1,0 +1,9 @@
+import Link from "next/link";
+import { getPublicCategories, getPublicCourses } from "@/lib/public-content";
+import { PublicPage } from "@/components/public-page";
+
+export default async function CoursesPage({ searchParams }: { searchParams: Promise<{ category?: string; q?: string }> }) {
+  const filters = await searchParams;
+  const [categories, courses] = await Promise.all([getPublicCategories(), getPublicCourses(filters)]);
+  return <PublicPage eyebrow="COURSE SYSTEM" title="课程体系，从兴趣走向作品" intro="常规课、竞赛课程和 AI 课程由运营后台持续维护。先选择方向，再查看适合孩子的课程与学习路径。"><section className="public-content"><div className="filter-bar"><div className="filter-chips"><Link href="/courses" className={!filters.category ? "active" : ""}>全部课程</Link>{categories.map((category) => <Link key={category.id} href={`/courses?category=${category.slug}`} className={filters.category === category.slug ? "active" : ""}>{category.name}</Link>)}</div><form className="search-form"><input name="q" defaultValue={filters.q} placeholder="搜索课程" aria-label="搜索课程" /><button type="submit">搜索</button></form></div><div className="course-directory">{courses.map((course) => <Link className="directory-course" href={`/courses/${course.slug}`} key={course.id}><div className="directory-course-art"><span>{course.category.name}</span><strong>{course.name.slice(0, 1)}</strong></div><div><span className="muted-label">{course.category.name} · {course.difficulty}</span><h2>{course.name}</h2><p>{course.shortDescription}</p><div className="course-meta"><span>{course.gradeRange}</span><span>{course.durationText}</span><span>{course.enrollmentStatus === "OPEN" ? "招生中" : course.enrollmentStatus === "COMING_SOON" ? "即将开课" : "欢迎咨询"}</span></div></div></Link>)}</div></section></PublicPage>;
+}

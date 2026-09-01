@@ -82,6 +82,22 @@ export default function AIArtGenerator() {
     { id: "ink", label: "水墨国风" },
   ];
 
+  async function savePersonalWork(image: string, title: string) {
+    const [header, contentBase64] = image.split(",", 2);
+    const mimeType = header.match(/^data:(image\/(?:jpeg|png|webp));base64$/)?.[1];
+    if (!mimeType || !contentBase64) return;
+    try {
+      const response = await fetch("/api/works", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "IMAGE", title: title.slice(0, 200), mimeType, contentBase64 }),
+      });
+      if (!response.ok && response.status !== 403) console.error("Cloud work save failed", { status: response.status });
+    } catch {
+      console.error("Cloud work save request failed");
+    }
+  }
+
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
     if (activeTab === "img2img" && !referenceImage) return;
@@ -104,7 +120,7 @@ export default function AIArtGenerator() {
     try {
       const response = await fetch('/api/minimax/image', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
         body: JSON.stringify({
           mode: activeTab,
           prompt,
@@ -129,6 +145,7 @@ export default function AIArtGenerator() {
         prompt: prompt,
         createdAt: Date.now()
       }, ...prev]);
+      void savePersonalWork(data.image, prompt || "AI 绘画作品");
     } catch (error: any) {
       console.error("Image generation error:", error);
       alert(`生成失败: ${error.message}`);
