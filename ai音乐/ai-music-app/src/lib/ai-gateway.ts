@@ -1,3 +1,4 @@
+import { createHash, randomUUID } from "crypto";
 import { AccountStatus, AccountType, RequestStatus, UsageStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getCurrentAccount } from "@/lib/auth";
@@ -149,7 +150,7 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
   if (!trackRequest) return { ok: true, access: { accountId, redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous } };
 
   // 匿名试用不建立 Account/AIRequest/作品记录；仅由 Redis 计数并在请求结束时释放并发槽位。
-  if (anonymous) return { ok: true, access: { accountId, redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous: true } };
+  if (anonymous) return { ok: true, access: { accountId, requestId: randomUUID(), redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous: true } };
 
   const idempotencyKey = request.headers.get("idempotency-key")?.trim();
   if (!idempotencyKey || idempotencyKey.length > 128) {
@@ -186,6 +187,10 @@ export async function finishAiRequest(access: GatewayAccess, tool: AiTool, succe
     await getRedis().then((redis) => redis.decr(access.redisKey));
   } catch {
     // Redis TTL limits the impact of a transient failure to release a slot.
+  }
+  if (access.anonymous) {
+    await db.anonymousUsageEvent.create({ data: { anonymousIdHash: createHash("sha256").update(access.accountId).digest("hex"), toolKey: tool, status: succeeded ? "SUCCEEDED" : "FAILED", requestId: access.requestId } }).catch(() => undefined);
+    return;
   }
   if (!access.requestId) return;
   const status = succeeded ? RequestStatus.SUCCEEDED : RequestStatus.FAILED;

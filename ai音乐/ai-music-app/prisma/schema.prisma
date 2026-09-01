@@ -475,6 +475,8 @@ model Enrollment {
   id String @id @default(cuid())
   accountId String
   courseId String
+  cohortId String?
+  organizationId String?
   source String @default("ADMIN") @db.VarChar(32)
   status String @default("ACTIVE") @db.VarChar(32)
   startsAt DateTime
@@ -489,6 +491,17 @@ model Enrollment {
   progress LearningProgress[]
   @@unique([accountId, courseId])
   @@index([accountId, status, startsAt, endsAt])
+}
+
+model AnonymousUsageEvent {
+  id String @id @default(cuid())
+  anonymousIdHash String @db.VarChar(128)
+  toolKey String @db.VarChar(64)
+  status String @db.VarChar(32)
+  requestId String? @db.VarChar(128)
+  ipHash String? @db.VarChar(128)
+  occurredAt DateTime @default(now())
+  @@index([anonymousIdHash, toolKey, occurredAt])
 }
 
 model LearningProgress {

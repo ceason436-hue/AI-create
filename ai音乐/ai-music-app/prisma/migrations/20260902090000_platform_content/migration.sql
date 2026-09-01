@@ -61,6 +61,8 @@ CREATE TABLE "Enrollment" (
     "id" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
     "courseId" TEXT NOT NULL,
+    "cohortId" TEXT,
+    "organizationId" TEXT,
     "source" VARCHAR(32) NOT NULL DEFAULT 'ADMIN',
     "status" VARCHAR(32) NOT NULL DEFAULT 'ACTIVE',
     "startsAt" TIMESTAMP(3) NOT NULL,
@@ -79,6 +81,16 @@ CREATE TABLE "LearningProgress" (
     "completedAt" TIMESTAMP(3),
     "lastViewedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "LearningProgress_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "AnonymousUsageEvent" (
+    "id" TEXT NOT NULL,
+    "anonymousIdHash" VARCHAR(128) NOT NULL,
+    "toolKey" VARCHAR(64) NOT NULL,
+    "status" VARCHAR(32) NOT NULL,
+    "requestId" VARCHAR(128),
+    "ipHash" VARCHAR(128),
+    "occurredAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "AnonymousUsageEvent_pkey" PRIMARY KEY ("id")
 );
 CREATE TABLE "CourseToolBinding" (
     "id" TEXT NOT NULL,
@@ -291,6 +303,7 @@ CREATE INDEX "CourseModule_courseId_sortOrder_idx" ON "CourseModule"("courseId",
 CREATE INDEX "Lesson_moduleId_sortOrder_idx" ON "Lesson"("moduleId", "sortOrder");
 CREATE UNIQUE INDEX "Enrollment_accountId_courseId_key" ON "Enrollment"("accountId", "courseId");
 CREATE INDEX "Enrollment_accountId_status_startsAt_endsAt_idx" ON "Enrollment"("accountId", "status", "startsAt", "endsAt");
+CREATE INDEX "AnonymousUsageEvent_anonymousIdHash_toolKey_occurredAt_idx" ON "AnonymousUsageEvent"("anonymousIdHash", "toolKey", "occurredAt");
 CREATE UNIQUE INDEX "LearningProgress_enrollmentId_lessonId_key" ON "LearningProgress"("enrollmentId", "lessonId");
 CREATE INDEX "CourseToolBinding_courseId_status_sortOrder_idx" ON "CourseToolBinding"("courseId", "status", "sortOrder");
 CREATE INDEX "CoursewareAsset_courseId_publishStatus_idx" ON "CoursewareAsset"("courseId", "publishStatus");
