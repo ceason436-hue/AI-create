@@ -2,6 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
 import { getPublicActivities, getPublicAchievements, getPublicCourses, placeholderMedia } from "@/lib/public-content";
+import { getPublishedPageSections } from "@/lib/site-pages";
+import { sectionPayload } from "@/lib/site-page-payload";
+
+export const dynamic = "force-dynamic";
 
 const tools = [
   { name: "AI 音乐", detail: "从节奏与旋律开始", href: "/tools/ai-music", image: "/tu1.jpg", className: "tool-card-blue" },
@@ -11,12 +15,15 @@ const tools = [
 ];
 
 export default async function LandingPage() {
-  const [courses, activities, achievements] = await Promise.all([getPublicCourses(), getPublicActivities(), getPublicAchievements()]);
+  const [courses, activities, achievements, homeSections] = await Promise.all([getPublicCourses(), getPublicActivities(), getPublicAchievements(), getPublishedPageSections("home")]);
+  const hero = sectionPayload(homeSections, "HERO", { eyebrow: "CREATE WITH INTELLIGENCE · KRT AI", title: "让孩子从使用科技，走向创造科技。", intro: "把 AI、机器人和项目式学习放进孩子真正能理解、能动手、能展示的创作过程里。", primaryLabel: "查看课程体系", secondaryLabel: "校园合作" });
+  const process = sectionPayload(homeSections, "PROCESS", { eyebrow: "HOW IT WORKS", title: "学习不是看完一页，而是完成一次创作。", intro: "每一个课程任务都把理解、实践和表达连在一起。孩子可以在安全的工具环境里试错，再把过程整理成自己的作品。", buttonLabel: "了解 AI 创作启航" });
+  const consult = sectionPayload(homeSections, "CONSULT_CTA", { eyebrow: "MAKE THE NEXT THING", title: "准备好开始一项真正属于孩子的创作了吗？", intro: "告诉我们孩子的年龄、兴趣和目标，我们会一起找到合适的开始方式。", buttonLabel: "课程咨询" });
   return (
     <PublicShell>
       <main>
         <section className="hero-section">
-          <div className="hero-copy"><span className="eyebrow">CREATE WITH INTELLIGENCE · KRT AI</span><h1>让孩子从使用科技，<span>走向创造科技。</span></h1><p>把 AI、机器人和项目式学习放进孩子真正能理解、能动手、能展示的创作过程里。</p><div className="hero-actions"><Link href="/courses" className="button button-lime">查看课程体系</Link><Link href="/school-cooperation" className="button button-outline">校园合作</Link></div><div className="hero-pills"><span>AI 科创教育</span><span>项目制学习</span><span>作品可展示</span></div></div>
+          <div className="hero-copy"><span className="eyebrow">{hero.eyebrow}</span><h1>{hero.title}</h1><p>{hero.intro}</p><div className="hero-actions"><Link href="/courses" className="button button-lime">{hero.primaryLabel}</Link><Link href="/school-cooperation" className="button button-outline">{hero.secondaryLabel}</Link></div><div className="hero-pills"><span>AI 科创教育</span><span>项目制学习</span><span>作品可展示</span></div></div>
           <div className="hero-stage"><div className="hero-stage-main"><Image src={placeholderMedia.scene} alt="AI 科创学习场景占位图" width={1200} height={800} priority /></div><div className="floating-card floating-card-path"><small>学习路径</small><strong>课程 → 实践 → 创作 → 展示</strong></div><div className="floating-card floating-card-art"><Image src={placeholderMedia.art} alt="AI 作品占位图" width={120} height={96} /><span>一件正在发生的作品</span></div></div>
         </section>
 
@@ -24,7 +31,7 @@ export default async function LandingPage() {
 
         <section className="category-section page-section"><div className="section-heading"><div><span className="eyebrow dark">COURSE SYSTEM</span><h2>三条学习路径，持续长出作品</h2></div><Link href="/courses" className="text-link">浏览全部课程 ↗</Link></div><div className="category-grid">{[...new Map(courses.map((course) => [course.category.slug, course.category])).values()].slice(0, 3).map((category, index) => <Link key={category.slug} href={`/courses?category=${category.slug}`} className={`category-card category-${index + 1}`}><div className="category-number">0{index + 1}</div><h3>{category.name}</h3><p>{category.description}</p><span>查看方向 →</span></Link>)}</div><div className="course-preview-row">{courses.slice(0, 3).map((course) => <Link href={`/courses/${course.slug}`} key={course.id} className="mini-course"><span>{course.category.name}</span><strong>{course.name}</strong><small>{course.shortDescription}</small></Link>)}</div></section>
 
-        <section className="process-section page-section"><div className="process-copy"><span className="eyebrow">HOW IT WORKS</span><h2>学习不是看完一页，<br /><span>而是完成一次创作。</span></h2><p>每一个课程任务都把理解、实践和表达连在一起。孩子可以在安全的工具环境里试错，再把过程整理成自己的作品。</p><Link href="/courses/ai-creation-starter" className="button button-lime">了解 AI 创作启航</Link></div><div className="process-steps">{["课程学习", "课件实践", "AI 工具创作", "作品成果"].map((step, index) => <div className="process-step" key={step}><b>0{index + 1}</b><div><strong>{step}</strong><span>{["理解问题和方法", "跟着任务动手做", "把想法变成作品", "展示、复盘和迭代"][index]}</span></div></div>)}</div></section>
+        <section className="process-section page-section"><div className="process-copy"><span className="eyebrow">{process.eyebrow}</span><h2>{process.title}</h2><p>{process.intro}</p><Link href="/courses/ai-creation-starter" className="button button-lime">{process.buttonLabel}</Link></div><div className="process-steps">{["课程学习", "课件实践", "AI 工具创作", "作品成果"].map((step, index) => <div className="process-step" key={step}><b>0{index + 1}</b><div><strong>{step}</strong><span>{["理解问题和方法", "跟着任务动手做", "把想法变成作品", "展示、复盘和迭代"][index]}</span></div></div>)}</div></section>
 
         <section className="tools-section page-section"><div className="section-heading light"><div><span className="eyebrow">ONE GATEWAY · FOUR WAYS TO CREATE</span><h2>创作空间，随时从灵感出发</h2></div><Link href="/tools" className="text-link light-link">进入创作空间 ↗</Link></div><div className="tools-grid">{tools.map((tool) => <Link href={tool.href} key={tool.name} className={`tool-card ${tool.className}`}><div className="tool-image"><Image src={tool.image} alt={`${tool.name}占位图`} width={600} height={380} /></div><div><span>{tool.detail}</span><h3>{tool.name}</h3></div></Link>)}</div><p className="trial-note">登录后按账户权益使用；访客每个 AI 业务工具每天可试用 5 次，匿名结果只留在当前浏览器。</p></section>
 
@@ -32,7 +39,7 @@ export default async function LandingPage() {
 
         <section className="stories-section page-section"><div className="section-heading"><div><span className="eyebrow dark">WHAT IS HAPPENING</span><h2>活动与成长，先展示过程</h2></div><Link href="/achievements" className="text-link">查看学员成长 ↗</Link></div><div className="story-grid"><div className="story-column"><h3>科创活动</h3>{activities.slice(0, 2).map((item) => <Link href={`/activities/${item.slug}`} key={item.id} className="story-card"><span>{item.type || "活动预告"}</span><strong>{item.title}</strong><p>{item.summary}</p></Link>)}</div><div className="story-column"><h3>作品与案例</h3>{achievements.slice(0, 2).map((item) => <Link href={`/achievements/${item.slug}`} key={item.id} className="story-card"><span>{item.type || "作品展示"}</span><strong>{item.title}</strong><p>{item.summary}</p></Link>)}</div></div></section>
 
-        <section className="consult-cta"><div><span className="eyebrow">MAKE THE NEXT THING</span><h2>准备好开始一项真正属于孩子的创作了吗？</h2><p>告诉我们孩子的年龄、兴趣和目标，我们会一起找到合适的开始方式。</p></div><Link href="/consult" className="button button-lime">课程咨询</Link></section>
+        <section className="consult-cta"><div><span className="eyebrow">{consult.eyebrow}</span><h2>{consult.title}</h2><p>{consult.intro}</p></div><Link href="/consult" className="button button-lime">{consult.buttonLabel}</Link></section>
       </main>
     </PublicShell>
   );

@@ -463,6 +463,7 @@ export default function AdminDashboardPage() {
           <Link href="/admin/courseware" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">课件管理</Link>
           <Link href="/admin/enrollments" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">报名管理</Link>
           <Link href="/admin/content" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">主站内容</Link>
+          <Link href="/admin/site-pages" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">页面区块</Link>
           <Link href="/admin/inquiries" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">咨询线索</Link>
         </div>
         <main className="mx-auto max-w-[1400px] space-y-6 p-5 lg:p-8">
