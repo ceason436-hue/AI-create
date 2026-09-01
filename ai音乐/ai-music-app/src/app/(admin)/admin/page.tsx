@@ -459,6 +459,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-wrap gap-2 border-b border-slate-200 bg-slate-50 px-5 py-3 lg:px-8">
           <span className="mr-2 self-center text-xs font-bold uppercase tracking-wider text-slate-400">内容与学习</span>
           <Link href="/admin/courses" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">课程管理</Link>
+          <Link href="/admin/curriculum" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">课时与工具</Link>
           <Link href="/admin/courseware" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">课件管理</Link>
           <Link href="/admin/enrollments" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">报名管理</Link>
           <Link href="/admin/content" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">主站内容</Link>

@@ -1,18 +1,32 @@
 import { NextResponse } from 'next/server';
+import { z } from "zod";
+import { withAiGateway } from "@/lib/ai-gateway";
+import { badRequest } from "@/lib/http";
 
 export const maxDuration = 120; // 允许最长 120 秒执行时间
 
+const codeInputSchema = z.object({
+  messages: z.array(z.object({
+    role: z.enum(["user", "assistant"]),
+    name: z.string().max(64).optional(),
+    content: z.string().min(1).max(20_000),
+  })).min(1).max(20),
+});
+
 export async function POST(req: Request) {
+  return withAiGateway(req, "code", async (_requestId, courseContext) => {
   try {
-    const body = await req.json();
+    const parsed = codeInputSchema.safeParse(await req.json());
+    if (!parsed.success) return badRequest();
+    const body = parsed.data;
     // 将默认模型替换为 MiniMax-M2.7
-    const { messages, model = "MiniMax-M2.7" } = body;
+    const { messages } = body;
 
     const apiKey = process.env.MINIMAX_API_KEY;
     const groupId = process.env.MINIMAX_GROUP_ID;
     
     if (!apiKey) {
-      return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
+      return NextResponse.json({ error: 'AI 服务暂不可用。' }, { status: 503 });
     }
 
     const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
@@ -42,10 +56,11 @@ export async function POST(req: Request) {
    - 可以引入图片占位符 (如 https://source.unsplash.com/random/800x600?tech) 增加真实感。`
     };
 
-    const finalMessages = [systemPrompt, ...messages];
+    const coursePrompt = courseContext ? { role: "system" as const, name: "system", content: `当前为科瑞特课程《${courseContext.courseName}》课时《${courseContext.lessonTitle}》服务。请把代码难度、示例和讲解与本课任务对应，不要虚构课程资料。课时任务：${courseContext.lessonTask ?? "请按课时标题提供合适的编程实践。"}` } : null;
+    const finalMessages = [systemPrompt, ...(coursePrompt ? [coursePrompt] : []), ...messages];
 
     const payload = {
-      model: model,
+      model: "MiniMax-M2.7",
       messages: finalMessages,
       stream: false
     };
@@ -70,7 +85,7 @@ export async function POST(req: Request) {
     try {
       // 尝试解析 JSON。如果网关超时（如 504），返回的是 HTML，这里会抛出异常
       data = JSON.parse(responseText);
-    } catch (e) {
+    } catch {
       console.error("Minimax Code API returned non-JSON:", responseText.substring(0, 200));
       
       // 如果是非 JSON，尝试看看是不是包含了真实的 HTML 代码（AI成功返回的代码）
@@ -92,16 +107,17 @@ export async function POST(req: Request) {
     }
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
-      console.error("Minimax Code API Error:", data);
+      console.error("MiniMax code request failed", { status: response.status });
       return NextResponse.json({ 
-        error: data.base_resp?.status_msg || data.message || 'API 调用失败' 
-      }, { status: response.status !== 200 ? response.status : 400 });
+        error: 'AI 服务暂时无法完成生成，请稍后重试。'
+      }, { status: 502 });
     }
 
     return NextResponse.json(data);
 
-  } catch (error: any) {
-    console.error("Internal Server Error:", error);
-    return NextResponse.json({ error: error.message || '服务器内部错误' }, { status: 500 });
+  } catch {
+    console.error("Code route failed");
+    return NextResponse.json({ error: '服务器内部错误' }, { status: 500 });
   }
+  });
 }

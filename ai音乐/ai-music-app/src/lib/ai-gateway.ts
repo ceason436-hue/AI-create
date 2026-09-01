@@ -7,6 +7,7 @@ import { conflict, forbidden, serviceUnavailable, tooManyRequests, unauthorized 
 import { getRedis } from "@/lib/redis";
 import { getToolCreditCost } from "@/lib/credit-costs";
 import { consumeAnonymousTrial, getAnonymousId, hasTrialConsent } from "@/lib/anonymous-trial";
+import { CourseToolContext, resolveCourseToolContext } from "@/lib/course-tool-context";
 
 export const AI_TOOLS = ["chat", "code", "image", "music", "music_query", "vision"] as const;
 export type AiTool = (typeof AI_TOOLS)[number];
@@ -17,6 +18,7 @@ type GatewayAccess = {
   redisKey: string;
   reservedCredits: number;
   anonymous?: boolean;
+  courseContext?: CourseToolContext | null;
 };
 
 type GatewayResult =
@@ -112,6 +114,7 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
   const sessionAccount = await getCurrentAccount();
   let accountId: string;
   let anonymous = false;
+  let courseContext: CourseToolContext | null = null;
   if (!sessionAccount) {
     if (!await hasTrialConsent()) {
       return { ok: false, response: NextResponse.json({ error: "请先登录，或确认使用访客试用。", trialAvailable: true, trialAcceptPath: "/api/ai/trial" }, { status: 401 }) };
@@ -125,6 +128,11 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
       return { ok: false, response: forbidden("该账号当前不可使用 AI 功能。") };
     }
     accountId = sessionAccount.id;
+    try {
+      courseContext = await resolveCourseToolContext(accountId, tool, request.headers.get("x-krt-course-id"), request.headers.get("x-krt-lesson-id"));
+    } catch {
+      return { ok: false, response: forbidden("课程任务上下文无效、报名已失效，或该课时未绑定当前 AI 工具。") };
+    }
   }
   if (process.env.AI_GENERATION_ENABLED !== "true") {
     return { ok: false, response: serviceUnavailable("AI 生成功能当前已暂停。") };
@@ -147,10 +155,10 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
   }
 
   const trackRequest = options?.trackRequest ?? request.method !== "GET";
-  if (!trackRequest) return { ok: true, access: { accountId, redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous } };
+  if (!trackRequest) return { ok: true, access: { accountId, redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous, courseContext } };
 
   // 匿名试用不建立 Account/AIRequest/作品记录；仅由 Redis 计数并在请求结束时释放并发槽位。
-  if (anonymous) return { ok: true, access: { accountId, requestId: randomUUID(), redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous: true } };
+  if (anonymous) return { ok: true, access: { accountId, requestId: randomUUID(), redisKey: rateLimit.concurrencyKey, reservedCredits: 0, anonymous: true, courseContext } };
 
   const idempotencyKey = request.headers.get("idempotency-key")?.trim();
   if (!idempotencyKey || idempotencyKey.length > 128) {
@@ -174,7 +182,7 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
       }
       return tx.aiRequest.create({ data: { accountId, tool, idempotencyKey, status: RequestStatus.RUNNING, reservedCredits } });
     });
-    return { ok: true, access: { accountId, requestId: aiRequest.requestId, redisKey: rateLimit.concurrencyKey, reservedCredits, anonymous } };
+    return { ok: true, access: { accountId, requestId: aiRequest.requestId, redisKey: rateLimit.concurrencyKey, reservedCredits, anonymous, courseContext } };
   } catch (error) {
     await getRedis().then((redis) => redis.decr(rateLimit.concurrencyKey)).catch(() => undefined);
     if (error instanceof Error && error.message === "INSUFFICIENT_CREDITS") return { ok: false, response: forbidden("AI 点数不足，无法发起生成。") };
@@ -208,13 +216,13 @@ export async function finishAiRequest(access: GatewayAccess, tool: AiTool, succe
 export async function withAiGateway(
   request: Request,
   tool: AiTool,
-  handler: (requestId: string | undefined) => Promise<Response>,
+  handler: (requestId: string | undefined, courseContext: CourseToolContext | null | undefined) => Promise<Response>,
   options?: { trackRequest?: boolean },
 ) {
   const gateway = await beginAiRequest(request, tool, options);
   if (!gateway.ok) return gateway.response;
   try {
-    const response = await handler(gateway.access.requestId);
+    const response = await handler(gateway.access.requestId, gateway.access.courseContext);
     await finishAiRequest(gateway.access, tool, response.ok);
     if (gateway.access.requestId) response.headers.set("x-ai-request-id", gateway.access.requestId);
     return response;
