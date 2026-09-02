@@ -2,6 +2,7 @@
 
 import React, { useState, useSyncExternalStore } from "react";
 import { BookOpen, Plus, History, ChevronRight, Loader2, Play } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { builtinArticles } from "./data";
 
@@ -95,7 +96,7 @@ export default function AIReadingDashboard() {
                  selectedArticleId === article.id ? 'border-secondary-fixed shadow-[0_0_20px_rgba(202,242,4,0.4)] scale-[1.02]' : 'border-transparent hover:border-white/30'
                }`}
              >
-                <img src={article.coverImage} alt={article.title} className="w-full h-32 object-cover opacity-80" />
+                <Image src={article.coverImage} alt={article.title} className="w-full h-32 object-cover opacity-80" width={640} height={320} priority />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
                    <h3 className="text-white font-bold text-xl">{article.title}</h3>
                 </div>
