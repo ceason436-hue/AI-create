@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   async redirects() {
     return [
+      { source: "/ai-music", destination: "/tools?category=music", permanent: true },
       { source: "/ai-art", destination: "/tools/ai-art", permanent: true },
       { source: "/ai-programming", destination: "/tools/ai-programming", permanent: true },
       { source: "/ai-reading", destination: "/tools/ai-reading", permanent: true },
