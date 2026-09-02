@@ -23,7 +23,7 @@ export async function getLearningDashboardSummary(accountId: string) {
 }
 
 export async function getEnrollmentForCourse(accountId: string, courseSlug: string) {
-  return db.enrollment.findFirst({ where: { ...activeEnrollmentWhere(accountId), course: { slug: courseSlug, publishStatus: "PUBLISHED" } }, include: { course: { include: { category: true, modules: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } } } });
+  return db.enrollment.findFirst({ where: { ...activeEnrollmentWhere(accountId), course: { slug: courseSlug, publishStatus: "PUBLISHED" } }, include: { course: { include: { category: true, toolBindings: { where: { status: "ACTIVE" }, orderBy: { sortOrder: "asc" } }, modules: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } } } });
 }
 
 export function serializeLearningEnrollment(enrollment: Awaited<ReturnType<typeof getLearningDashboard>>[number]) {
