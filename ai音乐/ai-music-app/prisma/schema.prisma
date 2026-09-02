@@ -734,10 +734,33 @@ model MediaAsset {
   mimeType String? @db.VarChar(128)
   width Int?
   height Int?
+  playbackObjectKey String?
+  thumbnailObjectKey String?
+  processingStatus String @default("READY") @db.VarChar(32)
+  processingError String?
+  processedAt DateTime?
   licenseNote String?
   status String @default("ACTIVE") @db.VarChar(32)
+  processingJobs MediaProcessingJob[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MediaProcessingJob {
+  id        String   @id @default(cuid())
+  assetId   String
+  jobType   String   @default("TRANSCODE") @db.VarChar(32)
+  status    String   @default("PENDING") @db.VarChar(32)
+  attempts  Int      @default(0)
+  errorCode String?  @db.VarChar(64)
+  errorDetail String?
+  startedAt DateTime?
+  finishedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  asset     MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  @@index([status, createdAt])
+  @@index([assetId, createdAt])
 }
 
 model MediaAssetRevision {

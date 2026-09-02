@@ -3,6 +3,7 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { matchesMediaSignature, mediaExtension, mediaKind, mediaMimeType } from "@/lib/media-files";
 import { mediaSnapshot } from "@/lib/media-revisions";
+import { initialMediaProcessingStatus } from "@/lib/media-processing-policy";
 import { badRequest, internalError } from "@/lib/http";
 import { deleteObject, putObjectAtKey } from "@/lib/storage";
 
@@ -40,9 +41,10 @@ export async function POST(request: Request) {
   try { stored = await putObjectAtKey(objectKey, content, { contentType: mimeType }); } catch { return Response.json({ error: "媒体文件暂时无法存储，请检查存储服务。" }, { status: 503 }); }
   try {
     const asset = await db.$transaction(async (tx) => {
-      const created = await tx.mediaAsset.create({ data: { sourceType, objectKey: stored.objectKey, title, altText: altText || null, mimeType, licenseNote: licenseNote || null, status: "ACTIVE" } });
+      const created = await tx.mediaAsset.create({ data: { sourceType, objectKey: stored.objectKey, title, altText: altText || null, mimeType, licenseNote: licenseNote || null, status: "ACTIVE", processingStatus: initialMediaProcessingStatus(mimeType) } });
+      if (kind === "video") await tx.mediaProcessingJob.create({ data: { assetId: created.id } });
       await tx.mediaAssetRevision.create({ data: { assetId: created.id, version: 1, payload: mediaSnapshot(created), createdBy: access.account.id } });
-      await tx.auditLog.create({ data: { actorId: access.account.id, action: "MEDIA_UPLOADED", targetType: "MEDIA_ASSET", targetId: created.id, result: "SUCCEEDED", after: { title, sourceType, mimeType, sizeBytes: stored.sizeBytes } } });
+      await tx.auditLog.create({ data: { actorId: access.account.id, action: "MEDIA_UPLOADED", targetType: "MEDIA_ASSET", targetId: created.id, result: "SUCCEEDED", after: { title, sourceType, mimeType, sizeBytes: stored.sizeBytes, processingStatus: created.processingStatus } } });
       return created;
     });
     return Response.json({ asset }, { status: 201 });

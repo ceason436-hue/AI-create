@@ -67,6 +67,7 @@
 - `[IN_PROGRESS / Phase 7]` 已重新扫描旧静态页、MiniMax 快照和正式应用资源引用：`code.html`、`minimax_docs.html`、`minimax_t2i.html` 未被正式应用运行时引用，仍因负责人确认要求而保留；根目录 `tu1.jpg`、`tu2.png`、`haibao1.png` 仍被正式应用和旧首页引用，不可删除。本轮已重新核验根目录与正式应用副本的 `logo2.png`、`haibao1.png`、`tu1.jpg`、`tu2.png` SHA256 全部一致，证据记录在《旧内容迁移与删除核验清单》。旧工具重定向补齐 `/ai-music` 到 `/tools?category=music`，删除清单、生产部署和上线收口仍需继续完成；在这些事项完成前不得宣称全部整改完成。
 - `[DONE / Redirect regression]` 新增自动化重定向回归测试，覆盖 AI 音乐、绘画、编程、阅读、音乐创建、阅读工作区/结果和全部四个 `stage1` 练习路径；每项均要求永久迁移到规划的统一工具路由。
 - `[DONE / Learning access regression]` 新增有效报名查询与学习中心账号边界的自动化测试；课程、课时、课件预览及课程内 AI 工具均复用同一“已开始、未过期、状态为 ACTIVE”的报名筛选条件，避免未来改动放宽受限内容访问。
+- `[DONE / Phase 3 video processing foundation]` 视频上传现创建异步处理任务，受保护 Worker 使用 FFmpeg 生成兼容 MP4 与海报对象；公开受控媒体地址仅在处理完成后自动切换至兼容播放源，失败可审计并由运营后台重试。迁移 `20260902100000_media_processing`、`MEDIA_WORKER_TOKEN`、FFmpeg、私有存储、任务调度和真实 MP4/WebM 浏览器验收仍待生产环境完成；HLS 自适应流、字幕与多码率派生未被误报为已完成，详见《媒体视频处理部署清单》。
 
 后续实施旧内容删除前，必须完成引用扫描、功能对照、资源哈希核对、URL 重定向和浏览器验证，并由项目负责人再次确认实际删除清单。
 
