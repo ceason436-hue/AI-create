@@ -19,6 +19,10 @@ export function publicMediaUrl(assetId: string | null | undefined) {
   return assetId ? (assetId.startsWith("/") ? assetId : `/api/media/${assetId}`) : null;
 }
 
+export function publicCaptionUrl(assetId: string | null | undefined) {
+  return assetId ? `/api/media/${assetId}/captions` : null;
+}
+
 export function mediaKind(mimeType: string) {
   return mimeType.startsWith("video/") ? "video" : mimeType.startsWith("image/") ? "image" : null;
 }
@@ -32,4 +36,8 @@ export function matchesMediaSignature(mimeType: string, data: Buffer) {
   if (mimeType === "video/mp4") return data.subarray(4, 8).toString("ascii") === "ftyp";
   if (mimeType === "video/webm") return data.length >= 4 && data.subarray(0, 4).equals(Buffer.from([0x1a, 0x45, 0xdf, 0xa3]));
   return false;
+}
+
+export function isWebVtt(data: Buffer) {
+  return data.subarray(0, 4).toString("utf8") === "\uFEFFWEB" || data.toString("utf8", 0, Math.min(data.length, 128)).trimStart().startsWith("WEBVTT");
 }

@@ -736,6 +736,8 @@ model MediaAsset {
   height Int?
   playbackObjectKey String?
   thumbnailObjectKey String?
+  captionObjectKey String?
+  captionLanguage String? @db.VarChar(32)
   processingStatus String @default("READY") @db.VarChar(32)
   processingError String?
   processedAt DateTime?

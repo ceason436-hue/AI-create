@@ -1,5 +1,5 @@
 type MediaRecord = Record<string, unknown>;
-const fields = ["sourceType", "objectKey", "publicUrl", "title", "altText", "mimeType", "width", "height", "licenseNote", "status"];
+const fields = ["sourceType", "objectKey", "publicUrl", "title", "altText", "mimeType", "width", "height", "captionObjectKey", "captionLanguage", "licenseNote", "status"];
 
 export function mediaSnapshot(asset: MediaRecord) {
   return Object.fromEntries(fields.flatMap((field) => asset[field] === undefined ? [] : [[field, asset[field]]]));

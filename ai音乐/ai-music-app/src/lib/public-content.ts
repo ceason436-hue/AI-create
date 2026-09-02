@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { publicMediaUrl } from "@/lib/media-files";
+import { publicCaptionUrl, publicMediaUrl } from "@/lib/media-files";
 
 export type PublicCategory = { id: string; name: string; slug: string; description: string; coverAssetId: string | null };
 export type PublicCourse = {
@@ -28,7 +28,7 @@ export type PublicListItem = {
   coverAssetId?: string | null;
   coverMimeType?: string | null;
   date?: string | null;
-  media?: Array<{ src: string; mimeType: string | null; caption: string | null; focalPoint: string | null }>;
+  media?: Array<{ src: string; mimeType: string | null; caption: string | null; focalPoint: string | null; captionsSrc?: string | null; captionLanguage?: string | null }>;
 };
 
 const imageAssets = {
@@ -188,9 +188,9 @@ async function getPublishedList(model: "activity" | "achievement" | "teacherProf
       const galleries = await db.contentMedia.findMany({ where: { contentType, contentId: { in: rows.map((row) => String(row.id)) } }, orderBy: [{ isCover: "desc" }, { sortOrder: "asc" }] });
       const galleryByContent = new Map<string, typeof galleries>(); galleries.forEach((entry) => galleryByContent.set(entry.contentId, [...(galleryByContent.get(entry.contentId) ?? []), entry]));
       const assetIds = [...rows.map((row) => String(row.coverAssetId ?? row.avatarAssetId ?? "")), ...galleries.map((entry) => entry.assetId)].filter(Boolean);
-      const assets = assetIds.length ? await db.mediaAsset.findMany({ where: { id: { in: assetIds }, status: "ACTIVE" }, select: { id: true, mimeType: true } }) : [];
+      const assets = assetIds.length ? await db.mediaAsset.findMany({ where: { id: { in: assetIds }, status: "ACTIVE" }, select: { id: true, mimeType: true, captionObjectKey: true, captionLanguage: true } }) : [];
       const assetsById = new Map(assets.map((asset) => [asset.id, asset]));
-      return rows.map((row) => { const gallery = (galleryByContent.get(String(row.id)) ?? []).flatMap((entry) => { const asset = assetsById.get(entry.assetId); return asset ? [{ src: publicMediaUrl(asset.id)!, mimeType: asset.mimeType, caption: entry.caption, focalPoint: entry.focalPoint }] : []; }); const assetId = String(row.coverAssetId ?? row.avatarAssetId ?? "") || null; const asset = assetId ? assetsById.get(assetId) : null; const cover = gallery[0]; return { id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: cover?.src ?? (asset ? publicMediaUrl(asset.id) : null), coverMimeType: cover?.mimeType ?? asset?.mimeType ?? null, media: gallery, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }; });
+      return rows.map((row) => { const gallery = (galleryByContent.get(String(row.id)) ?? []).flatMap((entry) => { const asset = assetsById.get(entry.assetId); return asset ? [{ src: publicMediaUrl(asset.id)!, mimeType: asset.mimeType, caption: entry.caption, focalPoint: entry.focalPoint, captionsSrc: asset.captionObjectKey ? publicCaptionUrl(asset.id) : null, captionLanguage: asset.captionLanguage }] : []; }); const assetId = String(row.coverAssetId ?? row.avatarAssetId ?? "") || null; const asset = assetId ? assetsById.get(assetId) : null; const cover = gallery[0]; return { id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: cover?.src ?? (asset ? publicMediaUrl(asset.id) : null), coverMimeType: cover?.mimeType ?? asset?.mimeType ?? null, media: gallery, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }; });
     }
   } catch {}
   return model === "activity" ? fallbackActivities : model === "achievement" ? fallbackAchievements : model === "teacherProfile" ? fallbackTeachers : fallbackCampuses;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { matchesMediaSignature, mediaMimeType, publicMediaUrl } from "./media-files";
+import { isWebVtt, matchesMediaSignature, mediaMimeType, publicMediaUrl } from "./media-files";
 
 describe("media file policy", () => {
   it("only accepts known image extensions with matching MIME types", () => {
@@ -18,5 +18,10 @@ describe("media file policy", () => {
     expect(matchesMediaSignature("image/png", Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))).toBe(true);
     expect(matchesMediaSignature("video/mp4", Buffer.from([0, 0, 0, 24, 0x66, 0x74, 0x79, 0x70]))).toBe(true);
     expect(matchesMediaSignature("video/webm", Buffer.from("not-a-video"))).toBe(false);
+  });
+
+  it("accepts only WebVTT text as a caption payload", () => {
+    expect(isWebVtt(Buffer.from("WEBVTT\n\n00:00.000 --> 00:01.000\n字幕"))).toBe(true);
+    expect(isWebVtt(Buffer.from("not a caption"))).toBe(false);
   });
 });
