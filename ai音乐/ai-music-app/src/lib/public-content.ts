@@ -163,7 +163,7 @@ export async function getPublicCourses(filters?: { category?: string; query?: st
   try {
     const courses = await db.course.findMany({
       where: { publishStatus: "PUBLISHED", ...(filters?.category ? { category: { slug: filters.category } } : {}), ...(filters?.query ? { OR: [{ name: { contains: filters.query, mode: "insensitive" } }, { shortDescription: { contains: filters.query, mode: "insensitive" } }] } : {}) },
-      include: { category: true, modules: { orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } },
+      include: { category: true, modules: { where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } },
       orderBy: [{ category: { sortOrder: "asc" } }, { updatedAt: "desc" }],
     });
     const mapped = courses.map((course) => ({ ...mapCourse(course as never)!, modules: course.modules.map((module) => ({ id: module.id, title: module.title, description: module.description ?? "", lessons: module.lessons.map((lesson) => ({ id: lesson.id, title: lesson.title, summary: lesson.summary ?? "", estimatedMinutes: lesson.estimatedMinutes })) })) }));
@@ -175,7 +175,7 @@ export async function getPublicCourses(filters?: { category?: string; query?: st
 
 export async function getPublicCourse(slug: string) {
   try {
-    const course = await db.course.findFirst({ where: { slug, publishStatus: "PUBLISHED" }, include: { category: true, modules: { orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } });
+    const course = await db.course.findFirst({ where: { slug, publishStatus: "PUBLISHED" }, include: { category: true, modules: { where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } });
     if (course) return { ...mapCourse(course as never)!, modules: course.modules.map((module) => ({ id: module.id, title: module.title, description: module.description ?? "", lessons: module.lessons.map((lesson) => ({ id: lesson.id, title: lesson.title, summary: lesson.summary ?? "", estimatedMinutes: lesson.estimatedMinutes })) })) };
   } catch {}
   return fallbackCourses.find((course) => course.slug === slug) ?? null;

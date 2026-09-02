@@ -1,8 +1,43 @@
 import { z } from "zod";
 import { requireAdminResponse } from "@/lib/admin-access";
+import { coursePublicationIssues } from "@/lib/course-publication-policy";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
-const schema = z.object({ categoryId: z.string().optional(), name: z.string().trim().min(1).max(180).optional(), shortDescription: z.string().trim().min(1).max(500).optional(), fullDescription: z.string().trim().max(20_000).optional(), targetAudience: z.string().trim().max(500).optional(), gradeRange: z.string().trim().max(80).optional(), difficulty: z.string().trim().max(32).optional(), deliveryModes: z.array(z.string().trim().min(1).max(32)).max(8).optional(), durationText: z.string().trim().max(80).optional(), enrollmentStatus: z.string().trim().max(32).optional(), publishStatus: z.enum(["DRAFT", "REVIEW", "PUBLISHED", "ARCHIVED"]).optional() });
-export async function GET(_request: Request, { params }: { params: Promise<{ courseId: string }> }) { const access = await requireAdminResponse(); if ("response" in access) return access.response; const { courseId } = await params; const course = await db.course.findUnique({ where: { id: courseId }, include: { category: true, modules: { orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" } } } } } }); if (!course) return Response.json({ error: "课程不存在。" }, { status: 404 }); return Response.json({ course }); }
-export async function PATCH(request: Request, { params }: { params: Promise<{ courseId: string }> }) { const access = await requireAdminResponse(); if ("response" in access) return access.response; const parsed = schema.safeParse(await request.json().catch(() => null)); if (!parsed.success) return Response.json({ error: "课程信息无效。" }, { status: 400 }); const { courseId } = await params; try { const course = await db.course.update({ where: { id: courseId }, data: { ...parsed.data, updatedBy: access.account.id, publishedAt: parsed.data.publishStatus === "PUBLISHED" ? new Date() : undefined }, include: { category: true, modules: { include: { lessons: true } } } }); await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_UPDATED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED", after: parsed.data } }); return Response.json({ course }); } catch { return internalError(); } }
-export async function DELETE(_request: Request, { params }: { params: Promise<{ courseId: string }> }) { const access = await requireAdminResponse(); if ("response" in access) return access.response; const { courseId } = await params; try { const course = await db.course.update({ where: { id: courseId }, data: { publishStatus: "ARCHIVED", updatedBy: access.account.id } }); await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_ARCHIVED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED" } }); return Response.json({ archived: true }); } catch { return internalError(); } }
+
+const schema = z.object({ categoryId: z.string().optional(), name: z.string().trim().min(1).max(180).optional(), shortDescription: z.string().trim().min(1).max(500).optional(), fullDescription: z.string().trim().max(20_000).optional(), targetAudience: z.string().trim().max(500).optional(), gradeRange: z.string().trim().max(80).optional(), difficulty: z.string().trim().max(32).optional(), deliveryModes: z.array(z.string().trim().min(1).max(32)).max(8).optional(), durationText: z.string().trim().max(80).optional(), enrollmentStatus: z.string().trim().max(32).optional(), coverAssetId: z.string().trim().max(128).optional(), publishStatus: z.enum(["DRAFT", "REVIEW", "PUBLISHED", "ARCHIVED"]).optional() });
+
+export async function GET(_request: Request, { params }: { params: Promise<{ courseId: string }> }) {
+  const access = await requireAdminResponse(); if ("response" in access) return access.response;
+  const { courseId } = await params;
+  const course = await db.course.findUnique({ where: { id: courseId }, include: { category: true, modules: { orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" } } } } } });
+  if (!course) return Response.json({ error: "课程不存在。" }, { status: 404 });
+  return Response.json({ course });
+}
+
+export async function PATCH(request: Request, { params }: { params: Promise<{ courseId: string }> }) {
+  const access = await requireAdminResponse(); if ("response" in access) return access.response;
+  const parsed = schema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return Response.json({ error: "课程信息无效。" }, { status: 400 });
+  const { courseId } = await params;
+  try {
+    const current = await db.course.findUnique({ where: { id: courseId }, select: { targetAudience: true, coverAssetId: true, modules: { select: { publishStatus: true } } } });
+    if (!current) return Response.json({ error: "课程不存在。" }, { status: 404 });
+    if (parsed.data.publishStatus === "PUBLISHED") {
+      const issues = coursePublicationIssues({ targetAudience: parsed.data.targetAudience ?? current.targetAudience, coverAssetId: parsed.data.coverAssetId ?? current.coverAssetId, publishedModuleCount: current.modules.filter((module) => module.publishStatus === "PUBLISHED").length });
+      if (issues.length) return Response.json({ error: "课程尚未满足发布条件。", issues }, { status: 400 });
+    }
+    const course = await db.course.update({ where: { id: courseId }, data: { ...parsed.data, updatedBy: access.account.id, publishedAt: parsed.data.publishStatus === "PUBLISHED" ? new Date() : undefined }, include: { category: true, modules: { include: { lessons: true } } } });
+    await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_UPDATED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED", after: parsed.data } });
+    return Response.json({ course });
+  } catch { return internalError(); }
+}
+
+export async function DELETE(_request: Request, { params }: { params: Promise<{ courseId: string }> }) {
+  const access = await requireAdminResponse(); if ("response" in access) return access.response;
+  const { courseId } = await params;
+  try {
+    const course = await db.course.update({ where: { id: courseId }, data: { publishStatus: "ARCHIVED", updatedBy: access.account.id } });
+    await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_ARCHIVED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED" } });
+    return Response.json({ archived: true });
+  } catch { return internalError(); }
+}
