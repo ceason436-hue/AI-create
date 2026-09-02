@@ -39,19 +39,19 @@ const imageAssets = {
 };
 
 const fallbackActivities: PublicListItem[] = [
-  { id: "activity-open-lab", slug: "open-lab", title: "AI 科创开放实验室", summary: "用一个下午体验从灵感到作品的完整流程。", content: "活动内容、时间和报名方式将在资料确认后由运营后台发布。", type: "体验活动", date: null },
-  { id: "activity-project-day", slug: "project-day", title: "小小项目日", summary: "把课程中的小作品带到真实展示场景里。", content: "这是用于占位的活动介绍，正式发布前会替换为经过确认的活动信息。", type: "作品展示", date: null },
+  { id: "activity-open-lab", slug: "open-lab", title: "AI 科创开放实验室", summary: "用一个下午体验从灵感到作品的完整流程。", content: "活动内容、时间和报名方式将在资料确认后由运营后台发布。", type: "体验活动 · 占位", coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]", date: null },
+  { id: "activity-project-day", slug: "project-day", title: "小小项目日", summary: "把课程中的小作品带到真实展示场景里。", content: "这是用于占位的活动介绍，正式发布前会替换为经过确认的活动信息。", type: "作品展示 · 占位", coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]", date: null },
 ];
 
 const fallbackAchievements: PublicListItem[] = [
   { id: "handbook-awards", slug: "handbook-awards", title: "手册资料中的奖项殊荣", summary: "《AI科瑞特手册》收录青少年科技创新大赛、宋庆龄少年儿童发明奖等成果资料。", content: "该内容来自项目提供的《AI科瑞特手册》第 7 页视觉资料。正式上线前仍需由运营人员确认每项成果的展示范围、名称、时间和授权，并按证书原件补充可核验说明。", type: "手册资料 · 奖项殊荣", coverAssetId: "/handbook/handbook-07.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 7 页 · [PENDING-CONTENT]" },
   { id: "handbook-robotics", slug: "handbook-robotics", title: "机器人与人工智能竞赛资料", summary: "手册资料页展示世界机器人大会、长三角青少年人工智能奥林匹克挑战赛等证书与成果。", content: "该内容来自项目提供的《AI科瑞特手册》第 8 页视觉资料。当前页面使用手册页作为真实资料展示，不对证书中的个人信息、名次或授权范围做额外推断。", type: "手册资料 · 竞赛成果", coverAssetId: "/handbook/handbook-08.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 8 页 · [PENDING-CONTENT]" },
-  { id: "achievement-project-wall", slug: "project-wall", title: "AI 作品成长墙", summary: "记录从问题、草图到最终作品的过程，而不仅是一张结果图。", content: "当前为品牌占位案例，不代表真实学员或已获奖成果。", type: "作品展示", coverAssetId: imageAssets.art },
-  { id: "achievement-school-lab", slug: "school-lab", title: "校园创作工作坊", summary: "围绕课堂任务完成一次团队协作和公开表达。", content: "当前为待补充的合作案例占位内容。", type: "合作案例", coverAssetId: imageAssets.scene },
+  { id: "achievement-project-wall", slug: "project-wall", title: "AI 作品成长墙", summary: "记录从问题、草图到最终作品的过程，而不仅是一张结果图。", content: "当前为品牌占位案例，不代表真实学员或已获奖成果。", type: "作品展示 · 占位", coverAssetId: imageAssets.art, coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]" },
+  { id: "achievement-school-lab", slug: "school-lab", title: "校园创作工作坊", summary: "围绕课堂任务完成一次团队协作和公开表达。", content: "当前为待补充的合作案例占位内容。", type: "合作案例 · 占位", coverAssetId: imageAssets.scene, coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]" },
 ];
 
-const fallbackTeachers: PublicListItem[] = [{ id: "teacher-xu", slug: "teacher-xu", title: "徐鸿涛 博士", summary: "《AI科瑞特手册》专家顾问资料：砾典微创始人、复旦大学研究员、博导。", content: "信息来源：项目提供的《AI科瑞特手册》第 5 页专家顾问页面。公开展示前请项目负责人确认姓名、职务、照片和授权范围。", type: "手册资料 · 专家顾问", coverAssetId: "/handbook/handbook-05.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 5 页 · [PENDING-CONTENT]" }, { id: "teacher-placeholder", slug: "teacher-placeholder", title: "更多师资资料待补充", summary: "真实教师资料与公开授权范围确认后展示。", content: "占位内容，不代表真实教师资料。", type: "品牌占位", coverAssetId: imageAssets.poster }];
-const fallbackCampuses: PublicListItem[] = [{ id: "campus-placeholder", slug: "campus-placeholder", title: "校区资料待补充", summary: "校区地址、开放时间和环境图片确认后展示。", content: "占位内容，不代表真实校区信息。", type: "品牌占位", coverAssetId: imageAssets.scene }];
+const fallbackTeachers: PublicListItem[] = [{ id: "teacher-xu", slug: "teacher-xu", title: "徐鸿涛 博士", summary: "《AI科瑞特手册》专家顾问资料：砾典微创始人、复旦大学研究员、博导。", content: "信息来源：项目提供的《AI科瑞特手册》第 5 页专家顾问页面。公开展示前请项目负责人确认姓名、职务、照片和授权范围。", type: "手册资料 · 专家顾问", coverAssetId: "/handbook/handbook-05.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 5 页 · [PENDING-CONTENT]" }, { id: "teacher-placeholder", slug: "teacher-placeholder", title: "更多师资资料待补充", summary: "真实教师资料与公开授权范围确认后展示。", content: "占位内容，不代表真实教师资料。", type: "品牌占位", coverAssetId: imageAssets.poster, coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]" }];
+const fallbackCampuses: PublicListItem[] = [{ id: "campus-placeholder", slug: "campus-placeholder", title: "校区资料待补充", summary: "校区地址、开放时间和环境图片确认后展示。", content: "占位内容，不代表真实校区信息。", type: "品牌占位", coverAssetId: imageAssets.scene, coverSourceLabel: "品牌占位内容 · [PENDING-CONTENT]" }];
 
 function mapCourse(course: Awaited<ReturnType<typeof db.course.findFirst>> & { category?: PublicCategory | null } | null): PublicCourse | null {
   if (!course || !course.category) return null;
