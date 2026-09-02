@@ -38,93 +38,6 @@ const imageAssets = {
   poster: "/haibao1.png",
 };
 
-const fallbackCategories: PublicCategory[] = [
-  { id: "category-regular", name: "常规课", slug: "regular", description: "从计算思维、机器人到数字创作，建立持续学习的科技基础。", coverAssetId: imageAssets.scene },
-  { id: "category-competition", name: "竞赛课程", slug: "competition", description: "以项目制训练和阶段成果，陪伴孩子准备科创赛事。", coverAssetId: imageAssets.art },
-  { id: "category-ai", name: "AI课程", slug: "ai", description: "把 AI 变成可理解、可动手、可展示的创作工具。", coverAssetId: imageAssets.poster },
-];
-
-const fallbackCourses: PublicCourse[] = [
-  {
-    id: "course-ai-creation",
-    name: "AI 创作启航",
-    slug: "ai-creation-starter",
-    shortDescription: "从一个问题开始，完成一件属于自己的 AI 科创作品。",
-    fullDescription: "通过阅读、图像、音乐和编程四种表达方式，带孩子理解 AI 的工作方式，并完成一项可展示的跨学科创作。",
-    targetAudience: "小学二至六年级，对科技创作感兴趣的孩子",
-    gradeRange: "二至六年级",
-    difficulty: "启蒙",
-    durationText: "8 次课 / 16 小时",
-    deliveryModes: ["线下", "校内合作"],
-    enrollmentStatus: "OPEN",
-    category: fallbackCategories[2],
-    modules: [
-      { id: "m-ai-1", title: "认识 AI 与创作任务", description: "从生活问题出发，建立创作目标。", lessons: [{ id: "l-ai-1", title: "我的第一个 AI 项目", summary: "了解项目流程和安全使用边界。", estimatedMinutes: 45 }, { id: "l-ai-2", title: "把想法变成提示", summary: "学会把观察、目标和限制说清楚。", estimatedMinutes: 45 }] },
-      { id: "m-ai-2", title: "多模态作品工作坊", description: "用文字、图像和声音丰富表达。", lessons: [{ id: "l-ai-3", title: "作品展示与复盘", summary: "整理过程，完成一次小型作品发布。", estimatedMinutes: 60 }] },
-    ],
-  },
-  {
-    id: "course-music",
-    name: "AI 音乐实验室",
-    slug: "ai-music-lab",
-    shortDescription: "从节奏、音高到旋律，让零基础孩子完成第一首原创音乐。",
-    fullDescription: "将音乐基础与 AI 工具结合，孩子可以先在浏览器里练习，再把灵感扩展为一首完整作品。",
-    targetAudience: "喜欢音乐、故事和动手尝试的孩子",
-    gradeRange: "二至六年级",
-    difficulty: "基础",
-    durationText: "6 次课 / 12 小时",
-    deliveryModes: ["线下", "线上"],
-    enrollmentStatus: "OPEN",
-    category: fallbackCategories[2],
-    modules: [{ id: "m-music-1", title: "声音与节奏", description: "用互动练习建立音乐直觉。", lessons: [{ id: "l-music-1", title: "节奏实验", summary: "从拍手和鼓点认识节奏。", estimatedMinutes: 45 }, { id: "l-music-2", title: "三键成曲", summary: "用简单选择组合音乐片段。", estimatedMinutes: 60 }] }],
-  },
-  {
-    id: "course-robotics",
-    name: "机器人与工程实践",
-    slug: "robotics-engineering",
-    shortDescription: "从拆解问题到制作原型，完成一次有证据的工程实践。",
-    fullDescription: "使用结构化的工程流程，让孩子学会观察、设计、测试和改进，而不是只追求一次成功。",
-    targetAudience: "喜欢搭建、实验和解决问题的孩子",
-    gradeRange: "三至六年级",
-    difficulty: "进阶",
-    durationText: "10 次课 / 20 小时",
-    deliveryModes: ["线下", "校内合作"],
-    enrollmentStatus: "COMING_SOON",
-    category: fallbackCategories[0],
-    modules: [{ id: "m-robot-1", title: "设计与原型", description: "从需求到方案，再到可验证的原型。", lessons: [{ id: "l-robot-1", title: "观察与拆解", summary: "将复杂问题拆成可完成的小任务。", estimatedMinutes: 60 }] }],
-  },
-  {
-    id: "course-competition",
-    name: "科创竞赛项目制训练",
-    slug: "competition-project",
-    shortDescription: "围绕真实主题完成选题、研究、制作、答辩与迭代。",
-    fullDescription: "课程不承诺虚构的奖项或排名，以项目记录、过程证据和表达能力为核心，帮助团队形成可核验的作品材料。",
-    targetAudience: "已经有基础，希望参加项目制活动的学生",
-    gradeRange: "四至六年级",
-    difficulty: "竞赛",
-    durationText: "12 次课 / 24 小时",
-    deliveryModes: ["线下", "集训"],
-    enrollmentStatus: "CONSULT",
-    category: fallbackCategories[1],
-    modules: [{ id: "m-comp-1", title: "选题与证据", description: "建立项目问题、方法和展示结构。", lessons: [{ id: "l-comp-1", title: "项目问题定义", summary: "把兴趣转为可以验证的问题。", estimatedMinutes: 60 }] }],
-  },
-  {
-    id: "course-programming",
-    name: "少儿编程课程体系",
-    slug: "programming-pathway",
-    shortDescription: "从 Scratch 到 Python、C++，循序渐进培养计算思维与综合运用能力。",
-    fullDescription: "根据《AI科瑞特手册》课程资料，编程课程覆盖 Scratch、Python 和 C++，强调科学教学设计、细致分析、启发式教学，以及知识与思维并重。",
-    targetAudience: "小学一至六年级，按基础与年龄分层",
-    gradeRange: "小学一至六年级",
-    difficulty: "基础 / 进阶",
-    durationText: "按年龄与课程体系安排",
-    deliveryModes: ["线下", "校内合作"],
-    enrollmentStatus: "CONSULT",
-    category: fallbackCategories[0],
-    modules: [{ id: "m-code-1", title: "图形化编程基础", description: "理解程序、角色、坐标、控制和综合运用。", lessons: [{ id: "l-code-1", title: "Scratch 与计算思维", summary: "从图形化编程建立问题拆解能力。", estimatedMinutes: 60 }] }],
-  },
-];
-
 const fallbackActivities: PublicListItem[] = [
   { id: "activity-open-lab", slug: "open-lab", title: "AI 科创开放实验室", summary: "用一个下午体验从灵感到作品的完整流程。", content: "活动内容、时间和报名方式将在资料确认后由运营后台发布。", type: "体验活动", date: null },
   { id: "activity-project-day", slug: "project-day", title: "小小项目日", summary: "把课程中的小作品带到真实展示场景里。", content: "这是用于占位的活动介绍，正式发布前会替换为经过确认的活动信息。", type: "作品展示", date: null },
@@ -167,9 +80,9 @@ export async function getPublicCourses(filters?: { category?: string; query?: st
       orderBy: [{ category: { sortOrder: "asc" } }, { updatedAt: "desc" }],
     });
     const mapped = courses.map((course) => ({ ...mapCourse(course as never)!, modules: course.modules.map((module) => ({ id: module.id, title: module.title, description: module.description ?? "", lessons: module.lessons.map((lesson) => ({ id: lesson.id, title: lesson.title, summary: lesson.summary ?? "", estimatedMinutes: lesson.estimatedMinutes })) })) }));
-    return mapped.length ? mapped : fallbackCourses.filter((course) => !filters?.category || course.category.slug === filters.category).filter((course) => !filters?.query || `${course.name}${course.shortDescription}`.toLowerCase().includes(filters.query.toLowerCase()));
+    return mapped;
   } catch {
-    return fallbackCourses.filter((course) => !filters?.category || course.category.slug === filters.category).filter((course) => !filters?.query || `${course.name}${course.shortDescription}`.toLowerCase().includes(filters.query.toLowerCase()));
+    return [];
   }
 }
 
@@ -178,7 +91,7 @@ export async function getPublicCourse(slug: string) {
     const course = await db.course.findFirst({ where: { slug, publishStatus: "PUBLISHED" }, include: { category: true, modules: { where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } });
     if (course) return { ...mapCourse(course as never)!, modules: course.modules.map((module) => ({ id: module.id, title: module.title, description: module.description ?? "", lessons: module.lessons.map((lesson) => ({ id: lesson.id, title: lesson.title, summary: lesson.summary ?? "", estimatedMinutes: lesson.estimatedMinutes })) })) };
   } catch {}
-  return fallbackCourses.find((course) => course.slug === slug) ?? null;
+  return null;
 }
 
 async function getPublishedList(model: "activity" | "achievement" | "teacherProfile" | "campus") {
@@ -202,7 +115,7 @@ export const getPublicCategories = async () => {
     const categories = await db.courseCategory.findMany({ where: { status: "ACTIVE" }, orderBy: { sortOrder: "asc" } });
     if (categories.length) return categories.map((category) => ({ id: category.id, name: category.name, slug: category.slug, description: category.description ?? "", coverAssetId: category.coverAssetId }));
   } catch {}
-  return fallbackCategories;
+  return [];
 };
 
 export const getPublicActivities = () => getPublishedList("activity");
