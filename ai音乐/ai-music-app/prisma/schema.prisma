@@ -709,6 +709,21 @@ model ContentRevision {
   @@unique([sectionId, version])
 }
 
+// Immutable snapshots for structured, repeatable content items. PageSection
+// revisions above cover flexible page blocks; this model covers the separate
+// activity, achievement, teacher, campus and partner records managed in CMS.
+model ContentItemRevision {
+  id          String   @id @default(cuid())
+  contentType String   @db.VarChar(32)
+  contentId   String
+  version     Int
+  payload     Json
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  @@unique([contentType, contentId, version])
+  @@index([contentType, contentId, createdAt])
+}
+
 model MediaAsset {
   id String @id @default(cuid())
   sourceType String @default("PLACEHOLDER") @db.VarChar(32)
