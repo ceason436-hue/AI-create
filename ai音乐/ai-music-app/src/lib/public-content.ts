@@ -27,6 +27,7 @@ export type PublicListItem = {
   type?: string;
   coverAssetId?: string | null;
   coverMimeType?: string | null;
+  coverSourceLabel?: string | null;
   date?: string | null;
   media?: Array<{ src: string; mimeType: string | null; caption: string | null; focalPoint: string | null; captionsSrc?: string | null; captionLanguage?: string | null }>;
 };
@@ -130,13 +131,13 @@ const fallbackActivities: PublicListItem[] = [
 ];
 
 const fallbackAchievements: PublicListItem[] = [
-  { id: "handbook-awards", slug: "handbook-awards", title: "手册资料中的奖项殊荣", summary: "《AI科瑞特手册》收录青少年科技创新大赛、宋庆龄少年儿童发明奖等成果资料。", content: "该内容来自项目提供的《AI科瑞特手册》视觉资料页。正式上线前仍需由运营人员确认每项成果的展示范围、名称、时间和授权，并按证书原件补充可核验说明。", type: "手册资料 · 奖项殊荣", coverAssetId: "/handbook/handbook-07.png" },
-  { id: "handbook-robotics", slug: "handbook-robotics", title: "机器人与人工智能竞赛资料", summary: "手册资料页展示世界机器人大会、长三角青少年人工智能奥林匹克挑战赛等证书与成果。", content: "该内容来自项目提供的《AI科瑞特手册》视觉资料页。当前页面使用手册页作为真实资料展示，不对证书中的个人信息、名次或授权范围做额外推断。", type: "手册资料 · 竞赛成果", coverAssetId: "/handbook/handbook-08.png" },
+  { id: "handbook-awards", slug: "handbook-awards", title: "手册资料中的奖项殊荣", summary: "《AI科瑞特手册》收录青少年科技创新大赛、宋庆龄少年儿童发明奖等成果资料。", content: "该内容来自项目提供的《AI科瑞特手册》第 7 页视觉资料。正式上线前仍需由运营人员确认每项成果的展示范围、名称、时间和授权，并按证书原件补充可核验说明。", type: "手册资料 · 奖项殊荣", coverAssetId: "/handbook/handbook-07.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 7 页 · [PENDING-CONTENT]" },
+  { id: "handbook-robotics", slug: "handbook-robotics", title: "机器人与人工智能竞赛资料", summary: "手册资料页展示世界机器人大会、长三角青少年人工智能奥林匹克挑战赛等证书与成果。", content: "该内容来自项目提供的《AI科瑞特手册》第 8 页视觉资料。当前页面使用手册页作为真实资料展示，不对证书中的个人信息、名次或授权范围做额外推断。", type: "手册资料 · 竞赛成果", coverAssetId: "/handbook/handbook-08.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 8 页 · [PENDING-CONTENT]" },
   { id: "achievement-project-wall", slug: "project-wall", title: "AI 作品成长墙", summary: "记录从问题、草图到最终作品的过程，而不仅是一张结果图。", content: "当前为品牌占位案例，不代表真实学员或已获奖成果。", type: "作品展示", coverAssetId: imageAssets.art },
   { id: "achievement-school-lab", slug: "school-lab", title: "校园创作工作坊", summary: "围绕课堂任务完成一次团队协作和公开表达。", content: "当前为待补充的合作案例占位内容。", type: "合作案例", coverAssetId: imageAssets.scene },
 ];
 
-const fallbackTeachers: PublicListItem[] = [{ id: "teacher-xu", slug: "teacher-xu", title: "徐鸿涛 博士", summary: "《AI科瑞特手册》专家顾问资料：砾典微创始人、复旦大学研究员、博导。", content: "信息来源：项目提供的《AI科瑞特手册》专家顾问页面。公开展示前请项目负责人确认姓名、职务、照片和授权范围。", type: "手册资料 · 专家顾问", coverAssetId: "/handbook/handbook-05.png" }, { id: "teacher-placeholder", slug: "teacher-placeholder", title: "更多师资资料待补充", summary: "真实教师资料与公开授权范围确认后展示。", content: "占位内容，不代表真实教师资料。", type: "品牌占位", coverAssetId: imageAssets.poster }];
+const fallbackTeachers: PublicListItem[] = [{ id: "teacher-xu", slug: "teacher-xu", title: "徐鸿涛 博士", summary: "《AI科瑞特手册》专家顾问资料：砾典微创始人、复旦大学研究员、博导。", content: "信息来源：项目提供的《AI科瑞特手册》第 5 页专家顾问页面。公开展示前请项目负责人确认姓名、职务、照片和授权范围。", type: "手册资料 · 专家顾问", coverAssetId: "/handbook/handbook-05.png", coverSourceLabel: "真实资料：《AI科瑞特手册》第 5 页 · [PENDING-CONTENT]" }, { id: "teacher-placeholder", slug: "teacher-placeholder", title: "更多师资资料待补充", summary: "真实教师资料与公开授权范围确认后展示。", content: "占位内容，不代表真实教师资料。", type: "品牌占位", coverAssetId: imageAssets.poster }];
 const fallbackCampuses: PublicListItem[] = [{ id: "campus-placeholder", slug: "campus-placeholder", title: "校区资料待补充", summary: "校区地址、开放时间和环境图片确认后展示。", content: "占位内容，不代表真实校区信息。", type: "品牌占位", coverAssetId: imageAssets.scene }];
 
 function mapCourse(course: Awaited<ReturnType<typeof db.course.findFirst>> & { category?: PublicCategory | null } | null): PublicCourse | null {
@@ -188,9 +189,9 @@ async function getPublishedList(model: "activity" | "achievement" | "teacherProf
       const galleries = await db.contentMedia.findMany({ where: { contentType, contentId: { in: rows.map((row) => String(row.id)) } }, orderBy: [{ isCover: "desc" }, { sortOrder: "asc" }] });
       const galleryByContent = new Map<string, typeof galleries>(); galleries.forEach((entry) => galleryByContent.set(entry.contentId, [...(galleryByContent.get(entry.contentId) ?? []), entry]));
       const assetIds = [...rows.map((row) => String(row.coverAssetId ?? row.avatarAssetId ?? "")), ...galleries.map((entry) => entry.assetId)].filter(Boolean);
-      const assets = assetIds.length ? await db.mediaAsset.findMany({ where: { id: { in: assetIds }, status: "ACTIVE" }, select: { id: true, mimeType: true, captionObjectKey: true, captionLanguage: true } }) : [];
+      const assets = assetIds.length ? await db.mediaAsset.findMany({ where: { id: { in: assetIds }, status: "ACTIVE" }, select: { id: true, mimeType: true, sourceType: true, captionObjectKey: true, captionLanguage: true } }) : [];
       const assetsById = new Map(assets.map((asset) => [asset.id, asset]));
-      return rows.map((row) => { const gallery = (galleryByContent.get(String(row.id)) ?? []).flatMap((entry) => { const asset = assetsById.get(entry.assetId); return asset ? [{ src: publicMediaUrl(asset.id)!, mimeType: asset.mimeType, caption: entry.caption, focalPoint: entry.focalPoint, captionsSrc: asset.captionObjectKey ? publicCaptionUrl(asset.id) : null, captionLanguage: asset.captionLanguage }] : []; }); const assetId = String(row.coverAssetId ?? row.avatarAssetId ?? "") || null; const asset = assetId ? assetsById.get(assetId) : null; const cover = gallery[0]; return { id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: cover?.src ?? (asset ? publicMediaUrl(asset.id) : null), coverMimeType: cover?.mimeType ?? asset?.mimeType ?? null, media: gallery, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }; });
+      return rows.map((row) => { const gallery = (galleryByContent.get(String(row.id)) ?? []).flatMap((entry) => { const asset = assetsById.get(entry.assetId); return asset ? [{ src: publicMediaUrl(asset.id)!, mimeType: asset.mimeType, caption: entry.caption, focalPoint: entry.focalPoint, captionsSrc: asset.captionObjectKey ? publicCaptionUrl(asset.id) : null, captionLanguage: asset.captionLanguage }] : []; }); const assetId = String(row.coverAssetId ?? row.avatarAssetId ?? "") || null; const asset = assetId ? assetsById.get(assetId) : null; const cover = gallery[0]; const coverSourceLabel = asset?.sourceType === "HANDBOOK" ? "真实资料：《AI科瑞特手册》· [PENDING-CONTENT]" : asset?.sourceType === "REAL" ? "已授权真实素材" : asset?.sourceType === "GENERATED" ? "生成概念图" : asset ? "品牌占位素材 · 待替换" : null; return { id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: cover?.src ?? (asset ? publicMediaUrl(asset.id) : null), coverMimeType: cover?.mimeType ?? asset?.mimeType ?? null, coverSourceLabel, media: gallery, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }; });
     }
   } catch {}
   return model === "activity" ? fallbackActivities : model === "achievement" ? fallbackAchievements : model === "teacherProfile" ? fallbackTeachers : fallbackCampuses;
