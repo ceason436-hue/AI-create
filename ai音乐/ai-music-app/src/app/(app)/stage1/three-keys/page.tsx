@@ -21,6 +21,8 @@ const PIANO_KEYS = [
 const TIMBRES = ["🎹 三角钢琴", "🎵 木琴", "👦 童声", "🎸 吉他", "🪘 铃鼓"];
 const STYLES = ["流行 Pop", "古典 Classical", "电子 Electronic", "摇滚 Rock", "爵士 Jazz"];
 const EMOTIONS = ["欢快", "忧伤", "宁静", "激昂", "梦幻"];
+type SequenceNote = string | string[] | null;
+type PlayablePolySynth = Pick<Tone.PolySynth, "dispose" | "triggerAttackRelease">;
 
 export default function ThreeKeys() {
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
@@ -36,8 +38,8 @@ export default function ThreeKeys() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Tone.js instances
-  const synthRef = useRef<Tone.PolySynth | any>(null);
-  const sequenceRef = useRef<Tone.Sequence | null>(null);
+  const synthRef = useRef<PlayablePolySynth | null>(null);
+  const sequenceRef = useRef<Tone.Sequence<SequenceNote> | null>(null);
 
   // Cleanup Tone.js when component unmounts
   useEffect(() => {
@@ -48,9 +50,9 @@ export default function ThreeKeys() {
     };
   }, []);
 
-  const createSynth = () => {
+  const createSynth = (): PlayablePolySynth => {
     if (synthRef.current) synthRef.current.dispose();
-    let synth;
+    let synth: PlayablePolySynth;
     
     // Emotion affects Reverb amount
     let reverbDecay = 2.5;
@@ -111,7 +113,7 @@ export default function ThreeKeys() {
     const mid = notes.map(n => `${n}4`);
     const high = notes.map(n => `${n}5`);
     
-    let pattern: any[] = [];
+    let pattern: SequenceNote[] = [];
     
     // Apply Style logic with richer arrangements
     switch (arrangement.style) {
@@ -178,7 +180,7 @@ export default function ThreeKeys() {
 
     if (sequenceRef.current) sequenceRef.current.dispose();
     
-    sequenceRef.current = new Tone.Sequence((time, note) => {
+    sequenceRef.current = new Tone.Sequence<SequenceNote>((time, note) => {
       if (note && synthRef.current) {
         // Randomize velocity slightly for humanization
         const velocity = 0.7 + Math.random() * 0.3;
