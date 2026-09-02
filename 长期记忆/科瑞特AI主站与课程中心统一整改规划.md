@@ -69,6 +69,7 @@
 - `[DONE / Legacy URL runtime regression]` 已在真实本地开发服务逐条验证上述 12 个旧工具地址，均返回规划目标的 `308` 永久重定向；该运行时结果与自动化重定向回归测试一致。旧静态页面本身与候选资源仍未删除，仍须完成生产环境 URL 验证和负责人确认。
 - `[DONE / Training registration migration]` 历史 `/register/training` 入口使用服务端重定向并在真实本地开发服务返回 `307 → /register`；公开导航只链接统一注册页。旧入口文件按规划继续保留一轮，不得在未完成生产验证与删除确认前移除。
 - `[DONE / Static internal-link runtime audit]` 已从正式应用 TSX 源码提取并在真实本地开发服务核验 38 个静态内部链接，覆盖公开主站、课程、工具、学习、登录注册、法律页、运营后台和迁移入口；均为 `200` 或规划的 `308`，未发现 `404/500`。后台页面数据操作仍由管理员 API 会话控制，未以页面可访问性代替权限验收。
+- `[DONE / Formal navigation placeholder audit]` 已扫描正式应用源码和公共资源，未发现 `href="#"` 或 JSX `href={'#'}` 导航占位链接；旧 `code.html` 内的占位链接仍只归属于待确认删除的静态旧页，不能据此误判正式主站存在导航空链。
 - `[DONE / Admin API access audit]` 已静态核验 44 个 `/api/admin/*` 路由均在数据访问前调用管理员或更严格的超级管理员会话校验；学校管理的三个路由使用 `requireSuperAdmin()`，不是遗漏。真实未登录请求已覆盖学校读取、修改、删除与密码重置，全部返回 `401`；未在无权限状态下模拟写入。
 - `[DONE / Courseware unauthenticated boundary audit]` 真实未登录请求调用课件预览会话与预览内容端点均在数据库查询前返回 `401`。源码复核确认登录后还会逐项校验有效报名、已发布课件、短时会话令牌与会话所属账户，并以 `inline`、`private, no-store` 响应预览内容；真实已报名账户的私有 OSS 与 PDF 版式验收仍待环境恢复。
 - `[DONE / Learning access regression]` 新增有效报名查询与学习中心账号边界的自动化测试；课程、课时、课件预览及课程内 AI 工具均复用同一“已开始、未过期、状态为 ACTIVE”的报名筛选条件，避免未来改动放宽受限内容访问。
