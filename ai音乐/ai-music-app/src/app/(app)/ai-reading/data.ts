@@ -2,7 +2,7 @@ export const builtinArticles = [
   {
     id: "story_plant",
     title: "植物妈妈有办法",
-    coverImage: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=400&auto=format&fit=crop",
+    coverImage: "/tu1.jpg",
     content: `孩子如果已经长大，
 就得告别妈妈，四海为家。
 牛马有脚，鸟有翅膀，

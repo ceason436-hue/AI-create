@@ -9,24 +9,6 @@ import {
 import { builtinArticles } from "../data";
 import * as mammoth from "mammoth";
 
-// Mock data to simulate the flow
-const MOCK_SEGMENTS = [
-  {
-    id: "seg_1",
-    text: "从前，在一个大森林边上，住着一个穷苦的樵夫，他妻子和两个孩子。小男孩叫汉赛尔，小女孩叫格莱特。樵夫家里经常吃不饱，有一次，全国发生了饥荒，他甚至连每天的面包都买不起了。",
-    question: "故事发生在大森林边上，你觉得这座森林看起来是怎样的？",
-    isImportant: true,
-    curriculumTarget: "感受童话故事的背景环境",
-  },
-  {
-    id: "seg_2",
-    text: "晚上，樵夫在床上翻来覆去睡不着，愁眉苦脸地叹气。妻子对他说：‘明天一大早，我们就把孩子们带到森林最密的地方，给他们每人一小块面包，然后我们生起一堆火，就离开他们去干活。’",
-    question: "妻子提出了一个残忍的计划，你觉得当时的氛围和场景应该是怎么样的？",
-    isImportant: false,
-    curriculumTarget: "了解故事情节发展",
-  }
-];
-
 const STYLES = [
   { id: "动漫风格", label: "动漫风格" },
   { id: "水彩绘本", label: "水彩绘本" },
