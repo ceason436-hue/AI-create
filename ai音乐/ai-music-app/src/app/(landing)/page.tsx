@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
-import { getPublicActivities, getPublicAchievements, getPublicCourses, placeholderMedia } from "@/lib/public-content";
+import { getPublicActivities, getPublicAchievements, getPublicCategories, getPublicCourses, placeholderMedia } from "@/lib/public-content";
 import { getPublishedPageSections } from "@/lib/site-pages";
 import { sectionPayload } from "@/lib/site-page-payload";
 import { getPublicMediaSlots } from "@/lib/media-slots";
@@ -24,7 +24,7 @@ function SlotVisual({ slot, width, height, priority = false }: { slot: PublicMed
 }
 
 export default async function LandingPage() {
-  const [courses, activities, achievements, homeSections, mediaSlots] = await Promise.all([getPublicCourses(), getPublicActivities(), getPublicAchievements(), getPublishedPageSections("home"), getPublicMediaSlots(["home-hero", "home-work", "home-school-cooperation"])]);
+  const [courses, categories, activities, achievements, homeSections, mediaSlots] = await Promise.all([getPublicCourses(), getPublicCategories(), getPublicActivities(), getPublicAchievements(), getPublishedPageSections("home"), getPublicMediaSlots(["home-hero", "home-work", "home-school-cooperation"])]);
   const hero = sectionPayload(homeSections, "HERO", { eyebrow: "CREATE WITH INTELLIGENCE · KRT AI", title: "让孩子从使用科技，走向创造科技。", intro: "把 AI、机器人和项目式学习放进孩子真正能理解、能动手、能展示的创作过程里。", primaryLabel: "查看课程体系", secondaryLabel: "校园合作" });
   const process = sectionPayload(homeSections, "PROCESS", { eyebrow: "HOW IT WORKS", title: "学习不是看完一页，而是完成一次创作。", intro: "每一个课程任务都把理解、实践和表达连在一起。孩子可以在安全的工具环境里试错，再把过程整理成自己的作品。", buttonLabel: "浏览课程体系" });
   const consult = sectionPayload(homeSections, "CONSULT_CTA", { eyebrow: "MAKE THE NEXT THING", title: "准备好开始一项真正属于孩子的创作了吗？", intro: "告诉我们孩子的年龄、兴趣和目标，我们会一起找到合适的开始方式。", buttonLabel: "课程咨询" });
@@ -41,7 +41,7 @@ export default async function LandingPage() {
 
         <section className="shortcut-section page-section"><div className="section-intro"><span className="eyebrow dark">START HERE</span><h2>找到适合你的下一步</h2><p>不同身份有不同的入口，先从最重要的事情开始。</p></div><div className="shortcut-grid"><Link href="/login" className="shortcut-card shortcut-card-blue"><span>在读学员</span><strong>继续我的学习 →</strong><small>进入课程、课件和作品空间</small></Link><Link href="/school-cooperation" className="shortcut-card shortcut-card-dark"><span>学校与机构</span><strong>了解校园合作 →</strong><small>课程进校、课堂账号与 AI 工具</small></Link><Link href="/consult" className="shortcut-card shortcut-card-lime"><span>家长与新同学</span><strong>咨询课程 →</strong><small>根据年龄、兴趣和目标开始选择</small></Link></div></section>
 
-        <section className="category-section page-section"><div className="section-heading"><div><span className="eyebrow dark">COURSE SYSTEM</span><h2>三条学习路径，持续长出作品</h2></div><Link href="/courses" className="text-link">浏览全部课程 ↗</Link></div><div className="category-grid">{[...new Map(courses.map((course) => [course.category.slug, course.category])).values()].slice(0, 3).map((category, index) => <Link key={category.slug} href={`/courses?category=${category.slug}`} className={`category-card category-${index + 1}`}><div className="category-number">0{index + 1}</div><h3>{category.name}</h3><p>{category.description}</p><span>查看方向 →</span></Link>)}</div><div className="course-preview-row">{courses.slice(0, 3).map((course) => <Link href={`/courses/${course.slug}`} key={course.id} className="mini-course"><span>{course.category.name}</span><strong>{course.name}</strong><small>{course.shortDescription}</small></Link>)}</div></section>
+        <section className="category-section page-section"><div className="section-heading"><div><span className="eyebrow dark">COURSE SYSTEM</span><h2>三条学习路径，持续长出作品</h2></div><Link href="/courses" className="text-link">浏览全部课程 ↗</Link></div><div className="category-grid">{categories.slice(0, 3).map((category, index) => <Link key={category.slug} href={`/courses?category=${category.slug}`} className={`category-card category-${index + 1}`}><div className="category-number">0{index + 1}</div><h3>{category.name}</h3><p>{category.description}</p><span>查看方向 →</span></Link>)}{!categories.length && <div className="admin-empty"><h3>课程方向正在整理</h3><p>课程分类由运营后台维护并在发布后展示。</p></div>}</div><div className="course-preview-row">{courses.slice(0, 3).map((course) => <Link href={`/courses/${course.slug}`} key={course.id} className="mini-course"><span>{course.category.name}</span><strong>{course.name}</strong><small>{course.shortDescription}</small></Link>)}</div></section>
 
         <section className="process-section page-section"><div className="process-copy"><span className="eyebrow">{process.eyebrow}</span><h2>{process.title}</h2><p>{process.intro}</p><Link href="/courses" className="button button-lime">{process.buttonLabel}</Link></div><div className="process-steps">{["课程学习", "课件实践", "AI 工具创作", "作品成果"].map((step, index) => <div className="process-step" key={step}><b>0{index + 1}</b><div><strong>{step}</strong><span>{["理解问题和方法", "跟着任务动手做", "把想法变成作品", "展示、复盘和迭代"][index]}</span></div></div>)}</div></section>
 
