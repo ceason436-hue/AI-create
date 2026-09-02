@@ -22,6 +22,7 @@ type Work = {
   status: string;
   sizeBytes: string;
   createdAt: string;
+  courseContext?: { course: { name: string; slug: string }; lesson: { title: string } | null; contextType: string } | null;
 };
 type WorksResponse = {
   works: Work[];
@@ -271,6 +272,7 @@ export default function MyWorksPage() {
                       {work.type} · {megabytes(work.sizeBytes)} MB ·{" "}
                       {new Date(work.createdAt).toLocaleDateString("zh-CN")}
                     </p>
+                    {work.courseContext && <p className="mt-2 text-xs font-semibold text-indigo-700">课程作品 · {work.courseContext.course.name}{work.courseContext.lesson ? ` · ${work.courseContext.lesson.title}` : ""}</p>}
                     <div className="mt-5 flex gap-2">
                       <a
                         href={`/api/works/${work.id}/download`}

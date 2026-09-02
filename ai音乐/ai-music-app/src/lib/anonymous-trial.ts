@@ -53,23 +53,23 @@ export async function getAnonymousId(create = false) {
   return id;
 }
 
-export async function getAnonymousTrialStatus(tool: string) {
+export async function getAnonymousTrialStatus(tool: string, limit = ANONYMOUS_TRIAL_LIMIT) {
   const id = await getAnonymousId(false);
-  if (!id) return { remaining: ANONYMOUS_TRIAL_LIMIT, used: 0 };
+  if (!id) return { remaining: limit, used: 0 };
   try {
     const redis = await getRedis();
     const key = `krt:ai:trial:${id}:${tool}:${trialDay()}`;
     const used = Number(await redis.get(key) ?? 0);
-    return { remaining: Math.max(0, ANONYMOUS_TRIAL_LIMIT - used), used };
+    return { remaining: Math.max(0, limit - used), used };
   } catch {
     return { remaining: null, used: null };
   }
 }
 
-export async function consumeAnonymousTrial(id: string, tool: string) {
+export async function consumeAnonymousTrial(id: string, tool: string, limit = ANONYMOUS_TRIAL_LIMIT) {
   const redis = await getRedis();
   const key = `krt:ai:trial:${id}:${tool}:${trialDay()}`;
   const used = await redis.incr(key);
   if (used === 1) await redis.expire(key, 60 * 60 * 48);
-  return { ok: used <= ANONYMOUS_TRIAL_LIMIT, used, key };
+  return { ok: used <= limit, used, key };
 }

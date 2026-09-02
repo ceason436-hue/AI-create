@@ -8,9 +8,11 @@ import { getRedis } from "@/lib/redis";
 import { getToolCreditCost } from "@/lib/credit-costs";
 import { consumeAnonymousTrial, getAnonymousId, hasTrialConsent } from "@/lib/anonymous-trial";
 import { CourseToolContext, resolveCourseToolContext } from "@/lib/course-tool-context";
+import { AI_TOOLS, type AiTool } from "@/lib/ai-tool-catalog";
+import { getActiveAiTool } from "@/lib/ai-tools";
 
-export const AI_TOOLS = ["chat", "code", "image", "music", "music_query", "vision"] as const;
-export type AiTool = (typeof AI_TOOLS)[number];
+export { AI_TOOLS };
+export type { AiTool };
 
 type GatewayAccess = {
   accountId: string;
@@ -91,8 +93,8 @@ async function acquireRateLimit(accountId: string, tool: AiTool): Promise<
   return { ok: true, concurrencyKey };
 }
 
-async function acquireAnonymousRateLimit(anonymousId: string, tool: AiTool) {
-  const trial = await consumeAnonymousTrial(anonymousId, tool);
+async function acquireAnonymousRateLimit(anonymousId: string, tool: AiTool, dailyTrialLimit: number) {
+  const trial = await consumeAnonymousTrial(anonymousId, tool, dailyTrialLimit);
   if (!trial.ok) return { ok: false as const, reason: "trial" as const };
   const redis = await getRedis();
   const concurrencyKey = `krt:ai:concurrency:anonymous:${anonymousId}:${tool}`;
@@ -137,13 +139,25 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
   if (process.env.AI_GENERATION_ENABLED !== "true") {
     return { ok: false, response: serviceUnavailable("AI 生成功能当前已暂停。") };
   }
+  let configuredTool;
+  try {
+    configuredTool = await getActiveAiTool(tool);
+  } catch {
+    return { ok: false, response: serviceUnavailable("AI 工具目录暂不可用，已拒绝本次请求。") };
+  }
+  if (!configuredTool || configuredTool.status !== "ACTIVE") {
+    return { ok: false, response: serviceUnavailable("该 AI 工具当前已由运营后台暂停。") };
+  }
+  if (anonymous && !configuredTool.allowAnonymousTrial) {
+    return { ok: false, response: forbidden("该 AI 工具暂不提供访客试用，请登录后继续。") };
+  }
   if (!anonymous && !await canUseTool(accountId, tool)) {
     return { ok: false, response: responseForAccountAccess() };
   }
 
   let rateLimit;
   try {
-    rateLimit = anonymous ? await acquireAnonymousRateLimit(accountId, tool) : await acquireRateLimit(accountId, tool);
+    rateLimit = anonymous ? await acquireAnonymousRateLimit(accountId, tool, configuredTool.dailyTrialLimit) : await acquireRateLimit(accountId, tool);
   } catch {
     return { ok: false, response: serviceUnavailable("AI 服务的限流组件暂不可用。") };
   }

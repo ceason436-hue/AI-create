@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { badRequest, forbidden, internalError, serviceUnavailable, unauthorized } from "@/lib/http";
 import { putObject, deleteObject } from "@/lib/storage";
 import { getPersonalWorkAccess, usedStorageBytes } from "@/lib/works";
+import { resolveWorkCourseContext } from "@/lib/work-course-context";
 
 const mimeTypes = {
   "image/jpeg": "jpg",
@@ -21,6 +22,8 @@ const workSchema = z.object({
   mimeType: z.enum(["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "text/html", "application/json"]),
   contentBase64: z.string().min(1).max(3_500_000),
   expiresAt: z.string().datetime().optional(),
+  courseId: z.string().min(1).optional(),
+  lessonId: z.string().min(1).optional(),
 });
 
 function accessError(error: unknown) {
@@ -35,7 +38,7 @@ export async function GET() {
     const access = await getPersonalWorkAccess();
     const works = await db.work.findMany({
       where: { ownerId: access.accountId, status: { not: WorkStatus.DELETED } },
-      include: { assets: { select: { id: true, mimeType: true, sizeBytes: true, checksum: true } } },
+      include: { assets: { select: { id: true, mimeType: true, sizeBytes: true, checksum: true } }, courseContext: { include: { course: { select: { name: true, slug: true } }, lesson: { select: { title: true } } } } },
       orderBy: { updatedAt: "desc" },
     });
     const usedBytes = await usedStorageBytes(access.accountId);
@@ -62,6 +65,8 @@ export async function POST(request: Request) {
     const requestedExpiry = parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null;
     const freePlanExpiry = new Date(Date.now() + 30 * 86_400_000);
     const expiresAt = access.isFreePlan && (!requestedExpiry || requestedExpiry > freePlanExpiry) ? freePlanExpiry : requestedExpiry;
+    const courseContext = parsed.data.courseId ? await resolveWorkCourseContext(access.accountId, parsed.data.courseId, parsed.data.lessonId) : null;
+    if (parsed.data.courseId && !courseContext) return forbidden("只能关联到本人报名有效且已发布的课程与课时。");
     const work = await db.work.create({
       data: {
         ownerId: access.accountId,
@@ -69,9 +74,10 @@ export async function POST(request: Request) {
         title: parsed.data.title,
         sizeBytes: BigInt(stored.sizeBytes),
         expiresAt,
+        courseContext: courseContext ? { create: { ...courseContext, contextType: "MANUAL_LINK" } } : undefined,
         assets: { create: { objectKey: stored.objectKey, mimeType: parsed.data.mimeType, sizeBytes: BigInt(stored.sizeBytes), checksum: stored.checksum } },
       },
-      include: { assets: true },
+      include: { assets: true, courseContext: { include: { course: { select: { name: true, slug: true } }, lesson: { select: { title: true } } } } },
     });
     return Response.json({ work: { ...work, sizeBytes: work.sizeBytes.toString(), assets: work.assets.map((asset) => ({ ...asset, sizeBytes: asset.sizeBytes.toString() })) } }, { status: 201 });
   } catch (error) {

@@ -283,6 +283,7 @@ model Work {
   updatedAt DateTime @updatedAt
   owner Account @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   assets WorkAsset[]
+  courseContext WorkCourseContext?
   retentionJobs RetentionJob[]
   @@index([ownerId, status, expiresAt])
 }
@@ -439,6 +440,8 @@ model Course {
   modules CourseModule[]
   enrollments Enrollment[]
   toolBindings CourseToolBinding[]
+  announcements CourseAnnouncement[]
+  workContexts WorkCourseContext[]
   courseware CoursewareAsset[]
   @@index([categoryId, publishStatus, enrollmentStatus])
 }
@@ -468,6 +471,7 @@ model Lesson {
   courseware CoursewareAsset[]
   toolBindings CourseToolBinding[]
   progress LearningProgress[]
+  workContexts WorkCourseContext[]
   @@index([moduleId, sortOrder])
 }
 
@@ -489,6 +493,7 @@ model Enrollment {
   account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   progress LearningProgress[]
+  workContexts WorkCourseContext[]
   @@unique([accountId, courseId])
   @@index([accountId, status, startsAt, endsAt])
 }
@@ -527,6 +532,59 @@ model CourseToolBinding {
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
   @@index([courseId, status, sortOrder])
+}
+
+model CourseAnnouncement {
+  id String @id @default(cuid())
+  courseId String
+  title String @db.VarChar(180)
+  content String
+  publishStatus String @default("DRAFT") @db.VarChar(32)
+  publishAt DateTime?
+  publishedAt DateTime?
+  sortOrder Int @default(0)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@index([courseId, publishStatus, publishAt, sortOrder])
+}
+
+model WorkCourseContext {
+  id String @id @default(cuid())
+  workId String @unique
+  courseId String
+  lessonId String?
+  enrollmentId String
+  contextType String @db.VarChar(32)
+  createdAt DateTime @default(now())
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  @@index([courseId, lessonId, createdAt])
+  @@index([enrollmentId, createdAt])
+}
+
+model AiTool {
+  id String @id @default(cuid())
+  toolKey String @unique @db.VarChar(64)
+  name String @db.VarChar(120)
+  description String @db.VarChar(500)
+  category String @db.VarChar(64)
+  routePath String @db.VarChar(180)
+  sortOrder Int @default(0)
+  status String @default("ACTIVE") @db.VarChar(32)
+  visibleToPublic Boolean @default(true)
+  allowAnonymousTrial Boolean @default(true)
+  dailyTrialLimit Int @default(5)
+  coverAssetId String?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status, visibleToPublic, sortOrder])
 }
 
 model CoursewareAsset {
