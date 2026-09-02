@@ -1,10 +1,7 @@
-import { AccountType } from "@prisma/client";
 import { db } from "@/lib/db";
+import { activeEnrollmentWhere, canUseLearningCenter } from "@/lib/learning-policy";
 
-export function activeEnrollmentWhere(accountId: string) {
-  const now = new Date();
-  return { accountId, status: "ACTIVE", startsAt: { lte: now }, OR: [{ endsAt: null }, { endsAt: { gt: now } }] };
-}
+export { activeEnrollmentWhere, canUseLearningCenter } from "@/lib/learning-policy";
 
 export async function getLearningDashboard(accountId: string) {
   return db.enrollment.findMany({ where: activeEnrollmentWhere(accountId), include: { course: { include: { category: true, modules: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } } }, orderBy: { updatedAt: "desc" } });
@@ -12,10 +9,6 @@ export async function getLearningDashboard(accountId: string) {
 
 export async function getEnrollmentForCourse(accountId: string, courseSlug: string) {
   return db.enrollment.findFirst({ where: { ...activeEnrollmentWhere(accountId), course: { slug: courseSlug, publishStatus: "PUBLISHED" } }, include: { course: { include: { category: true, modules: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } } } });
-}
-
-export function canUseLearningCenter(type: AccountType) {
-  return type === AccountType.PERSONAL;
 }
 
 export function serializeLearningEnrollment(enrollment: Awaited<ReturnType<typeof getLearningDashboard>>[number]) {

@@ -66,6 +66,7 @@
 - `[DONE / Phase 4 SEO baseline]` 新增 `/sitemap.xml` 与 `/robots.txt`，公开主站、课程、工具、咨询与法律页面进入站点地图；运营后台、学习中心、个人作品和 API 路径明确禁止索引。生产域名可通过 `NEXT_PUBLIC_SITE_URL` 覆盖。
 - `[IN_PROGRESS / Phase 7]` 已重新扫描旧静态页、MiniMax 快照和正式应用资源引用：`code.html`、`minimax_docs.html`、`minimax_t2i.html` 未被正式应用运行时引用，仍因负责人确认要求而保留；根目录 `tu1.jpg`、`tu2.png`、`haibao1.png` 仍被正式应用和旧首页引用，不可删除。本轮已重新核验根目录与正式应用副本的 `logo2.png`、`haibao1.png`、`tu1.jpg`、`tu2.png` SHA256 全部一致，证据记录在《旧内容迁移与删除核验清单》。旧工具重定向补齐 `/ai-music` 到 `/tools?category=music`，删除清单、生产部署和上线收口仍需继续完成；在这些事项完成前不得宣称全部整改完成。
 - `[DONE / Redirect regression]` 新增自动化重定向回归测试，覆盖 AI 音乐、绘画、编程、阅读、音乐创建、阅读工作区/结果和全部四个 `stage1` 练习路径；每项均要求永久迁移到规划的统一工具路由。
+- `[DONE / Learning access regression]` 新增有效报名查询与学习中心账号边界的自动化测试；课程、课时、课件预览及课程内 AI 工具均复用同一“已开始、未过期、状态为 ACTIVE”的报名筛选条件，避免未来改动放宽受限内容访问。
 
 后续实施旧内容删除前，必须完成引用扫描、功能对照、资源哈希核对、URL 重定向和浏览器验证，并由项目负责人再次确认实际删除清单。
 
