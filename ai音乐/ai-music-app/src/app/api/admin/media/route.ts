@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { requireAdminResponse } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { matchesMediaSignature, mediaExtension, mediaKind, mediaMimeType } from "@/lib/media-files";
+import { mediaSnapshot } from "@/lib/media-revisions";
 import { badRequest, internalError } from "@/lib/http";
 import { deleteObject, putObjectAtKey } from "@/lib/storage";
 
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
   try {
     const asset = await db.$transaction(async (tx) => {
       const created = await tx.mediaAsset.create({ data: { sourceType, objectKey: stored.objectKey, title, altText: altText || null, mimeType, licenseNote: licenseNote || null, status: "ACTIVE" } });
+      await tx.mediaAssetRevision.create({ data: { assetId: created.id, version: 1, payload: mediaSnapshot(created), createdBy: access.account.id } });
       await tx.auditLog.create({ data: { actorId: access.account.id, action: "MEDIA_UPLOADED", targetType: "MEDIA_ASSET", targetId: created.id, result: "SUCCEEDED", after: { title, sourceType, mimeType, sizeBytes: stored.sizeBytes } } });
       return created;
     });

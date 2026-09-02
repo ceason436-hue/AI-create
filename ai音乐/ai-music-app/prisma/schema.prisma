@@ -740,6 +740,17 @@ model MediaAsset {
   updatedAt DateTime @updatedAt
 }
 
+model MediaAssetRevision {
+  id        String   @id @default(cuid())
+  assetId   String
+  version   Int
+  payload   Json
+  createdBy String?
+  createdAt DateTime @default(now())
+  @@unique([assetId, version])
+  @@index([assetId, createdAt])
+}
+
 model MediaSlot {
   id String @id @default(cuid())
   slotKey String @unique @db.VarChar(120)
