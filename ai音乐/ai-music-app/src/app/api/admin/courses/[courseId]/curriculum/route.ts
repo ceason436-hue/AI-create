@@ -18,6 +18,10 @@ const updateSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("TOOL_BINDING"), id: z.string().min(1), toolKey: toolKey.optional(), accessMode: z.enum(["COURSE", "TASK"]).optional(), sortOrder: z.number().int().min(0).max(9999).optional(), status: z.enum(["ACTIVE", "INACTIVE"]).optional() }),
 ]);
 
+function omitKind<T extends { kind: string }>(value: T): Omit<T, "kind"> {
+  return Object.fromEntries(Object.entries(value).filter(([key]) => key !== "kind")) as Omit<T, "kind">;
+}
+
 async function courseExists(courseId: string) {
   return db.course.findUnique({ where: { id: courseId }, select: { id: true } });
 }
@@ -36,9 +40,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ cou
   const { courseId } = await params; if (!await courseExists(courseId)) return Response.json({ error: "课程不存在。" }, { status: 404 });
   try {
     let item: unknown;
-    if (parsed.data.kind === "MODULE") { const { kind: _kind, ...data } = parsed.data; item = await db.courseModule.create({ data: { courseId, ...data } }); }
-    if (parsed.data.kind === "LESSON") { const { kind: _kind, ...data } = parsed.data; const courseModule = await db.courseModule.findFirst({ where: { id: data.moduleId, courseId }, select: { id: true } }); if (!courseModule) return Response.json({ error: "模块不属于当前课程。" }, { status: 400 }); item = await db.lesson.create({ data }); }
-    if (parsed.data.kind === "TOOL_BINDING") { const { kind: _kind, ...data } = parsed.data; const tool = await db.aiTool.findFirst({ where: { toolKey: data.toolKey, status: "ACTIVE" }, select: { id: true } }); if (!tool) return Response.json({ error: "该 AI 工具已暂停，不能新建课程绑定。" }, { status: 409 }); if (data.lessonId) { const lesson = await db.lesson.findFirst({ where: { id: data.lessonId, module: { courseId } }, select: { id: true } }); if (!lesson) return Response.json({ error: "课时不属于当前课程。" }, { status: 400 }); } item = await db.courseToolBinding.create({ data: { ...data, courseId } }); }
+    if (parsed.data.kind === "MODULE") { const data = omitKind(parsed.data); item = await db.courseModule.create({ data: { courseId, ...data } }); }
+    if (parsed.data.kind === "LESSON") { const data = omitKind(parsed.data); const courseModule = await db.courseModule.findFirst({ where: { id: data.moduleId, courseId }, select: { id: true } }); if (!courseModule) return Response.json({ error: "模块不属于当前课程。" }, { status: 400 }); item = await db.lesson.create({ data }); }
+    if (parsed.data.kind === "TOOL_BINDING") { const data = omitKind(parsed.data); const tool = await db.aiTool.findFirst({ where: { toolKey: data.toolKey, status: "ACTIVE" }, select: { id: true } }); if (!tool) return Response.json({ error: "该 AI 工具已暂停，不能新建课程绑定。" }, { status: 409 }); if (data.lessonId) { const lesson = await db.lesson.findFirst({ where: { id: data.lessonId, module: { courseId } }, select: { id: true } }); if (!lesson) return Response.json({ error: "课时不属于当前课程。" }, { status: 400 }); } item = await db.courseToolBinding.create({ data: { ...data, courseId } }); }
     await db.auditLog.create({ data: { actorId: access.account.id, action: `CURRICULUM_${parsed.data.kind}_CREATED`, targetType: "COURSE", targetId: courseId, result: "SUCCEEDED", after: JSON.parse(JSON.stringify(parsed.data)) as Prisma.InputJsonValue } });
     return Response.json({ item }, { status: 201 });
   } catch { return internalError(); }

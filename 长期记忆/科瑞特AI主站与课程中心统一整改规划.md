@@ -99,6 +99,7 @@
 - `[DONE / Lint hygiene pass 11]` 音乐创作页改为依赖稳定的生成中曲目数量，不再把数组过滤表达式直接写入 effect 依赖；AI 编程加载步骤使用显式步骤数量；退出登录使用 Next 客户端路由跳转，避免完整页面重载。全量 ESLint 降至 `0 errors / 29 warnings`，TypeScript 与 39 项单元测试通过。剩余警告集中在图片组件、后台历史数据加载和字体策略。
 - `[DONE / Lint hygiene pass 12]` 公共主站页头、页脚与应用内导航 Logo 已由原生图片元素改为 Next 图片组件，并补充固有尺寸与首屏优先级；不改变品牌资源、视觉样式或导航结构。全量 ESLint 降至 `0 errors / 26 warnings`，定向 ESLint 与 TypeScript 通过。后续继续处理页面内动态图片与后台数据加载警告。
 - `[DONE / Lint hygiene pass 13]` AI 阅读内置故事封面（本地 `/tu1.jpg`）已接入 Next 图片组件；用户历史和 AI 生成的动态图片仍保持原地址渲染，未将不受控的供应商 URL 加入图片白名单。全量 ESLint 降至 `0 errors / 25 warnings`，定向 ESLint 与 TypeScript 通过。
+- `[DONE / Lint hygiene pass 14]` 课程结构运营 API 已提取类型安全的 `omitKind` 辅助函数，统一移除 Zod 判别字段后再写入模块、课时或课程工具绑定；保留原有课程归属、AI 工具白名单、发布状态和审计行为。全量 ESLint 降至 `0 errors / 22 warnings`，定向 ESLint 与 TypeScript 通过。
 - `[DONE / Local infrastructure re-audit]` 本机 Docker 复核显示 `krt-postgres`、`krt-redis` 均为 healthy，Prisma 9 项迁移状态为 up to date，凭据扫描通过 259 个源/配置文件。`npm audit --omit=dev` 仍为 4 个高危项，均属于 Prisma 配置的 `deepmerge-ts`/`effect` 传递依赖；审计的唯一自动修复会改动到不兼容的 Prisma 版本，继续不擅自执行。真实账户、OSS/Worker、供应商凭据和生产域名验收仍待负责人提供环境。
 - `[DONE / Production handoff checklist]` 已新增《科瑞特AI生产环境验收与资源交接清单》，列出最小验收账号、生产 Secret 的变量名、网络/定时任务要求和按权限、课件、工具、媒体、旧 URL 排列的验收顺序；清单不包含任何真实密钥或个人资料。后续负责人可按该清单一次性交付资源，避免在聊天或仓库中暴露凭据。
 - `[DONE / Enrollment bulk import]` `/admin/enrollments` 现保留单条报名录入，并新增 CSV/制表符批量导入预览。服务端在写入前校验每行时间、重复账户课程组合、个人账户类型与启用状态、课程存在性；任何错误都会阻止整批写入。通过校验后在一个数据库事务内 upsert 报名并写入汇总审计，未登录调用预览和写入端点均返回 401。真实管理员账号下的成功导入、数据库迁移状态和运营数据仍待环境恢复后验收。
