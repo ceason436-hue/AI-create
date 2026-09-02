@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { 
+import {
   Sparkles, 
   Dices, 
   RefreshCcw, 
@@ -18,6 +18,9 @@ import {
   SkipForward
 } from "lucide-react";
 
+type MusicTrack = { id: string; status: "generating" | "completed" | "failed"; progress: number; title: string; duration: string; tags: string[]; cover: string; audioUrl?: string; prompt?: string; lyrics?: string };
+type TimedLyric = { text: string; originalIndex: number; weight: number; isMarker: boolean; startFraction: number; endFraction: number };
+
 export default function MusicCreationPage() {
   const [lyrics, setLyrics] = useState("");
   const [style, setStyle] = useState("");
@@ -25,8 +28,8 @@ export default function MusicCreationPage() {
   const [activeTab, setActiveTab] = useState<"works" | "favorites">("works");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingStatus, setGeneratingStatus] = useState("");
-  const [tracks, setTracks] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [tracks, setTracks] = useState<MusicTrack[]>([]);
+  const [favorites, setFavorites] = useState<MusicTrack[]>([]);
   const [showMoreMenu, setShowMoreMenu] = useState<string | null>(null);
   
   const [isPolishingLyrics, setIsPolishingLyrics] = useState(false);
@@ -132,7 +135,7 @@ export default function MusicCreationPage() {
 
   // Player State
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState<any>(null);
+  const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -175,21 +178,21 @@ export default function MusicCreationPage() {
     
     const lines = currentTrack.lyrics.split('\n')
       .map((text: string, originalIndex: number) => ({ text: text.trim(), originalIndex }))
-      .filter((l: any) => l.text !== '');
+      .filter((line) => line.text !== '');
 
     // 使用基于字符长度的启发式算法来估算歌词时间戳
     let totalWeight = 0;
-    const weightedLines = lines.map((line: any, idx: number) => {
+    const weightedLines = lines.map((line, idx) => {
       const isMarker = line.text.startsWith('[') && line.text.endsWith(']');
       // 段落标记(如[Verse])通常代表前奏或间奏，给予固定权重；第一行如果是标记则代表前奏较长
-      let weight = isMarker ? (idx === 0 ? 20 : 10) : Math.max(line.text.length, 8);
+      const weight = isMarker ? (idx === 0 ? 20 : 10) : Math.max(line.text.length, 8);
       return { ...line, weight, isMarker };
     });
 
-    totalWeight = weightedLines.reduce((acc: number, line: any) => acc + line.weight, 0);
+    totalWeight = weightedLines.reduce((acc, line) => acc + line.weight, 0);
 
     let accumulatedWeight = 0;
-    return weightedLines.map((line: any) => {
+    return weightedLines.map((line): TimedLyric => {
       const startFraction = accumulatedWeight / totalWeight;
       accumulatedWeight += line.weight;
       const endFraction = accumulatedWeight / totalWeight;
@@ -205,7 +208,7 @@ export default function MusicCreationPage() {
   useEffect(() => {
     if (duration > 0 && activeLines.length > 0) {
       const fraction = currentTime / duration;
-      const newIndex = activeLines.findIndex((line: any) => fraction >= line.startFraction && fraction < line.endFraction);
+      const newIndex = activeLines.findIndex((line) => fraction >= line.startFraction && fraction < line.endFraction);
       
       const safeIndex = newIndex !== -1 ? newIndex : activeLines.length - 1;
       
@@ -227,7 +230,7 @@ export default function MusicCreationPage() {
     }
   }, [activeIndex, isPlayerOpen]);
 
-  const togglePlay = (track: any) => {
+  const togglePlay = (track: MusicTrack) => {
     if (!audioRef.current) return;
     
     if (playingTrackId === track.id) {
@@ -351,7 +354,7 @@ export default function MusicCreationPage() {
     setActiveTab("works");
 
     const tempId = `temp-${Date.now()}`;
-    const newPendingTrack = {
+    const newPendingTrack: MusicTrack = {
       id: tempId,
       title: songName || "未命名 AI 原创",
       duration: "生成中",
@@ -422,10 +425,10 @@ export default function MusicCreationPage() {
         throw new Error("未能获取到音频结果");
       }
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       clearInterval(progressInterval);
-      alert(err.message || "请求失败");
+      alert(err instanceof Error ? err.message : "请求失败");
       setIsGenerating(false);
       setGeneratingStatus("");
       
@@ -433,14 +436,14 @@ export default function MusicCreationPage() {
     }
   };
 
-  const handleRegenerate = (track: any) => {
+  const handleRegenerate = (track: MusicTrack) => {
     setStyle(track.prompt || "");
     setLyrics(track.lyrics || "");
     setSongName(track.title.replace(" (重新生成)", "") + " (重新生成)");
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDownload = async (track: any) => {
+  const handleDownload = async (track: MusicTrack) => {
     try {
       // 简单实现在新窗口打开音频链接，用户可以右键另存为
       // 真实下载可能需要通过后端代理处理跨域或者使用 blob
@@ -451,7 +454,7 @@ export default function MusicCreationPage() {
     }
   };
 
-  const toggleFavorite = (track: any) => {
+  const toggleFavorite = (track: MusicTrack) => {
     const isFavorite = favorites.some(f => f.id === track.id);
     if (isFavorite) {
       setFavorites(prev => prev.filter(f => f.id !== track.id));
@@ -812,7 +815,7 @@ export default function MusicCreationPage() {
               style={{ maxHeight: '50vh' }}
             >
               {activeLines.length > 0 ? (
-                activeLines.map((line: any, index: number) => (
+                activeLines.map((line, index) => (
                   <div 
                     key={index}
                     ref={index === activeIndex ? activeLineRef : null}
