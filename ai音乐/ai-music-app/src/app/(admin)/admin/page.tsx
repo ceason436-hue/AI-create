@@ -465,6 +465,7 @@ export default function AdminDashboardPage() {
           <Link href="/admin/enrollments" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">报名管理</Link>
           <Link href="/admin/content" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">主站内容</Link>
           <Link href="/admin/media" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">图片媒体库</Link>
+          <Link href="/admin/media-slots" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">页面媒体位</Link>
           <Link href="/admin/site-pages" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">页面区块</Link>
           <Link href="/admin/inquiries" className="rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-[#caf204]">咨询线索</Link>
         </div>
