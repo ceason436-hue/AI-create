@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { publicMediaUrl } from "@/lib/media-files";
 
 export type PublicCategory = { id: string; name: string; slug: string; description: string; coverAssetId: string | null };
 export type PublicCourse = {
@@ -180,7 +181,7 @@ export async function getPublicCourse(slug: string) {
 async function getPublishedList(model: "activity" | "achievement" | "teacherProfile" | "campus") {
   try {
     const rows = await (db[model] as { findMany: (args: unknown) => Promise<Array<Record<string, unknown>>> }).findMany({ where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" } });
-    if (rows.length) return rows.map((row) => ({ id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: row.coverAssetId ? String(row.coverAssetId) : null, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }));
+    if (rows.length) return rows.map((row) => ({ id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: publicMediaUrl(String(row.coverAssetId ?? row.avatarAssetId ?? "") || null), date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }));
   } catch {}
   return model === "activity" ? fallbackActivities : model === "achievement" ? fallbackAchievements : model === "teacherProfile" ? fallbackTeachers : fallbackCampuses;
 }
@@ -197,5 +198,11 @@ export const getPublicActivities = () => getPublishedList("activity");
 export const getPublicAchievements = () => getPublishedList("achievement");
 export const getPublicTeachers = () => getPublishedList("teacherProfile");
 export const getPublicCampuses = () => getPublishedList("campus");
+export async function getPublicPartners() {
+  try {
+    const partners = await db.partnerSchool.findMany({ where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" } });
+    return partners.map((partner) => ({ id: partner.id, name: partner.name, description: partner.description ?? "", logoUrl: publicMediaUrl(partner.logoAssetId) }));
+  } catch { return []; }
+}
 
 export const placeholderMedia = imageAssets;
