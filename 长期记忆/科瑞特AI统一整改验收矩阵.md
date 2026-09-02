@@ -1,8 +1,8 @@
 # 科瑞特 AI 统一整改验收矩阵
 
-> 核验日期：2026-09-02  
-> 适用仓库：`https://github.com/ceason436-hue/AI-create`  
-> 正式应用：`ai音乐/ai-music-app`  
+> 核验日期：2026-09-02
+> 适用仓库：`https://github.com/ceason436-hue/AI-create`
+> 正式应用：`ai音乐/ai-music-app`
 > 说明：本矩阵只依据当前源码、自动化测试和本地真实应用运行结果记录证据；不能以“已有规划”代替已完成，也不能以本地回退替代生产验收。
 
 ## 状态定义
