@@ -66,6 +66,7 @@
 - `[DONE / Phase 4 SEO baseline]` 新增 `/sitemap.xml` 与 `/robots.txt`，公开主站、课程、工具、咨询与法律页面进入站点地图；运营后台、学习中心、个人作品和 API 路径明确禁止索引。生产域名可通过 `NEXT_PUBLIC_SITE_URL` 覆盖。
 - `[IN_PROGRESS / Phase 7]` 已重新扫描旧静态页、MiniMax 快照和正式应用资源引用：`code.html`、`minimax_docs.html`、`minimax_t2i.html` 未被正式应用运行时引用，仍因负责人确认要求而保留；根目录 `tu1.jpg`、`tu2.png`、`haibao1.png` 仍被正式应用和旧首页引用，不可删除。本轮已重新核验根目录与正式应用副本的 `logo2.png`、`haibao1.png`、`tu1.jpg`、`tu2.png` SHA256 全部一致，证据记录在《旧内容迁移与删除核验清单》。旧工具重定向补齐 `/ai-music` 到 `/tools?category=music`，删除清单、生产部署和上线收口仍需继续完成；在这些事项完成前不得宣称全部整改完成。
 - `[DONE / Redirect regression]` 新增自动化重定向回归测试，覆盖 AI 音乐、绘画、编程、阅读、音乐创建、阅读工作区/结果和全部四个 `stage1` 练习路径；每项均要求永久迁移到规划的统一工具路由。
+- `[DONE / Legacy URL runtime regression]` 已在真实本地开发服务逐条验证上述 12 个旧工具地址，均返回规划目标的 `308` 永久重定向；该运行时结果与自动化重定向回归测试一致。旧静态页面本身与候选资源仍未删除，仍须完成生产环境 URL 验证和负责人确认。
 - `[DONE / Learning access regression]` 新增有效报名查询与学习中心账号边界的自动化测试；课程、课时、课件预览及课程内 AI 工具均复用同一“已开始、未过期、状态为 ACTIVE”的报名筛选条件，避免未来改动放宽受限内容访问。
 - `[DONE / Courseware viewer navigation]` 受保护课件预览器现支持上一页、下一页、页码缩略导航、当前页状态和全屏展示；页码仅写入同一短时会话 URL 的 PDF 片段，仍由服务端实时校验报名有效期、发布状态和预览会话，且保留动态水印。真实转换课件的分页、字体、宽高比、浏览器 PDF 兼容性和全屏体验仍需生产环境验收。
 - `[DONE / Learning dashboard summary]` `/learn` 与学习中心 API 现只读取当前个人账户的有效报名，并汇总 14 天内到期提醒、已发布课件访问记录、已启用课程工具和最近个人作品；没有报名或无数据时明确显示空状态，不以占位数据伪造学习或作品进度。
