@@ -310,6 +310,7 @@
 
 .tool-app-page { min-height: 720px; padding: 48px max(20px, calc((100vw - 1224px) / 2)); background: #005bb3; color: #fff; }
 .admin-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }.admin-list-actions button { border: 2px solid #07111f; border-radius: 999px; padding: 5px 10px; background: #fff; color: #07111f; font-size: .75rem; font-weight: 900; cursor: pointer; }.admin-list-actions button:hover { background: #caf204; }
+.admin-list article strong { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }.admin-content-media-link { border-radius: 999px; padding: 4px 8px; background: #d9ecff; color: #005bb3; font-size: .72rem; font-weight: 900; }
 
 .courseware-loading { margin-top: 28px; padding: 22px; border: 2px dashed #94a3b8; border-radius: 15px; }.courseware-frame { position: relative; }.courseware-watermark { position: absolute; z-index: 2; right: 14px; bottom: 14px; max-width: calc(100% - 28px); pointer-events: none; opacity: .56; border: 2px solid #07111f; border-radius: 999px; padding: 7px 11px; background: rgba(202,242,4,.85); color: #07111f; font-size: .72rem; font-weight: 900; }
 .admin-form-note { margin: 0; color: #64748b; font-size: .82rem; line-height: 1.55; }
