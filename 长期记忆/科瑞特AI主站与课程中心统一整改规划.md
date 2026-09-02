@@ -60,6 +60,7 @@
 - `[DONE / Phase 3 content media navigation]` 内容管理列表中已为每一条结构化内容提供“管理媒体”直接入口，无需手工拼接内容 ID；仍需在数据库迁移及测试数据就绪后验证实际链接点击与完整写入流程。
 - `[DONE / Phase 4 public content galleries]` 活动和学员成长公开详情页现只读取关联到已发布内容、且媒体状态为启用的图集/视频；封面按“封面优先、排序其次”进入列表卡片，详情页展示完整图集、视频控制、说明与裁切焦点。下线或未关联的媒体不会暴露到公开页面。
 - `[DONE / Phase 4 about media]` “走进科瑞特”页的师资和校区区块现在读取后台关联的启用封面与图集；无媒体或数据库不可用时沿用明确的手册/品牌占位回退，不将生成内容冒充真实资料。
+- `[DONE / Browser smoke about media]` 已在真实本地应用验证 `/about` 的桌面端与 390px 移动端师资、校区和占位回退呈现；本地 PostgreSQL 不可用时页面仍返回 200 并使用安全回退，真实关联媒体待数据库环境恢复后验收。
 - `[DONE / Browser smoke public galleries]` 已在真实本地应用验证成果详情页桌面端与 390px 移动端的回退渲染、导航和内容风险提示；本地数据库未运行时公开页正确回退为手册/品牌资料，不伪造图集数据。待迁移并录入真实媒体后，仍需在受控数据环境验证排序与下线即时生效。
 - `[DONE / Browser smoke content media]` 已在真实本地应用验证 `/admin/content/activities/:id/media` 的桌面端与 390px 移动端页面加载、媒体关联表单、列表和空状态；未登录请求会由管理员 API 返回 401，未模拟或伪造受保护的写入操作。
 - `[DONE / Phase 4 SEO baseline]` 新增 `/sitemap.xml` 与 `/robots.txt`，公开主站、课程、工具、咨询与法律页面进入站点地图；运营后台、学习中心、个人作品和 API 路径明确禁止索引。生产域名可通过 `NEXT_PUBLIC_SITE_URL` 覆盖。
