@@ -58,6 +58,7 @@
 | 旧工具迁移 | `[VERIFIED-LOCAL]` | 12 个旧工具地址实测均返回规划目标 `308`；`/register/training` 实测 `307 → /register`。自动化重定向测试覆盖旧工具迁移。 |
 | 旧静态页与根目录资源 | `[REMOVE-PENDING]` | `code.html`、`minimax_docs.html`、`minimax_t2i.html` 已无正式应用运行时引用，但仍保留；根目录图片与正式应用副本哈希已核验，不得删除。详见《旧内容迁移与删除核验清单》。 |
 | 自动化与构建 | `[VERIFIED-LOCAL]` | 当前基线通过 TypeScript、ESLint、Prisma Schema 校验、37 项 Vitest、凭据扫描与生产构建。生产构建仍有既有的动态文件追踪警告：`next.config.ts → storage.ts → works download route`，不是构建失败。 |
+| 依赖漏洞修复 | `[IMPLEMENTED-ENV]` | `npm audit --omit=dev --package-lock-only` 当前报告 8 个高危依赖项：直接依赖 Next.js `16.2.4` 的审计修复目标为 `16.3.4`，另有 Prisma 配置链、`nanoid`、PostCSS 与 Sharp 传递依赖项。`package.json` 与锁文件属于现有未提交修改，未擅自升级或覆盖；上线前必须在独立依赖升级阶段处理、重新生成锁文件并完成全量测试、构建与生产回归。 |
 | 数据库与基础设施 | `[IMPLEMENTED-ENV]` | 当前 `127.0.0.1:5540` 无 PostgreSQL 监听。已尝试后台启动 Docker Desktop：桌面/后端进程和命名管道已出现，但 `com.docker.service` 仍停止，当前权限不能打开该服务，Docker API 不能使用；因此迁移部署、真实管理员写入、真实报名、OSS、Redis、Worker 和生产 URL 验收均未完成。 |
 
 ## 6. 完成前的必要动作
