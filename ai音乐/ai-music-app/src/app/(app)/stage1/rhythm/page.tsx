@@ -12,6 +12,13 @@ type GameLevel = {
   bgmUrl: string;
 };
 
+type WindowWithWebkitAudioContext = Window & {
+  webkitAudioContext?: typeof AudioContext;
+};
+
+const getAudioContextConstructor = () =>
+  window.AudioContext || (window as WindowWithWebkitAudioContext).webkitAudioContext;
+
 const buildPattern = (type: number, maxBeats: number) => {
   const pattern: number[] = [];
   if (type === 1) { // 小星星 (简单，基本全四分音符)
@@ -104,7 +111,12 @@ function RhythmGame() {
     setActiveNotes(notes);
     
     if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioContextConstructor = getAudioContextConstructor();
+      if (!AudioContextConstructor) {
+        console.error("当前浏览器不支持 Web Audio API，无法开始节奏练习。");
+        return;
+      }
+      audioCtxRef.current = new AudioContextConstructor();
     }
     const ctx = audioCtxRef.current;
     if (ctx.state === 'suspended') ctx.resume();
@@ -377,8 +389,12 @@ export default function RhythmRoom() {
   useEffect(() => { aiTempoRef.current = aiTempo; }, [aiTempo]);
 
   useEffect(() => {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    audioContextRef.current = new AudioContext();
+    const AudioContextConstructor = getAudioContextConstructor();
+    if (!AudioContextConstructor) {
+      console.error("当前浏览器不支持 Web Audio API，无法加载节奏音色。");
+      return;
+    }
+    audioContextRef.current = new AudioContextConstructor();
     
     const loadSound = async (name: string, url: string) => {
       try {
@@ -603,9 +619,9 @@ export default function RhythmRoom() {
       const newTrack: (string | null)[] = [];
 
       // 3. Parse Instruments - support combinations
-      let useTambourine = prompt.includes("铃鼓") || prompt.includes("+铃鼓");
-      let useXylophone = prompt.includes("木琴");
-      let useCartoonDrum = !useTambourine && !useXylophone || prompt.includes("卡通鼓") || prompt.includes("鼓组");
+      const useTambourine = prompt.includes("铃鼓") || prompt.includes("+铃鼓");
+      const useXylophone = prompt.includes("木琴");
+      const useCartoonDrum = (!useTambourine && !useXylophone) || prompt.includes("卡通鼓") || prompt.includes("鼓组");
       
       if (useCartoonDrum) setAiDrumSound("卡通鼓");
       else if (useXylophone) setAiDrumSound("木琴鼓");
@@ -752,7 +768,7 @@ export default function RhythmRoom() {
                 >
                   <span className="text-3xl md:text-4xl">{note.icon}</span>
                   <span className="font-bold text-orange-800 text-xs md:text-base">{note.name}</span>
-                  <span className="bg-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold text-orange-500">"{note.text}"</span>
+                  <span className="bg-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold text-orange-500">{`"${note.text}"`}</span>
                 </div>
               ))}
             </div>
