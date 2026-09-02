@@ -615,7 +615,6 @@ export default function RhythmRoom() {
       else if (prompt.includes("2/4")) beatsPerMeasure = 2;
       else if (prompt.includes("6/8")) beatsPerMeasure = 6;
 
-      const totalSlots = measures * beatsPerMeasure;
       const newTrack: (string | null)[] = [];
 
       // 3. Parse Instruments - support combinations
@@ -649,7 +648,6 @@ export default function RhythmRoom() {
         const isLastMeasure = m === measures - 1;
         
         for (let b = 0; b < beatsPerMeasure; b++) {
-          const i = m * beatsPerMeasure + b;
           const isStrongBeat = b === 0;
           const isMediumBeat = b === Math.floor(beatsPerMeasure / 2);
           

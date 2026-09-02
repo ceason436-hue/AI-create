@@ -57,7 +57,7 @@
 |---|---|---|
 | 旧工具迁移 | `[VERIFIED-LOCAL]` | 12 个旧工具地址实测均返回规划目标 `308`；`/register/training` 实测 `307 → /register`。自动化重定向测试覆盖旧工具迁移。 |
 | 旧静态页与根目录资源 | `[REMOVE-PENDING]` | `code.html`、`minimax_docs.html`、`minimax_t2i.html` 已无正式应用运行时引用，但仍保留；根目录图片与正式应用副本哈希已核验，不得删除。详见《旧内容迁移与删除核验清单》。 |
-| 自动化与构建 | `[VERIFIED-LOCAL]` | 锁文件 `npm ci` 后重新生成 Prisma Client；`npx tsc --noEmit`、39 项 Vitest、凭据扫描与正常 `npm run build`（Next 16.3.4 Turbopack，95 个路由）均通过。质量治理已将全量 ESLint 从 `58 errors / 46 warnings` 清零至 `0 errors / 43 warnings`。运营媒体库、内容媒体、字幕、历史版本和媒体位完成异步初始读取整改；真实开发应用 `/admin/media` 已验证桌面端表单与空库回退。43 项警告仍需逐批治理，不能误报为零警告；CI/生产镜像仍须独立复验。 |
+| 自动化与构建 | `[VERIFIED-LOCAL]` | 锁文件 `npm ci` 后重新生成 Prisma Client；`npx tsc --noEmit`、39 项 Vitest、凭据扫描与正常 `npm run build`（Next 16.3.4 Turbopack，95 个路由）均通过。质量治理已将全量 ESLint 从 `58 errors / 46 warnings` 降至 `0 errors / 33 warnings`；运营媒体库、内容媒体、字幕、历史版本和媒体位完成异步初始读取整改，首批无用代码也已移除。真实开发应用 `/admin/media` 已验证桌面端表单与空库回退。33 项警告仍需逐批治理，不能误报为零警告；CI/生产镜像仍须独立复验。 |
 | 依赖漏洞修复 | `[IMPLEMENTED-ENV]` | 已在负责人授权下将 Next.js 与 `eslint-config-next` 升级至 `16.3.4` 并重新生成锁文件。`npm audit --omit=dev` 由 8 个高危项降为 4 个，剩余均在 Prisma 配置链；审计建议与当前 Prisma 版本不一致，未擅自做降级或重大变更。类型、测试、凭据扫描和生产构建已回归；生产镜像仍须从干净依赖安装验证。 |
 | 数据库与基础设施 | `[IMPLEMENTED-ENV]` | Docker Desktop 服务、PostgreSQL 与 Redis 已恢复，`krt-postgres`、`krt-redis` 均健康；9 项 Prisma 迁移已成功部署且状态为 up to date。管理员/学员/学校实际读写、OSS、Worker、供应商凭据和生产 URL 验收仍未完成。 |
 

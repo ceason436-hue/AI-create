@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Play, ArrowUpRight, ArrowDownRight, Music, Sparkles } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Music } from "lucide-react";
 import * as Tone from "tone";
 
 const PITCHES = [

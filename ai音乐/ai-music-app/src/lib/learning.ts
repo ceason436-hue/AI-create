@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { activeEnrollmentWhere, canUseLearningCenter } from "@/lib/learning-policy";
+import { activeEnrollmentWhere } from "@/lib/learning-policy";
 
 export { activeEnrollmentWhere, canUseLearningCenter } from "@/lib/learning-policy";
 

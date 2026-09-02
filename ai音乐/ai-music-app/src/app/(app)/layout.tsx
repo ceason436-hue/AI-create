@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { Music, Star, Home, Play } from "lucide-react";
 import Link from "next/link";
 import { AuthNav } from "@/components/auth-nav";
 import { AiTrialConsent } from "@/components/ai-trial-consent";

@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "crypto";
 import { requireAdminResponse } from "@/lib/admin-access";
 import { processNextCoursewareJob } from "@/lib/courseware-processor";
-import { forbidden, serviceUnavailable } from "@/lib/http";
+import { serviceUnavailable } from "@/lib/http";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
