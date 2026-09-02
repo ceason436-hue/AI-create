@@ -427,12 +427,12 @@ export default function AdminDashboardPage() {
               </h1>
             </div>
             <div className="flex items-center gap-2">
-              <a
+              <Link
                 href="/"
                 className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
               >
                 返回主站
-              </a>
+              </Link>
               <button
                 type="button"
                 title="刷新数据"
@@ -552,7 +552,7 @@ export default function AdminDashboardPage() {
           )}
         </main>
       </div>
-      <AdminModal modal={modal} close={() => setModal(null)} />
+      <AdminModal key={modal ? modal.kind : "closed"} modal={modal} close={() => setModal(null)} />
     </section>
   );
 }
@@ -1523,7 +1523,6 @@ function AdminModal({
   close: () => void;
 }) {
   const [password, setPassword] = useState("");
-  useEffect(() => setPassword(""), [modal]);
   if (!modal) return null;
   const confirm = () => {
     if (modal.kind === "password" && !/^\d{6}$/.test(password)) return;

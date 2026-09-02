@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import { BookOpen, Plus, History, ChevronRight, Loader2, Play } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { builtinArticles } from "./data";
 
@@ -14,28 +13,38 @@ interface ReadingHistory {
   segmentCount: number;
 }
 
+const EMPTY_HISTORY: ReadingHistory[] = [];
+
+function isReadingHistory(value: unknown): value is ReadingHistory {
+  if (!value || typeof value !== "object") return false;
+  const item = value as Record<string, unknown>;
+  return typeof item.id === "string" && typeof item.title === "string" && typeof item.date === "string" && typeof item.segmentCount === "number";
+}
+
+function readReadingHistory(): ReadingHistory[] {
+  if (typeof window === "undefined") return EMPTY_HISTORY;
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem("ai_reading_history") ?? "[]");
+    return Array.isArray(value) ? value.filter(isReadingHistory) : EMPTY_HISTORY;
+  } catch {
+    return EMPTY_HISTORY;
+  }
+}
+
+function subscribeToReadingHistory(onStoreChange: () => void) {
+  const listener = (event: StorageEvent) => {
+    if (event.key === "ai_reading_history") onStoreChange();
+  };
+  window.addEventListener("storage", listener);
+  return () => window.removeEventListener("storage", listener);
+}
+
 export default function AIReadingDashboard() {
   const router = useRouter();
-  const [history, setHistory] = useState<ReadingHistory[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const history = useSyncExternalStore(subscribeToReadingHistory, readReadingHistory, () => EMPTY_HISTORY);
   const [selectedArticleId, setSelectedArticleId] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [isStarting, setIsStarting] = useState(false);
-
-  useEffect(() => {
-    // Load history from local storage
-    const savedHistory = localStorage.getItem('ai_reading_history');
-    if (savedHistory) {
-      try {
-        setHistory(JSON.parse(savedHistory));
-      } catch (e) {
-        console.error("Failed to load reading history", e);
-      }
-    } else {
-      setHistory([]);
-    }
-    setIsLoaded(true);
-  }, []);
 
   const handleStartReading = () => {
     if (!selectedArticleId && !newTitle.trim()) return;
@@ -142,11 +151,7 @@ export default function AIReadingDashboard() {
           </h2>
         </div>
 
-        {!isLoaded ? (
-          <div className="h-40 flex items-center justify-center">
-            <Loader2 className="animate-spin text-white" size={32} />
-          </div>
-        ) : history.length === 0 ? (
+        {history.length === 0 ? (
           <div className="glass-panel rounded-2xl p-12 flex flex-col items-center justify-center text-center border-dashed border-white/20">
             <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
               <BookOpen size={32} className="text-white/50" />

@@ -3,6 +3,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Upload, Download, Sparkles, Image as ImageIcon, Settings2, Loader2, Square, RectangleHorizontal, RectangleVertical, Monitor, ChevronDown, ChevronUp } from "lucide-react";
 
+type LocalArtWork = { id: string; url: string; prompt: string; createdAt: number };
+
+function isLocalArtWork(value: unknown): value is LocalArtWork {
+  if (!value || typeof value !== "object") return false;
+  const work = value as Record<string, unknown>;
+  return typeof work.id === "string" && typeof work.url === "string" && typeof work.prompt === "string" && typeof work.createdAt === "number";
+}
+
 export default function AIArtGenerator() {
   const [activeTab, setActiveTab] = useState<"text2img" | "img2img">("text2img");
   const [prompt, setPrompt] = useState("");
@@ -15,14 +23,15 @@ export default function AIArtGenerator() {
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
   
   const [rightTab, setRightTab] = useState<"current" | "works">("current");
-  const [works, setWorks] = useState<any[]>([]);
+  const [works, setWorks] = useState<LocalArtWork[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const savedWorks = localStorage.getItem('ai_art_works');
     if (savedWorks) {
       try {
-        setWorks(JSON.parse(savedWorks));
+        const parsed: unknown = JSON.parse(savedWorks);
+        setWorks(Array.isArray(parsed) ? parsed.filter(isLocalArtWork) : []);
       } catch (e) {
         console.error("Failed to load works", e);
       }
@@ -130,25 +139,28 @@ export default function AIArtGenerator() {
         }),
       });
 
-      const data = await response.json();
+      const data: unknown = await response.json();
+      const result = data && typeof data === "object" ? data as { image?: unknown; error?: unknown } : {};
 
       if (!response.ok) {
-        throw new Error(data.error || '生成失败');
+        throw new Error(typeof result.error === "string" ? result.error : '生成失败');
       }
+      if (typeof result.image !== "string") throw new Error("生成服务未返回图片。");
+      const generatedImage = result.image;
 
       setProgress(100);
-      setResultImage(data.image);
+      setResultImage(generatedImage);
       setRightTab("current");
       setWorks(prev => [{
         id: Date.now().toString(),
-        url: data.image,
+        url: generatedImage,
         prompt: prompt,
         createdAt: Date.now()
       }, ...prev]);
-      void savePersonalWork(data.image, prompt || "AI 绘画作品");
-    } catch (error: any) {
+      void savePersonalWork(generatedImage, prompt || "AI 绘画作品");
+    } catch (error: unknown) {
       console.error("Image generation error:", error);
-      alert(`生成失败: ${error.message}`);
+      alert(`生成失败: ${error instanceof Error ? error.message : "未知错误"}`);
     } finally {
       clearInterval(interval);
       setIsGenerating(false);
@@ -162,7 +174,8 @@ export default function AIArtGenerator() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setReferenceImage(event.target?.result as string);
+        const result = event.target?.result;
+        if (typeof result === "string") setReferenceImage(result);
       };
       reader.readAsDataURL(file);
     }
