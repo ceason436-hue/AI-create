@@ -751,6 +751,20 @@ model MediaAssetRevision {
   @@index([assetId, createdAt])
 }
 
+model ContentMedia {
+  id          String   @id @default(cuid())
+  contentType String   @db.VarChar(32)
+  contentId   String
+  assetId     String
+  caption     String?  @db.VarChar(500)
+  focalPoint  String?  @db.VarChar(64)
+  sortOrder   Int      @default(0)
+  isCover     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  @@unique([contentType, contentId, assetId])
+  @@index([contentType, contentId, sortOrder])
+}
+
 model MediaSlot {
   id String @id @default(cuid())
   slotKey String @unique @db.VarChar(120)
