@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AuthNav } from "@/components/auth-nav";
 
@@ -6,7 +7,7 @@ export function PublicHeader() {
     <header className="site-header">
       <div className="site-header-inner">
         <Link href="/" className="brand-mark" aria-label="返回科瑞特 AI 首页">
-          <img src="/logo2.png" alt="科瑞特 AI" className="brand-logo" />
+          <Image src="/logo2.png" alt="科瑞特 AI" className="brand-logo" width={160} height={64} priority />
           <span>科瑞特 AI</span>
         </Link>
         <nav className="site-nav" aria-label="主导航">

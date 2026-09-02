@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function PublicFooter() {
@@ -5,7 +6,7 @@ export function PublicFooter() {
     <footer className="site-footer">
       <div className="site-footer-grid">
         <div>
-          <img src="/logo2.png" alt="科瑞特 AI" className="brand-logo footer-logo" />
+          <Image src="/logo2.png" alt="科瑞特 AI" className="brand-logo footer-logo" width={160} height={64} />
           <p className="footer-note">让孩子从使用科技，走向创造科技。</p>
         </div>
         <div className="footer-links">

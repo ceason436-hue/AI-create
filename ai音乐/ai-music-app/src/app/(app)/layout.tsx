@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import Image from "next/image";
 import Link from "next/link";
 import { AuthNav } from "@/components/auth-nav";
 import { AiTrialConsent } from "@/components/ai-trial-consent";
@@ -45,10 +46,13 @@ export default function RootLayout({
             <div className="flex justify-between items-center px-4 md:px-gutter py-base max-w-7xl mx-auto">
               <div className="flex items-center gap-4 md:gap-8">
                 <Link className="flex items-center gap-2 md:gap-3" href="/">
-                  <img
+                  <Image
                     alt="Create AI Logo"
                     className="h-8 md:h-10 object-contain"
                     src="/logo2.png"
+                    width={160}
+                    height={64}
+                    priority
                   />
                   <span className="font-display-xl text-2xl md:text-headline-md font-black tracking-tighter text-on-primary-container sr-only">
                     Create AI (科瑞特)
