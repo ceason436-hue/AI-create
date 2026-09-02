@@ -56,6 +56,7 @@
 - `[DONE / Phase 3 content item revisions]` 活动、成果、师资、校区和合作学校已新增不可变内容快照；新建、编辑、发布状态变更与恢复均在同一数据库事务内生成新版本和审计日志。后台提供按内容项查询的版本接口及恢复页，恢复只接受字段白名单、不会直接覆盖历史，并会将恢复前内容另存为新的版本。迁移 `20260902093000_content_item_revisions` 仍需随生产部署执行。
 - `[DONE / Phase 3 media asset revisions]` 媒体资源的标题、替代文本、授权说明、来源类型、状态及对象引用现有不可变版本快照；上传、元数据变更与恢复均写入事务与审计。恢复只接受白名单字段，原始上传对象保持不变；迁移 `20260902094000_media_asset_revisions` 需随生产部署执行。
 - `[DONE / Phase 3 content media galleries]` 新增 `ContentMedia` 关联模型与 `/admin/content/:type/:id/media` 编排页：活动、成果、师资、校区和合作学校可关联多张已启用媒体，维护封面、排序、说明和裁切焦点，并可安全解除关联而不删除原媒体。关联、更新和解除均需管理员权限、限定所属内容并写入审计；迁移 `20260902095000_content_media` 需随生产部署执行。
+- `[DONE / Browser smoke content media]` 已在真实本地应用验证 `/admin/content/activities/:id/media` 的桌面端与 390px 移动端页面加载、媒体关联表单、列表和空状态；未登录请求会由管理员 API 返回 401，未模拟或伪造受保护的写入操作。
 - `[DONE / Phase 4 SEO baseline]` 新增 `/sitemap.xml` 与 `/robots.txt`，公开主站、课程、工具、咨询与法律页面进入站点地图；运营后台、学习中心、个人作品和 API 路径明确禁止索引。生产域名可通过 `NEXT_PUBLIC_SITE_URL` 覆盖。
 - `[IN_PROGRESS / Phase 7]` 已重新扫描旧静态页、MiniMax 快照和正式应用资源引用：`code.html`、`minimax_docs.html`、`minimax_t2i.html` 未被正式应用运行时引用，仍因负责人确认要求而保留；根目录 `tu1.jpg`、`tu2.png`、`haibao1.png` 仍被正式应用和旧首页引用，不可删除。旧工具重定向补齐 `/ai-music` 到 `/tools?category=music`，删除清单、生产部署和上线收口仍需继续完成；在这些事项完成前不得宣称全部整改完成。
 
