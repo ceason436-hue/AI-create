@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { 
   ArrowLeft, Check, Sparkles, Image as ImageIcon, Loader2, 
-  Send, RefreshCw, Palette, MessageSquare, BookOpen, ChevronRight, Save, Upload
+  Send, RefreshCw, Palette, BookOpen, ChevronRight, Save, Upload
 } from "lucide-react";
 import { builtinArticles } from "../data";
 import * as mammoth from "mammoth";
@@ -15,6 +15,17 @@ const STYLES = [
   { id: "3D卡通", label: "3D卡通" },
   { id: "写实摄影", label: "写实摄影" }
 ];
+
+type ChatMessage = { role: "ai" | "user"; content: string };
+type ReadingSegment = { id: string; text: string; question: string; isImportant: boolean; curriculumTarget: string; chatHistory?: ChatMessage[]; prompt?: string; image?: string | null };
+type ReadingSession = { id: string; title: string; date: string; fullText: string; segments: ReadingSegment[]; currentIndex: number; chatHistory: ChatMessage[]; extractedPrompt: string; generatedImage: string | null; globalStyle: string; lessonPlan: string; isManualInput: boolean; coverImage?: string | null; segmentCount?: number };
+
+function isRecord(value: unknown): value is Record<string, unknown> { return Boolean(value) && typeof value === "object"; }
+function errorMessage(error: unknown) { return error instanceof Error ? error.message : ""; }
+function normalizeChatHistory(value: unknown): ChatMessage[] { return Array.isArray(value) ? value.filter((item): item is ChatMessage => isRecord(item) && (item.role === "ai" || item.role === "user") && typeof item.content === "string") : []; }
+function normalizeSegment(value: unknown, index: number): ReadingSegment | null { if (!isRecord(value) || typeof value.text !== "string") return null; return { id: typeof value.id === "string" ? value.id : `seg_${index}`, text: value.text, question: typeof value.question === "string" ? value.question : "你从这一段想到了什么画面？", isImportant: value.isImportant === true, curriculumTarget: typeof value.curriculumTarget === "string" ? value.curriculumTarget : "", chatHistory: normalizeChatHistory(value.chatHistory), prompt: typeof value.prompt === "string" ? value.prompt : "", image: typeof value.image === "string" ? value.image : null }; }
+function normalizeSession(value: unknown): ReadingSession | null { if (!isRecord(value) || typeof value.id !== "string") return null; const segments = Array.isArray(value.segments) ? value.segments.map(normalizeSegment).filter((item): item is ReadingSegment => item !== null) : []; return { id: value.id, title: typeof value.title === "string" ? value.title : "未命名", date: typeof value.date === "string" ? value.date : "", fullText: typeof value.fullText === "string" ? value.fullText : "", segments, currentIndex: typeof value.currentIndex === "number" ? value.currentIndex : 0, chatHistory: normalizeChatHistory(value.chatHistory), extractedPrompt: typeof value.extractedPrompt === "string" ? value.extractedPrompt : "", generatedImage: typeof value.generatedImage === "string" ? value.generatedImage : null, globalStyle: typeof value.globalStyle === "string" ? value.globalStyle : "", lessonPlan: typeof value.lessonPlan === "string" ? value.lessonPlan : "", isManualInput: value.isManualInput !== false, coverImage: typeof value.coverImage === "string" ? value.coverImage : null, segmentCount: typeof value.segmentCount === "number" ? value.segmentCount : segments.length }; }
+function readStoredSessions(raw: string | null): ReadingSession[] { if (!raw) return []; try { const data: unknown = JSON.parse(raw); return Array.isArray(data) ? data.map(normalizeSession).filter((item): item is ReadingSession => item !== null) : []; } catch { return []; } }
 
 function AIReadingWorkspaceContent() {
   const searchParams = useSearchParams();
@@ -37,11 +48,11 @@ function AIReadingWorkspaceContent() {
   const [isSplitting, setIsSplitting] = useState(false);
   
   // Segments State
-  const [segments, setSegments] = useState<any[]>([]);
+  const [segments, setSegments] = useState<ReadingSegment[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   
   // Interaction State for current segment
-  const [chatHistory, setChatHistory] = useState<{role: 'ai'|'user', content: string}[]>([]);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [userInput, setUserInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   
@@ -61,8 +72,7 @@ function AIReadingWorkspaceContent() {
       const savedHistory = localStorage.getItem('ai_reading_history');
       if (savedHistory) {
         try {
-          const historyArray = JSON.parse(savedHistory);
-          const sessionData = historyArray.find((h: any) => h.id === urlSessionId);
+          const sessionData = readStoredSessions(savedHistory).find((item) => item.id === urlSessionId);
           if (sessionData) {
             setTitle(sessionData.title);
             setFullText(sessionData.fullText);
@@ -82,7 +92,7 @@ function AIReadingWorkspaceContent() {
             // Set interaction states based on the segment we are loading into
             const targetSegment = sessionData.segments[initialIndex];
             if (targetSegment) {
-               setChatHistory(targetSegment.chatHistory || [{ role: 'ai', content: targetSegment.question }]);
+               setChatHistory(targetSegment.chatHistory?.length ? targetSegment.chatHistory : [{ role: 'ai', content: targetSegment.question }]);
                setExtractedPrompt(targetSegment.prompt || "");
                setGeneratedImage(targetSegment.image || null);
             } else {
@@ -118,7 +128,7 @@ function AIReadingWorkspaceContent() {
       image: generatedImage
     };
 
-    const sessionData = {
+    const sessionData: ReadingSession = {
       id: sessionId,
       title,
       date: new Date().toISOString().split('T')[0],
@@ -135,10 +145,9 @@ function AIReadingWorkspaceContent() {
       isManualInput,
     };
 
-    const savedHistory = localStorage.getItem('ai_reading_history');
-    let historyArray = savedHistory ? JSON.parse(savedHistory) : [];
+    const historyArray = readStoredSessions(localStorage.getItem('ai_reading_history'));
     
-    const existingIndex = historyArray.findIndex((h: any) => h.id === sessionId);
+    const existingIndex = historyArray.findIndex((item) => item.id === sessionId);
     if (existingIndex >= 0) {
       historyArray[existingIndex] = sessionData;
     } else {
@@ -147,15 +156,15 @@ function AIReadingWorkspaceContent() {
     
     try {
       localStorage.setItem('ai_reading_history', JSON.stringify(historyArray));
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("localStorage save error", e);
-      if (e.name === 'QuotaExceededError' || e.message.includes('quota')) {
+      if ((isRecord(e) && e.name === 'QuotaExceededError') || errorMessage(e).includes('quota')) {
         // Storage is full. Try to save without base64 images to prevent crashing and losing all progress.
-        const lightweightHistory = historyArray.map((session: any) => ({
+        const lightweightHistory = historyArray.map((session) => ({
           ...session,
           coverImage: null,
           generatedImage: null,
-          segments: session.segments.map((seg: any) => ({
+          segments: session.segments.map((seg) => ({
             ...seg,
             image: null
           }))
@@ -251,7 +260,7 @@ ${fullText}`;
 
       // parse JSON from minimax response
       const choice = data.choices[0];
-      let content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
+      const content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
       
       // Robust JSON extraction
       let jsonStr = content;
@@ -272,15 +281,11 @@ ${fullText}`;
          jsonStr += ']';
       }
       
-      const parsedSegments = JSON.parse(jsonStr);
-      
-      setSegments(parsedSegments.map((seg: any, i: number) => ({
-        id: `seg_${i}`,
-        text: seg.text,
-        question: seg.question,
-        isImportant: seg.isImportant,
-        curriculumTarget: seg.curriculumTarget
-      })));
+      const parsedSegments: unknown = JSON.parse(jsonStr);
+      if (!Array.isArray(parsedSegments)) throw new Error("AI 未返回段落列表。");
+      const nextSegments = parsedSegments.map(normalizeSegment).filter((item): item is ReadingSegment => item !== null);
+      if (!nextSegments.length) throw new Error("AI 返回的段落内容无效。");
+      setSegments(nextSegments);
       
       const newSessionId = `session_${Date.now()}`;
       setSessionId(newSessionId);
@@ -290,18 +295,18 @@ ${fullText}`;
       setIsSplitting(false);
       setIsManualInput(false);
       setChatHistory([
-        { role: 'ai', content: parsedSegments[0].question }
+        { role: 'ai', content: nextSegments[0].question }
       ]);
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       
       // Provide a clear error message to the user if it's a known API error
-      const errorMessage = err.message || "";
-      if (errorMessage.includes("insufficient balance") || errorMessage.includes("欠费")) {
+      const message = errorMessage(err);
+      if (message.includes("insufficient balance") || message.includes("欠费")) {
          alert("抱歉，AI 接口调用失败：账号余额不足 (insufficient balance)。请联系管理员充值或更换 API Key。");
       } else {
-         alert(`AI 拆分文章失败: ${errorMessage} \n请重试或检查原文。`);
+         alert(`AI 拆分文章失败: ${message} \n请重试或检查原文。`);
       }
       
       setIsSplitting(false);
@@ -367,7 +372,7 @@ ${historyContext}
       if (data.error) throw new Error(data.error);
 
       const choice = data.choices[0];
-      let content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
+      const content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
       
       // Robust JSON extraction for object
       let jsonStr = content;
@@ -391,10 +396,12 @@ ${historyContext}
          jsonStr += '}'; 
       }
       
-      let parsedData;
+      let parsedData: { reply: string; isPromptReady: boolean; finalPrompt: string };
       try {
-        parsedData = JSON.parse(jsonStr);
-      } catch (parseError) {
+        const parsed: unknown = JSON.parse(jsonStr);
+        if (!isRecord(parsed) || typeof parsed.reply !== "string") throw new Error("无效回复");
+        parsedData = { reply: parsed.reply, isPromptReady: parsed.isPromptReady === true, finalPrompt: typeof parsed.finalPrompt === "string" ? parsed.finalPrompt : "" };
+      } catch {
         console.error("Failed to parse JSON string:", jsonStr);
         // Fallback gracefully if parsing totally fails
         parsedData = {
@@ -412,13 +419,13 @@ ${historyContext}
       if (parsedData.isPromptReady && parsedData.finalPrompt) {
         setExtractedPrompt(parsedData.finalPrompt);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       
-      const errorMessage = err.message || "";
+      const message = errorMessage(err);
       let aiResponse = "抱歉，我刚刚走神了，你能再说一遍吗？";
       
-      if (errorMessage.includes("insufficient balance") || errorMessage.includes("欠费")) {
+      if (message.includes("insufficient balance") || message.includes("欠费")) {
          aiResponse = "抱歉，AI 接口调用失败：账号余额不足 (insufficient balance)。请充值后再试。";
       }
 
