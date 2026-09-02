@@ -2,6 +2,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Sparkles, Play, Music, Settings, Info, Square } from "lucide-react";
 
+declare global { interface Window { webkitAudioContext?: typeof AudioContext } }
+type MelodyNote = { f: number; d: number; t: number };
+
 export default function MelodyGenerator() {
   const [emotion, setEmotion] = useState("开心");
   const [style, setStyle] = useState("儿歌");
@@ -17,7 +20,7 @@ export default function MelodyGenerator() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContextRef.current = new AudioContext();
     
     const loadSound = async (name: string, url: string) => {
@@ -143,7 +146,7 @@ export default function MelodyGenerator() {
     };
     
     // Melody sequences (t is in beats, d is duration in seconds relative to beat)
-    const MELODIES: Record<string, any[]> = {
+    const MELODIES: Record<string, MelodyNote[]> = {
       "开心": [
         { f: FREQ.C4, d: 0.8, t: 0 }, { f: FREQ.E4, d: 0.8, t: 1 },
         { f: FREQ.G4, d: 0.8, t: 2 }, { f: FREQ.C5, d: 1.5, t: 3 },
