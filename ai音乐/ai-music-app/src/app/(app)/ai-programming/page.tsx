@@ -29,6 +29,7 @@ export default function AIProgrammingPage() {
     "⚙️ 正在编写高质量的前端代码...",
     "✨ 正在组装并进行最终优化..."
   ];
+  const loadingStepCount = loadingSteps.length;
 
   // 初始默认占位代码
   const [code, setCode] = useState(`<!-- 生成的代码将显示在这里 -->
@@ -52,11 +53,11 @@ export default function AIProgrammingPage() {
     if (isGenerating) {
       setLoadingStepIndex(0);
       interval = setInterval(() => {
-        setLoadingStepIndex(prev => (prev < loadingSteps.length - 1 ? prev + 1 : prev));
+        setLoadingStepIndex(prev => (prev < loadingStepCount - 1 ? prev + 1 : prev));
       }, 2500); // 每 2.5 秒切换一次状态
     }
     return () => clearInterval(interval);
-  }, [isGenerating]);
+  }, [isGenerating, loadingStepCount]);
 
   useEffect(() => {
     // 当处于全屏状态时，强制隐藏全局导航栏，防止 z-index 冲突遮挡退出按钮

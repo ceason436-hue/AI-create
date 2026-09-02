@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type SessionAccount = {
@@ -11,6 +12,7 @@ type SessionAccount = {
 export function AuthNav({ sessionOnly = false }: { sessionOnly?: boolean } = {}) {
   const [account, setAccount] = useState<SessionAccount | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -26,7 +28,7 @@ export function AuthNav({ sessionOnly = false }: { sessionOnly?: boolean } = {})
     }
     await fetch("/api/auth/logout", { method: "POST" });
     setAccount(null);
-    window.location.assign("/");
+    router.push("/");
   }
 
   if (!loaded) return sessionOnly ? null : <div className="h-10 w-24" aria-hidden="true" />;

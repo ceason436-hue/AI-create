@@ -67,12 +67,13 @@ export default function MusicCreationPage() {
     }
   }, [favorites, isLoaded]);
 
+  const generatingTrackCount = tracks.filter((track) => track.status === "generating").length;
+
   // Check and restore `isGenerating` state correctly based on `tracks` on component mount or tracks update
   useEffect(() => {
     if (!isLoaded) return;
     
-    const generatingTracks = tracks.filter(t => t.status === "generating");
-    if (generatingTracks.length > 0) {
+    if (generatingTrackCount > 0) {
       setIsGenerating(true);
       setGeneratingStatus("正在由 AI 谱曲演唱，这可能需要几分钟...");
       
@@ -106,7 +107,7 @@ export default function MusicCreationPage() {
       setIsGenerating(false);
       setGeneratingStatus("");
     }
-  }, [tracks.filter(t => t.status === "generating").length, isLoaded]);
+  }, [generatingTrackCount, isLoaded]);
 
   // Save tracks to local storage whenever it changes
   useEffect(() => {
