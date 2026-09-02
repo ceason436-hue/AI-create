@@ -64,6 +64,7 @@
 - `[DONE / Browser smoke public galleries]` 已在真实本地应用验证成果详情页桌面端与 390px 移动端的回退渲染、导航和内容风险提示；本地数据库未运行时公开页正确回退为手册/品牌资料，不伪造图集数据。待迁移并录入真实媒体后，仍需在受控数据环境验证排序与下线即时生效。
 - `[DONE / Browser smoke content media]` 已在真实本地应用验证 `/admin/content/activities/:id/media` 的桌面端与 390px 移动端页面加载、媒体关联表单、列表和空状态；未登录请求会由管理员 API 返回 401，未模拟或伪造受保护的写入操作。
 - `[DONE / Phase 4 SEO baseline]` 新增 `/sitemap.xml` 与 `/robots.txt`，公开主站、课程、工具、咨询与法律页面进入站点地图；运营后台、学习中心、个人作品和 API 路径明确禁止索引。生产域名可通过 `NEXT_PUBLIC_SITE_URL` 覆盖。
+- `[DONE / Dynamic public sitemap]` `/sitemap.xml` 现除固定公开页外，还只收录运营后台已发布的课程、活动和成果详情，并使用各内容的更新时间；数据库暂不可用时安全退回固定公开页，不会把前端占位内容、草稿或已移除示例课程写入站点地图。真实生产数据恢复后仍需复验动态详情 URL。
 - `[IN_PROGRESS / Phase 7]` 已重新扫描旧静态页、MiniMax 快照和正式应用资源引用：`code.html`、`minimax_docs.html`、`minimax_t2i.html` 未被正式应用运行时引用，仍因负责人确认要求而保留；根目录 `tu1.jpg`、`tu2.png`、`haibao1.png` 仍被正式应用和旧首页引用，不可删除。本轮已重新核验根目录与正式应用副本的 `logo2.png`、`haibao1.png`、`tu1.jpg`、`tu2.png` SHA256 全部一致，证据记录在《旧内容迁移与删除核验清单》。旧工具重定向补齐 `/ai-music` 到 `/tools?category=music`，删除清单、生产部署和上线收口仍需继续完成；在这些事项完成前不得宣称全部整改完成。
 - `[DONE / Redirect regression]` 新增自动化重定向回归测试，覆盖 AI 音乐、绘画、编程、阅读、音乐创建、阅读工作区/结果和全部四个 `stage1` 练习路径；每项均要求永久迁移到规划的统一工具路由。
 - `[DONE / Legacy URL runtime regression]` 已在真实本地开发服务逐条验证上述 12 个旧工具地址，均返回规划目标的 `308` 永久重定向；该运行时结果与自动化重定向回归测试一致。旧静态页面本身与候选资源仍未删除，仍须完成生产环境 URL 验证和负责人确认。
