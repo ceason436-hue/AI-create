@@ -26,6 +26,7 @@ export type PublicListItem = {
   content: string;
   type?: string;
   coverAssetId?: string | null;
+  coverMimeType?: string | null;
   date?: string | null;
 };
 
@@ -181,7 +182,12 @@ export async function getPublicCourse(slug: string) {
 async function getPublishedList(model: "activity" | "achievement" | "teacherProfile" | "campus") {
   try {
     const rows = await (db[model] as { findMany: (args: unknown) => Promise<Array<Record<string, unknown>>> }).findMany({ where: { publishStatus: "PUBLISHED" }, orderBy: { sortOrder: "asc" } });
-    if (rows.length) return rows.map((row) => ({ id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: publicMediaUrl(String(row.coverAssetId ?? row.avatarAssetId ?? "") || null), date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }));
+    if (rows.length) {
+      const assetIds = rows.map((row) => String(row.coverAssetId ?? row.avatarAssetId ?? "")).filter(Boolean);
+      const assets = assetIds.length ? await db.mediaAsset.findMany({ where: { id: { in: assetIds }, status: "ACTIVE" }, select: { id: true, mimeType: true } }) : [];
+      const assetsById = new Map(assets.map((asset) => [asset.id, asset]));
+      return rows.map((row) => { const assetId = String(row.coverAssetId ?? row.avatarAssetId ?? "") || null; const asset = assetId ? assetsById.get(assetId) : null; return { id: String(row.id), slug: String(row.slug ?? row.id), title: String(row.title ?? row.name), summary: String(row.summary ?? row.description ?? ""), content: String(row.content ?? row.bio ?? ""), type: String(row.activityType ?? row.achievementType ?? ""), coverAssetId: asset ? publicMediaUrl(asset.id) : null, coverMimeType: asset?.mimeType ?? null, date: row.startsAt instanceof Date ? row.startsAt.toISOString() : null }; });
+    }
   } catch {}
   return model === "activity" ? fallbackActivities : model === "achievement" ? fallbackAchievements : model === "teacherProfile" ? fallbackTeachers : fallbackCampuses;
 }
