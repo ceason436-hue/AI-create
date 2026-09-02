@@ -57,7 +57,7 @@
 |---|---|---|
 | 旧工具迁移 | `[VERIFIED-LOCAL]` | 12 个旧工具地址实测均返回规划目标 `308`；`/register/training` 实测 `307 → /register`。自动化重定向测试覆盖旧工具迁移。 |
 | 旧静态页与根目录资源 | `[REMOVE-PENDING]` | `code.html`、`minimax_docs.html`、`minimax_t2i.html` 已无正式应用运行时引用，但仍保留；根目录图片与正式应用副本哈希已核验，不得删除。详见《旧内容迁移与删除核验清单》。 |
-| 自动化与构建 | `[VERIFIED-LOCAL]` | `npx tsc --noEmit`、Prisma Schema/migration 状态、39 项 Vitest、凭据扫描和 Next 16.3.4 Webpack 生产构建均通过；新增工具目录白名单单测。质量治理首批已将全量 ESLint 从 `58 errors / 46 warnings` 降至 `53 errors / 45 warnings`，并使后台入口、AI 阅读与 AI 绘画页无错误；其余历史页面/运营组件仍需逐批清理，不能误报全量 lint 已通过。 |
+| 自动化与构建 | `[VERIFIED-LOCAL]` | `npx tsc --noEmit`、Prisma Schema/migration 状态、39 项 Vitest、凭据扫描和 Next 16.3.4 Webpack 生产构建均通过；新增工具目录白名单单测。质量治理已将全量 ESLint 从 `58 errors / 46 warnings` 降至 `45 errors / 45 warnings`，并使后台入口、AI 阅读、AI 绘画及阅读结果页无错误；其余历史页面/运营组件仍需逐批清理，不能误报全量 lint 已通过。 |
 | 依赖漏洞修复 | `[IMPLEMENTED-ENV]` | 已在负责人授权下将 Next.js 与 `eslint-config-next` 升级至 `16.3.4` 并重新生成锁文件。`npm audit --omit=dev` 由 8 个高危项降为 4 个，剩余均在 Prisma 配置链；审计建议与当前 Prisma 版本不一致，未擅自做降级或重大变更。类型、测试、凭据扫描和生产构建已回归；生产镜像仍须从干净依赖安装验证。 |
 | 数据库与基础设施 | `[IMPLEMENTED-ENV]` | Docker Desktop 服务、PostgreSQL 与 Redis 已恢复，`krt-postgres`、`krt-redis` 均健康；9 项 Prisma 迁移已成功部署且状态为 up to date。管理员/学员/学校实际读写、OSS、Worker、供应商凭据和生产 URL 验收仍未完成。 |
 

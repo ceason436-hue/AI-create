@@ -5,17 +5,38 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeft, Download, Edit3, Image as ImageIcon, Loader2, BookOpen, ScanEye, Sparkles, FileImage } from "lucide-react";
 import * as htmlToImage from "html-to-image";
 
+type ReadingSegment = { text: string; prompt?: string; image?: string; curriculumTarget?: string };
+type ReadingSession = { id: string; title: string; date: string; globalStyle?: string; segments: ReadingSegment[] };
+type VisionAnalysis = { percentage: number; analysis: string };
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object";
+}
+
+function isReadingSegment(value: unknown): value is ReadingSegment {
+  if (!isRecord(value) || typeof value.text !== "string") return false;
+  return ["prompt", "image", "curriculumTarget"].every((key) => value[key] === undefined || typeof value[key] === "string");
+}
+
+function isReadingSession(value: unknown): value is ReadingSession {
+  return isRecord(value) && typeof value.id === "string" && typeof value.title === "string" && typeof value.date === "string" && (value.globalStyle === undefined || typeof value.globalStyle === "string") && Array.isArray(value.segments) && value.segments.every(isReadingSegment);
+}
+
+function isVisionAnalysis(value: unknown): value is VisionAnalysis {
+  return isRecord(value) && typeof value.percentage === "number" && typeof value.analysis === "string";
+}
+
 function OverviewContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("sessionId");
   
-  const [sessionData, setSessionData] = useState<any>(null);
+  const [sessionData, setSessionData] = useState<ReadingSession | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [analyzingIdx, setAnalyzingIdx] = useState<number | null>(null);
   const [isBatchAnalyzing, setIsBatchAnalyzing] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState<Record<number, any>>({});
+  const [analysisResults, setAnalysisResults] = useState<Record<number, VisionAnalysis>>({});
   const exportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,8 +44,8 @@ function OverviewContent() {
       const savedHistory = localStorage.getItem('ai_reading_history');
       if (savedHistory) {
         try {
-          const historyArray = JSON.parse(savedHistory);
-          const found = historyArray.find((h: any) => h.id === sessionId);
+          const historyArray: unknown = JSON.parse(savedHistory);
+          const found = Array.isArray(historyArray) ? historyArray.find((item) => isReadingSession(item) && item.id === sessionId) : undefined;
           if (found) {
             setSessionData(found);
           }
@@ -51,7 +72,7 @@ function OverviewContent() {
       document.body.removeChild(a);
     };
 
-    sessionData.segments.forEach((seg: any, index: number) => {
+    sessionData.segments.forEach((seg, index) => {
       if (seg.image) {
         downloadImage(seg.image, `${sessionData.title || '绘本'}_画面_${index + 1}.jpg`);
         downloadedCount++;
@@ -63,7 +84,7 @@ function OverviewContent() {
     }
   };
 
-  const handleAnalyzeImage = async (seg: any, idx: number) => {
+  const handleAnalyzeImage = async (seg: ReadingSegment, idx: number) => {
     if (!seg.image) return;
     setAnalyzingIdx(idx);
     
@@ -78,14 +99,16 @@ function OverviewContent() {
         })
       });
 
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      const data: unknown = await res.json();
+      const errorMessage = isRecord(data) && typeof data.error === "string" ? data.error : "图片分析失败";
+      if (!res.ok) throw new Error(errorMessage);
+      if (!isVisionAnalysis(data)) throw new Error("图片分析服务返回格式无效。");
 
       setAnalysisResults(prev => ({
         ...prev,
         [idx]: data
       }));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       alert("图片分析失败，请稍后重试");
     } finally {
@@ -223,7 +246,7 @@ function OverviewContent() {
 
       {/* Content */}
       <div className="flex flex-col gap-12">
-        {sessionData.segments?.map((seg: any, idx: number) => (
+        {sessionData.segments.map((seg, idx) => (
           <div key={idx} className="flex flex-col lg:flex-row gap-8 items-start bg-black/20 p-6 md:p-8 rounded-3xl border border-white/10 relative">
 
             {/* Left: Text & Prompt */}
@@ -321,7 +344,7 @@ function OverviewContent() {
 
           {/* Segments */}
           <div className="flex flex-col gap-12">
-            {sessionData.segments?.map((seg: any, idx: number) => (
+            {sessionData.segments.map((seg, idx) => (
               <div key={`export-${idx}`} className="flex flex-col gap-6">
                 {seg.image && (
                   <div className="w-full rounded-2xl overflow-hidden shadow-2xl">
