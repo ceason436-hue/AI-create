@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from "zod";
 import { withAiGateway } from "@/lib/ai-gateway";
 import { badRequest } from "@/lib/http";
+import { providerExceptionResponse, providerFetch, providerHttpErrorResponse } from "@/lib/provider-fetch";
 
 export const maxDuration = 120; // 允许最长 120 秒执行时间
 
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
       headers['GroupId'] = groupId;
     }
 
-    const response = await fetch(url, {
+    const response = await providerFetch(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
@@ -83,16 +84,15 @@ export async function POST(req: Request) {
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
       console.error("MiniMax chat request failed", { status: response.status });
-      return NextResponse.json({ 
-        error: 'AI 服务暂时无法完成生成，请稍后重试。'
-      }, { status: 502 });
+      return providerHttpErrorResponse(response);
     }
 
-    return NextResponse.json(data);
+    const text = data?.choices?.[0]?.message?.content;
+    if (typeof text !== "string" || !text.trim()) return NextResponse.json({ error: "AI 未返回文本结果。", code: "RESULT_EMPTY", retryable: true }, { status: 502 });
+    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "TEXT", preview: { text } } });
 
-  } catch {
-    console.error("Chat route failed");
-    return NextResponse.json({ error: '服务器内部错误' }, { status: 500 });
+  } catch (error) {
+    return providerExceptionResponse(error);
   }
   });
 }

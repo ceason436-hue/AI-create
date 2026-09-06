@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getCurrentAccount, isAdmin } from "@/lib/auth";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -6,7 +8,12 @@ export const metadata: Metadata = {
   description: "科瑞特 AI 平台运营管理后台",
 };
 
-export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const account = await getCurrentAccount();
+  if (!account || !isAdmin(account)) {
+    redirect("/login?mode=admin&next=/admin");
+  }
+
   return (
     <html lang="zh-CN">
       <body className="min-h-screen bg-slate-100 text-slate-900 antialiased">{children}</body>

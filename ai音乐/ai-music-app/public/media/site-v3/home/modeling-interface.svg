@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 600" role="img" aria-labelledby="t d">
+  <title id="t">三维建模界面</title><desc id="d">工程网格上的机械零件三维线框模型。</desc>
+  <defs><pattern id="p" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#C9D3EA" stroke-opacity=".55"/></pattern><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F" stop-opacity=".14"/><stop offset="1" stop-color="#F15A2A" stop-opacity=".22"/></linearGradient></defs>
+  <rect width="920" height="600" rx="32" fill="#F8FAFD"/><rect x="28" y="28" width="864" height="544" rx="24" fill="url(#p)" stroke="#D3DBED" stroke-width="2"/>
+  <g transform="translate(460 302)" fill="url(#g)" stroke="#253A8F" stroke-width="4" stroke-linejoin="round"><path d="M-215-72L-42-170 214-58 35 59z"/><path d="M-215-72v149L35 198V59zM35 59l179-117V91L35 198"/><path d="M-117-24l85-49 126 56L7 40z"/><path d="M-117-24v78L7 113V40zM7 40l87-57v77L7 113"/><circle cx="-137" cy="62" r="38"/><circle cx="122" cy="100" r="38"/><circle cx="-137" cy="62" r="17"/><circle cx="122" cy="100" r="17"/></g>
+  <g fill="#F15A2A"><circle cx="245" cy="230" r="9"/><circle cx="674" cy="244" r="9"/><circle cx="337" cy="425" r="9"/></g><g stroke="#F15A2A" stroke-width="2" stroke-dasharray="5 8"><path d="M245 230L126 142"/><path d="M674 244l103-95"/><path d="M337 425l-120 65"/></g>
+</svg>

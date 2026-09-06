@@ -4,6 +4,9 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { coursePublicationIssues } from "@/lib/course-publication-policy";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
+import { isReservedCourseDirectionSlug } from "@/lib/public-slugs";
+import { revalidateCourses } from "@/lib/public-revalidation";
+import { isReadyPublicMedia } from "@/lib/admin-public-media";
 
 const lessonSchema = z.object({ title: z.string().trim().min(1).max(180), summary: z.string().trim().max(500).optional(), content: z.string().trim().max(20_000).optional(), estimatedMinutes: z.number().int().min(1).max(480).optional() });
 const moduleSchema = z.object({ title: z.string().trim().min(1).max(180), description: z.string().trim().max(500).optional(), lessons: z.array(lessonSchema).max(50).optional() });
@@ -24,6 +27,8 @@ export async function POST(request: Request) {
   const access = await requireAdminResponse(); if ("response" in access) return access.response;
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "课程信息无效。" }, { status: 400 });
+  if (isReservedCourseDirectionSlug(parsed.data.slug)) return Response.json({ error: "该 slug 已由公开课程方向页保留，请更换课程 slug。" }, { status: 409 });
+  if (!(await isReadyPublicMedia(parsed.data.coverAssetId, "image/"))) return Response.json({ error: "课程封面必须是已启用且处理完成的图片。" }, { status: 400 });
   const { modules = [], ...courseData } = parsed.data;
   if (parsed.data.publishStatus === "PUBLISHED") {
     const issues = coursePublicationIssues({ targetAudience: parsed.data.targetAudience, coverAssetId: parsed.data.coverAssetId, publishedModuleCount: modules.length });
@@ -35,6 +40,7 @@ export async function POST(request: Request) {
       await tx.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_CREATED", targetType: "COURSE", targetId: created.id, result: "SUCCEEDED", after: { name: created.name, slug: created.slug, publishStatus: created.publishStatus } } });
       return created;
     });
+    revalidateCourses(course.slug);
     return Response.json({ course: serializeCourse(course) }, { status: 201 });
   } catch (error) {
     if (error instanceof Error && error.message.includes("Unique constraint")) return Response.json({ error: "课程 slug 已存在。" }, { status: 409 });

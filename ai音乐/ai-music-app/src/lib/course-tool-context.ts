@@ -20,7 +20,7 @@ export async function resolveCourseToolContext(accountId: string, toolKey: strin
   });
   if (!lesson) throw new Error("COURSE_LESSON_UNAVAILABLE");
   const binding = await db.courseToolBinding.findFirst({
-    where: { courseId, status: "ACTIVE", OR: [{ lessonId }, { lessonId: null }], ...(toolKey === "chat" ? {} : { toolKey }) },
+    where: { courseId, status: "ACTIVE", OR: [{ lessonId }, { lessonId: null }], toolKey },
     select: { id: true },
   });
   if (!binding) throw new Error("COURSE_TOOL_NOT_BOUND");

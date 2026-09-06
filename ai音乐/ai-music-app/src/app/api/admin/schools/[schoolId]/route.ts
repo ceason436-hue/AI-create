@@ -16,9 +16,9 @@ const updateSchoolSchema = z
     status: z.enum(["ACTIVE", "SUSPENDED", "EXPIRED"]).optional(),
     allowedTools: z
       .array(
-        z.enum(["chat", "code", "image", "music", "music_query", "vision"]),
+        z.enum(["chat", "code", "image", "music", "music_query", "reading", "vision"]),
       )
-      .max(6)
+      .max(7)
       .optional(),
     validFrom: z.string().datetime().nullable().optional(),
     validTo: z.string().datetime().nullable().optional(),

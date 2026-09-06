@@ -4,6 +4,8 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { contentItemSnapshot, isRevisionableContentType } from "@/lib/content-item-revisions";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
+import { isReadyPublicMedia } from "@/lib/admin-public-media";
+import { revalidatePublicContent } from "@/lib/public-revalidation";
 
 const modelNames = { activities: "activity", achievements: "achievement", teachers: "teacherProfile", campuses: "campus", partners: "partnerSchool", inquiries: "inquiry" } as const;
 type ContentType = keyof typeof modelNames;
@@ -30,6 +32,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
   const input = parsed.data; const title = input.title ?? input.name;
   if (!title) return Response.json({ error: "需要标题或名称。" }, { status: 400 });
   const assetId = input.coverAssetId || undefined;
+  if (!(await isReadyPublicMedia(assetId, "image/"))) return Response.json({ error: "内容封面必须是已启用且处理完成的图片。" }, { status: 400 });
   const data = contentType === "teachers" ? { name: title, bio: input.description ?? input.bio, avatarAssetId: assetId, publishStatus: input.publishStatus, sortOrder: input.sortOrder } : contentType === "partners" ? { name: title, description: input.description ?? input.bio, logoAssetId: assetId, publishStatus: input.publishStatus, sortOrder: input.sortOrder } : contentType === "campuses" ? { name: title, description: input.description ?? input.bio, address: input.address, coverAssetId: assetId, publishStatus: input.publishStatus, sortOrder: input.sortOrder } : { slug: input.slug ?? `draft-${Date.now()}`, title, summary: input.summary ?? input.description ?? "", content: input.content, coverAssetId: assetId, activityType: input.activityType, achievementType: input.achievementType, publishStatus: input.publishStatus, sortOrder: input.sortOrder };
   try {
     const item = await db.$transaction(async (tx) => {
@@ -39,6 +42,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
       await tx.auditLog.create({ data: { actorId: access.account.id, action: "CONTENT_CREATED", targetType: contentType.toUpperCase(), targetId: String(created.id), result: "SUCCEEDED", after: { title, publishStatus: input.publishStatus, assetId, version: isRevisionableContentType(contentType) ? 1 : undefined } } });
       return created;
     });
+    if (contentType === "activities" || contentType === "achievements") revalidatePublicContent(contentType);
     return Response.json({ item }, { status: 201 });
   } catch { return internalError(); }
 }

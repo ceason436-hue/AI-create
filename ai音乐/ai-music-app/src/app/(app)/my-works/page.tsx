@@ -98,7 +98,12 @@ export default function MyWorksPage() {
       });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error ?? "导入失败，请稍后重试。");
-      setLegacyArt((items) => items.filter((item) => item.id !== work.id));
+      setLegacyArt((items) => {
+        const remaining = items.filter((item) => item.id !== work.id);
+        if (remaining.length) localStorage.setItem("ai_art_works", JSON.stringify(remaining));
+        else localStorage.removeItem("ai_art_works");
+        return remaining;
+      });
       await loadWorks();
     } catch (importError) {
       setError(

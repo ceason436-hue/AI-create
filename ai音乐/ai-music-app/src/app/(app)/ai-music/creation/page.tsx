@@ -10,7 +10,6 @@ import {
   MoreVertical,
   Play,
   Shuffle,
-  Music,
   Trash2,
   X,
   Pause,
@@ -22,9 +21,9 @@ type MusicTrack = { id: string; status: "generating" | "completed" | "failed"; p
 type TimedLyric = { text: string; originalIndex: number; weight: number; isMarker: boolean; startFraction: number; endFraction: number };
 
 export default function MusicCreationPage() {
-  const [lyrics, setLyrics] = useState("");
-  const [style, setStyle] = useState("");
-  const [songName, setSongName] = useState("");
+  const [lyrics, setLyrics] = useState("在城市的夜空下，灯火像星星洒落，\n风穿过街道，带来远方的歌。\n我们慢慢走着，把孤单都遗忘，\n明天会更温柔。");
+  const [style, setStyle] = useState("温暖、治愈、希望的氛围，慢速抒情流行，以钢琴和木吉他为主，加入弦乐铺底与轻柔鼓点。");
+  const [songName, setSongName] = useState("夜空下的温柔");
   const [activeTab, setActiveTab] = useState<"works" | "favorites">("works");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingStatus, setGeneratingStatus] = useState("");
@@ -482,7 +481,7 @@ export default function MusicCreationPage() {
   const displayedTracks = activeTab === 'works' ? tracks : favorites;
 
   return (
-    <div className="bg-white/90 backdrop-blur-xl rounded-[40px] brutalist-border shadow-[8px_8px_0_0_#0073e0] p-6 md:p-10 flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto w-full min-h-[80vh]">
+    <div className="ai-studio music-studio bg-white/90 p-6 md:p-10 flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto w-full min-h-[80vh]">
       
       {/* Left Column - Input Area */}
       <div className="w-full lg:w-[55%] flex flex-col gap-6">
@@ -783,16 +782,16 @@ export default function MusicCreationPage() {
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400 gap-4">
-              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center brutalist-border">
-                <Music className="w-8 h-8 text-gray-300" />
-              </div>
-              <p>暂无{activeTab === 'works' ? '作品' : '收藏'}</p>
+            <div className="music-reference-empty">
+              <img className="music-empty-illustration" src="/media/site-v3/music/music-empty-state.svg" alt={`暂无${activeTab === 'works' ? '作品' : '收藏'}，先在左侧描述歌词主题和音乐风格`} width="560" height="420" />
+              {activeTab === 'works' && <div className="music-example-result"><img src="/media/site-v3/music/night-city-cover-v2.png" alt="示例音乐作品夜空封面" width="320" height="320" /><div><strong>夜空下的温柔</strong><span>温暖 · 舒缓 · 轻电子</span><img src="/media/site-v3/music/music-waveform.svg" alt="音乐波形" width="1200" height="260" /></div></div>}
             </div>
           )}
         </div>
         
       </div>
+
+      <img className="music-process-strip" src="/media/site-v3/music/music-process.svg" alt="描述情绪、生成试听、修改表达三步音乐创作流程" width="1200" height="300" />
 
       {/* Music Player Modal */}
       {isPlayerOpen && currentTrack && (

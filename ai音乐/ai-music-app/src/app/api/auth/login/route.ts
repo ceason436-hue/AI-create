@@ -1,29 +1,33 @@
 import { compare } from "bcryptjs";
 import { AccountStatus } from "@prisma/client";
-import { z } from "zod";
 import { createSession } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
-import { badRequest, forbidden, internalError, serviceUnavailable, tooManyRequests } from "@/lib/http";
+import { badRequest, forbidden, internalError, serviceUnavailable, tooManyRequests, unauthorized } from "@/lib/http";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { accountTypeCookieMaxAge } from "@/lib/session-policy";
+import { loginInputSchema, loginModeAllowsAccount } from "@/lib/login-mode";
 
-const inputSchema = z.object({
-  loginIdentifier: z.string().trim().min(3).max(64).transform((value) => value.toUpperCase()),
-  password: z.string().min(6).max(128),
-});
+function invalidCredentials() {
+  return unauthorized("账号或密码错误。");
+}
 
 export async function POST(request: Request) {
   try {
     if (!await enforceRateLimit(request, "login", 10, 60)) return tooManyRequests("登录尝试过于频繁，请稍后重试。");
-    const parsed = inputSchema.safeParse(await request.json());
+    const parsed = loginInputSchema.safeParse(await request.json().catch(() => null));
     if (!parsed.success) return badRequest("请输入正确的账号和密码。");
 
     const account = await db.account.findUnique({
       where: { loginIdentifier: parsed.data.loginIdentifier },
+      include: { roles: { include: { role: true } } },
     });
     if (!account || !(await compare(parsed.data.password, account.passwordHash))) {
-      return forbidden("账号或密码错误。");
+      return invalidCredentials();
+    }
+    const roleKeys = account.roles.map(({ role }) => role.key);
+    if (!loginModeAllowsAccount(parsed.data.mode, { type: account.type, roleKeys })) {
+      return invalidCredentials();
     }
     if (account.status !== AccountStatus.ACTIVE) {
       return forbidden("该账号当前不可用，请联系管理员。");

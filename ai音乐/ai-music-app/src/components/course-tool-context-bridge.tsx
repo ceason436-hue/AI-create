@@ -10,14 +10,17 @@ export function CourseToolContextBridge() {
   const lessonId = searchParams.get("lessonId");
 
   useEffect(() => {
-    if (!pathname.startsWith("/tools/") || !courseId || !lessonId) return;
+    if (!pathname.startsWith("/tools/")) return;
     const nativeFetch = window.fetch;
     window.fetch = (input, init) => {
       const requestUrl = typeof input === "string" ? input : input instanceof URL ? input.pathname : input.url;
       if (!requestUrl.startsWith("/api/minimax/")) return nativeFetch(input, init);
+      window.dispatchEvent(new CustomEvent("krt:ai-first-use"));
       const headers = new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined));
-      headers.set("x-krt-course-id", courseId);
-      headers.set("x-krt-lesson-id", lessonId);
+      if (courseId && lessonId) {
+        headers.set("x-krt-course-id", courseId);
+        headers.set("x-krt-lesson-id", lessonId);
+      }
       return nativeFetch(input, { ...init, headers });
     };
     return () => { window.fetch = nativeFetch; };

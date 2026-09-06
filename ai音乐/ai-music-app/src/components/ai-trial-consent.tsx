@@ -1,27 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 
 export function AiTrialConsent() {
   const [visible, setVisible] = useState(false);
   const [busy, setBusy] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    let active = true;
-    fetch("/api/ai/trial").then((response) => response.ok ? response.json() : null).then((data) => {
-      if (active && data && !data.authenticated && !data.consent) setVisible(true);
-    }).catch(() => undefined);
-    return () => { active = false; };
+    async function onFirstUse() {
+      const response = await fetch("/api/ai/trial");
+      const data = response.ok ? await response.json() : null;
+      if (data && !data.authenticated && !data.consent) setVisible(true);
+    }
+    window.addEventListener("krt:ai-first-use", onFirstUse);
+    return () => window.removeEventListener("krt:ai-first-use", onFirstUse);
   }, []);
+  useEffect(() => {
+    if (visible && !dialogRef.current?.open) dialogRef.current?.showModal();
+  }, [visible]);
   if (!visible) return null;
   async function accept() {
     setBusy(true);
     try {
       const response = await fetch("/api/ai/trial", { method: "POST" });
-      if (response.ok) setVisible(false);
+      if (response.ok) { dialogRef.current?.close(); setVisible(false); }
     } finally {
       setBusy(false);
     }
   }
-  return <div className="trial-consent" role="dialog" aria-label="AI 试用提示"><div className="trial-consent-card"><span className="eyebrow dark">TRY BEFORE YOU JOIN</span><h2>先登录，或直接试用 AI</h2><p>登录后可以保存作品并按账户权益使用；访客也可以选择先试用，每个 AI 业务工具每天 5 次，匿名结果不会保存到云端。</p><div className="trial-consent-actions"><Link className="button button-dark" href="/login">学员登录</Link><button className="button button-lime" onClick={() => void accept()} disabled={busy}>{busy ? "准备中…" : "先试用"}</button></div></div></div>;
+  return <dialog ref={dialogRef} className="site-dialog trial-consent" aria-labelledby="trial-title" onClose={() => setVisible(false)}><div className="dialog-sheet trial-consent-card"><button type="button" className="dialog-close" onClick={() => dialogRef.current?.close()} aria-label="关闭提示"><X aria-hidden="true" size={20} /></button><span className="section-kicker">FIRST CREATION · 第一次创作</span><h2 id="trial-title">先试着完成一个想法</h2><p>你可以直接开始体验。登录后，作品与学习进度可以继续保存和完善。</p><div className="trial-consent-actions"><Link className="button button-secondary" href="/login">登录学习账户</Link><button className="button button-primary" onClick={() => void accept()} disabled={busy}>{busy ? "正在准备…" : "开始体验"}</button></div></div></dialog>;
 }

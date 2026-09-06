@@ -1,4 +1,4 @@
 import { PublicShell } from "@/components/public-shell";
-import Page from "../../../../(app)/ai-reading/workspace/page";
+import {ReferenceReadingImport} from "@/components/reference-reading-import";
 
-export default function ToolReadingWorkspacePage() { return <PublicShell><main className="tool-app-page"><Page /></main></PublicShell>; }
+export default function ToolReadingWorkspacePage() { return <PublicShell><ReferenceReadingImport /></PublicShell>; }

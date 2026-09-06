@@ -1,8 +1,9 @@
 # Stage 1: Install dependencies
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+RUN npm ci && npx prisma generate
 
 # Stage 2: Build the application
 FROM node:20-alpine AS builder
@@ -34,5 +35,7 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
 
 CMD ["node", "server.js"]

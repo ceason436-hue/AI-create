@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" fill="none">
+  <title>四阶段课程梯度</title><desc>依据手册第38及43至46页：科创体验、成长、发明家与小院士。</desc>
+  <rect width="1200" height="620" fill="#F8FAFE"/>
+  <path d="M88 518H340V406H574V294H808V182H1114V518H88Z" fill="#EDF1FA" stroke="#CBD4EA"/>
+  <g font-family="Arial, Microsoft YaHei, sans-serif"><text x="88" y="84" font-size="20" fill="#F05A24" font-weight="700">COURSE LADDER</text><text x="88" y="130" font-size="38" fill="#1D2F82" font-weight="700">从体验到自主研究</text>
+    <g><circle cx="216" cy="474" r="27" fill="#F05A24"/><text x="216" y="482" text-anchor="middle" fill="white" font-size="18" font-weight="700">01</text><text x="112" y="382" fill="#1D2F82" font-size="28" font-weight="700">科创体验</text><text x="112" y="414" fill="#68738E" font-size="17">2–3 年级</text><text x="112" y="446" fill="#68738E" font-size="16">兴趣启蒙 · 基础搭建</text></g>
+    <g><circle cx="458" cy="362" r="27" fill="#F05A24"/><text x="458" y="370" text-anchor="middle" fill="white" font-size="18" font-weight="700">02</text><text x="364" y="270" fill="#1D2F82" font-size="28" font-weight="700">科创成长</text><text x="364" y="302" fill="#68738E" font-size="17">4–5 年级</text><text x="364" y="334" fill="#68738E" font-size="16">项目制作 · 工具基础</text></g>
+    <g><circle cx="692" cy="250" r="27" fill="#F05A24"/><text x="692" y="258" text-anchor="middle" fill="white" font-size="18" font-weight="700">03</text><text x="598" y="158" fill="#1D2F82" font-size="28" font-weight="700">科创发明家</text><text x="598" y="190" fill="#68738E" font-size="17">6–7 年级</text><text x="598" y="222" fill="#68738E" font-size="16">项目进阶 · 发明表达</text></g>
+    <g><circle cx="946" cy="138" r="27" fill="#1D2F82"/><text x="946" y="146" text-anchor="middle" fill="white" font-size="18" font-weight="700">04</text><text x="842" y="262" fill="#1D2F82" font-size="28" font-weight="700">科创小院士</text><text x="842" y="294" fill="#68738E" font-size="17">7 年级以上</text><text x="842" y="326" fill="#68738E" font-size="16">跨学科研究 · 数据编程 · 答辩</text></g>
+  </g>
+</svg>

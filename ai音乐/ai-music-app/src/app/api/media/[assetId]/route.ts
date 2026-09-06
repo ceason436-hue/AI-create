@@ -10,6 +10,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ ass
   const objectKey = asset ? publicPlaybackObjectKey(asset) : null;
   if (!asset || !objectKey) return new Response("Not found", { status: 404 });
   try {
-    return new Response(await getObject(objectKey), { headers: { "Content-Type": asset.mimeType || "application/octet-stream", "Cache-Control": "public, max-age=300", "X-Content-Type-Options": "nosniff", "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(asset.title || "media")}` } });
+    return new Response(await getObject(objectKey), { headers: { "Content-Type": asset.mimeType || "application/octet-stream", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(asset.title || "media")}` } });
   } catch { return new Response("Unavailable", { status: 503 }); }
 }

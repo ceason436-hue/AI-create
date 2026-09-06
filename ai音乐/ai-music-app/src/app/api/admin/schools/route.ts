@@ -9,7 +9,7 @@ const schoolInputSchema = z.object({
   name: z.string().trim().min(2).max(160),
   code: z.string().trim().toUpperCase().regex(/^[A-Z0-9_]{2,32}$/),
   notes: z.string().trim().max(2_000).optional(),
-  allowedTools: z.array(z.enum(["chat", "code", "image", "music", "music_query", "vision"])).max(6).default([]),
+  allowedTools: z.array(z.enum(["chat", "code", "image", "music", "music_query", "reading", "vision"])).max(7).default([]),
   validFrom: z.string().datetime().optional(),
   validTo: z.string().datetime().optional(),
 }).superRefine(({ validFrom, validTo }, context) => {

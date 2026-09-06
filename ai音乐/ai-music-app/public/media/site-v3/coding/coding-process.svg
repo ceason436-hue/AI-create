@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-labelledby="t d">
+  <title id="t">编程创作四步流程</title><desc id="d">拆解、搭建、运行和调试四个环节。</desc>
+  <path d="M150 130H1050" stroke="#CED7EB" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#F8FAFD" stroke="#253A8F" stroke-width="4"><circle cx="150" cy="130" r="72"/><circle cx="450" cy="130" r="72"/><circle cx="750" cy="130" r="72"/><circle cx="1050" cy="130" r="72"/></g>
+  <g fill="none" stroke="#253A8F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M117 112h66M117 132h48M117 152h58"/><path d="M416 107h68v50h-68zM430 93h40M440 172h20"/><path d="M727 101l52 29-52 29z"/><path d="M1018 111h64M1018 149h64M1035 94v35M1063 131v35"/></g>
+  <g fill="#F15A2A"><circle cx="150" cy="58" r="9"/><circle cx="450" cy="58" r="9"/><circle cx="750" cy="58" r="9"/><circle cx="1050" cy="58" r="9"/></g>
+</svg>

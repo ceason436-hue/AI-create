@@ -1,4 +1,4 @@
-export const AI_TOOLS = ["chat", "code", "image", "music", "music_query", "vision"] as const;
+export const AI_TOOLS = ["chat", "code", "image", "music", "music_query", "reading", "vision"] as const;
 
 export type AiTool = (typeof AI_TOOLS)[number];
 
@@ -8,7 +8,8 @@ export const AI_TOOL_CATALOG: Record<AiTool, { name: string; description: string
   image: { name: "AI 绘画", description: "用文字和参考图把想象变成视觉作品。", category: "视觉创作", routePath: "/tools/ai-art", color: "#caf204" },
   music: { name: "AI 音乐", description: "从节奏、音高和旋律开始，完成一首作品。", category: "音乐创作", routePath: "/tools/ai-music", color: "#005bb3" },
   music_query: { name: "音乐查询", description: "查询并管理 AI 音乐生成结果。", category: "音乐创作", routePath: "/tools/ai-music", color: "#005bb3" },
-  vision: { name: "AI 阅读与视觉", description: "边读边问边画，做一份自己的绘本。", category: "阅读创作", routePath: "/tools/ai-reading", color: "#ffffff" },
+  reading: { name: "AI 阅读", description: "逐段理解文章、生成问题并创作绘本。", category: "阅读创作", routePath: "/tools/ai-reading", color: "#ffffff" },
+  vision: { name: "视觉点评", description: "分析图片内容并给出结构化建议。", category: "视觉创作", routePath: "/tools/ai-art", color: "#ffffff" },
 };
 
 export function isAiTool(value: string): value is AiTool {

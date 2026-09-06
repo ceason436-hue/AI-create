@@ -524,13 +524,13 @@ ${historyContext}
   // View 1: Manual Input / Fetching
   if (isManualInput || segments.length === 0 || !currentSegment) {
     return (
-      <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full pb-20">
+      <div className="ai-studio reading-workspace reading-workspace-import flex flex-col gap-6 max-w-4xl mx-auto w-full pb-20">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-white/60 hover:text-white w-fit mb-4">
           <ArrowLeft size={20} />
           <span>返回</span>
         </button>
 
-        <div className="glass-panel-dark rounded-3xl p-8 flex flex-col gap-6">
+        <div className="reading-import-card glass-panel-dark rounded-3xl p-8 flex flex-col gap-6">
           <h2 className="text-3xl font-bold text-white flex items-center gap-3">
             <BookOpen className="text-secondary-fixed" />
             导入文章：{title || "未命名"}
@@ -615,6 +615,9 @@ ${historyContext}
             {isSplitting ? <Loader2 size={20} className="animate-spin" /> : <Sparkles size={20} />}
             {isSplitting ? "AI正在智能拆分段落..." : "开始智能拆分"}
           </button>
+          <aside className="reading-import-guide" aria-label="智能拆分将完成的步骤">
+            <img src="/media/site-v3/reading/reading-stages.svg" alt="导入文章、智能拆分、阅读引导与绘本表达四阶段" width="1260" height="300" />
+          </aside>
         </div>
       </div>
     );
@@ -622,7 +625,7 @@ ${historyContext}
 
   // View 2: Interactive Workspace (Split Layout)
   return (
-    <div className="flex flex-col flex-1 gap-6 pb-6">
+    <div className="ai-studio reading-workspace reading-workspace-editor flex flex-col flex-1 gap-6 pb-6">
       {/* Header Bar */}
       <div className="flex items-center justify-between glass-panel px-6 py-4 rounded-2xl shrink-0">
         <div className="flex items-center gap-4">
@@ -804,6 +807,15 @@ ${historyContext}
             </div>
           )}
         </div>
+      <section className="reading-continuity" aria-label="连续绘本场景">
+        <div className="reading-continuity-title"><strong>连续绘本场景（6 段）</strong><span>统一画风将应用于整个绘本</span></div>
+        <div className="reading-continuity-grid">
+          {Array.from({ length: 6 }, (_, index) => {
+            const frame = segments[index]?.image || `/media/site-v3/reading/story-frame-0${index + 1}.png`;
+            return <figure key={index} className={index === currentIndex ? "is-current" : ""}><img src={frame} alt={`绘本第 ${index + 1} 段画面`} width="1672" height="941" /><figcaption>第 {index + 1} 段 <span>{index < currentIndex ? "已完成" : index === currentIndex ? "当前" : "待生成"}</span></figcaption></figure>;
+          })}
+        </div>
+      </section>
     </div>
   );
 }

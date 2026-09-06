@@ -68,7 +68,7 @@ export default function AIReadingDashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full pb-20">
+    <div className="ai-studio reading-import flex flex-col gap-8 w-full pb-20">
       {/* Header Area */}
       <div className="flex flex-col gap-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full w-fit text-sm font-bold brutalist-border">

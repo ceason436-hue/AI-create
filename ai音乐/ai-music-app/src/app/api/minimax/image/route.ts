@@ -1,21 +1,37 @@
 import { NextResponse } from 'next/server';
+import { z } from "zod";
+import { withAiGateway } from "@/lib/ai-gateway";
+import { badRequest } from "@/lib/http";
+import { providerExceptionResponse, providerFetch, providerHttpErrorResponse } from "@/lib/provider-fetch";
 
 export const maxDuration = 120;
 
+const imageInputSchema = z.object({
+  mode: z.enum(["text2img", "img2img"]),
+  prompt: z.string().trim().min(1).max(2_000),
+  ratio: z.enum(["1:1", "16:9", "9:16", "4:3", "3:4"]).optional(),
+  style: z.string().trim().max(300).optional(),
+  referenceImage: z.string().max(3_500_000).optional(),
+});
+
 export async function POST(req: Request) {
+  return withAiGateway(req, "image", async () => {
   try {
-    const body = await req.json();
+    const parsed = imageInputSchema.safeParse(await req.json());
+    if (!parsed.success) return badRequest();
+    const body = parsed.data;
     const { mode, prompt, ratio, style, referenceImage } = body;
+    if (mode === "img2img" && !referenceImage) return badRequest("请提供参考图片。");
 
     const apiKey = process.env.MINIMAX_API_KEY;
     const groupId = process.env.MINIMAX_GROUP_ID; // 可选，有些接口需要
     
     if (!apiKey) {
-      return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
+      return NextResponse.json({ error: 'AI 服务暂不可用。' }, { status: 503 });
     }
 
     const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
-    let url = `${baseUrl}/v1/image_generation`;
+    const url = `${baseUrl}/v1/image_generation`;
     
     // 如果存在专门的图生图接口，可以在这里覆盖
     // url = mode === 'img2img' ? 'https://api.minimax.chat/v1/image_generation_i2i' : url;
@@ -23,7 +39,7 @@ export async function POST(req: Request) {
     // 针对Minimax的样式，拼接进prompt中
     const finalPrompt = prompt + (style ? `, ${style} style` : '');
     
-    const payload: any = {
+    const payload: Record<string, string> = {
       model: "image-01",
       prompt: finalPrompt,
       aspect_ratio: ratio || "1:1",
@@ -52,7 +68,7 @@ export async function POST(req: Request) {
       headers['GroupId'] = groupId;
     }
 
-    const response = await fetch(url, {
+    const response = await providerFetch(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
@@ -61,10 +77,8 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
-      console.error("Minimax API Error:", data);
-      return NextResponse.json({ 
-        error: data.base_resp?.status_msg || data.message || 'API 调用失败' 
-      }, { status: response.status !== 200 ? response.status : 400 });
+      console.error("MiniMax image request failed", { status: response.status });
+      return providerHttpErrorResponse(response);
     }
 
     // 根据 response_format: "base64"，返回的数据在 data.image_base64 (数组) 中
@@ -77,10 +91,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: '返回的数据格式不匹配，未能找到图片数据' }, { status: 500 });
     }
 
-    return NextResponse.json({ image: base64Image });
+    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "IMAGE", preview: { image: base64Image } } });
 
-  } catch (error: any) {
-    console.error("Internal Server Error:", error);
-    return NextResponse.json({ error: error.message || '服务器内部错误' }, { status: 500 });
+  } catch (error) {
+    return providerExceptionResponse(error);
   }
+  });
 }

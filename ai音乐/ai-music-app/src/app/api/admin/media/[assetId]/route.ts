@@ -3,6 +3,7 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
 import { mediaSnapshot, restoredMediaData } from "@/lib/media-revisions";
+import { revalidatePublicMedia } from "@/lib/public-revalidation";
 
 const schema = z.object({ title: z.string().trim().min(1).max(180).optional(), altText: z.string().trim().max(300).optional(), licenseNote: z.string().trim().max(2_000).optional(), status: z.enum(["ACTIVE", "ARCHIVED"]).optional(), restoreVersion: z.number().int().min(1).optional() });
 
@@ -23,6 +24,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
       await tx.auditLog.create({ data: { actorId: access.account.id, action: revision ? "MEDIA_RESTORED" : "MEDIA_UPDATED", targetType: "MEDIA_ASSET", targetId: assetId, result: "SUCCEEDED", after: { version, restoreVersion: parsed.data.restoreVersion } } });
       return updated;
     });
+    revalidatePublicMedia();
     return Response.json({ asset });
   } catch (error) { if (error instanceof Error && error.message === "REVISION_NOT_FOUND") return Response.json({ error: "媒体历史版本不存在。" }, { status: 404 }); return internalError(); }
 }

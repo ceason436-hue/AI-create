@@ -1,23 +1,36 @@
 import { NextResponse } from 'next/server';
+import { z } from "zod";
+import { withAiGateway } from "@/lib/ai-gateway";
+import { badRequest } from "@/lib/http";
+import { providerExceptionResponse, providerFetch, providerHttpErrorResponse } from "@/lib/provider-fetch";
 
 export const maxDuration = 120;
 
+const musicInputSchema = z.object({
+  prompt: z.string().trim().max(1_000).optional(),
+  lyrics: z.string().trim().max(8_000).optional(),
+  songName: z.string().trim().max(120).optional(),
+}).refine(({ prompt, lyrics }) => Boolean(prompt || lyrics));
+
 export async function POST(req: Request) {
+  return withAiGateway(req, "music", async () => {
   try {
-    const body = await req.json();
-    const { prompt, lyrics, songName } = body;
+    const parsed = musicInputSchema.safeParse(await req.json());
+    if (!parsed.success) return badRequest("请提供歌曲风格或歌词。");
+    const body = parsed.data;
+    const { prompt, lyrics } = body;
 
     const apiKey = process.env.MINIMAX_API_KEY;
     const groupId = process.env.MINIMAX_GROUP_ID;
     
     if (!apiKey) {
-      return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
+      return NextResponse.json({ error: 'AI 服务暂不可用。' }, { status: 503 });
     }
 
     const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
     const url = `${baseUrl}/v1/music_generation`;
     
-    const payload: any = {
+    const payload: Record<string, string | boolean> = {
       model: "music-2.6-free",
       prompt: prompt || "流行音乐", 
       output_format: "url"
@@ -38,7 +51,7 @@ export async function POST(req: Request) {
       headers['GroupId'] = groupId;
     }
 
-    const response = await fetch(url, {
+    const response = await providerFetch(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
@@ -47,17 +60,17 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
-      console.error("Minimax API Error:", data);
-      return NextResponse.json({ 
-        error: data.base_resp?.status_msg || data.message || 'API 调用失败' 
-      }, { status: response.status !== 200 ? response.status : 400 });
+      console.error("MiniMax music request failed", { status: response.status });
+      return providerHttpErrorResponse(response);
     }
 
     // Music API for 2.6-free is synchronous and returns audio directly when output_format is "url"
-    return NextResponse.json(data);
+    const audioUrl = data?.data?.audio;
+    if (typeof audioUrl !== "string" || !audioUrl) return NextResponse.json({ error: "AI 未返回可用音频。", code: "RESULT_EMPTY", retryable: true }, { status: 502 });
+    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "MUSIC", preview: { audioUrl, traceId: typeof data.trace_id === "string" ? data.trace_id : undefined } } });
 
-  } catch (error: any) {
-    console.error("Internal Server Error:", error);
-    return NextResponse.json({ error: error.message || '服务器内部错误' }, { status: 500 });
+  } catch (error) {
+    return providerExceptionResponse(error);
   }
+  });
 }

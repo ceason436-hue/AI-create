@@ -9,7 +9,7 @@ const planSchema = z.object({
   name: z.string().trim().min(2).max(80),
   storageLimitBytes: z.number().int().min(0).max(10_995_116_277_760),
   monthlyCredits: z.number().int().min(0).max(1_000_000),
-  allowedTools: z.array(z.enum(["chat", "code", "image", "music", "music_query", "vision"])).min(1).max(6),
+  allowedTools: z.array(z.enum(["chat", "code", "image", "music", "music_query", "reading", "vision"])).min(1).max(7),
 });
 
 export async function GET() {

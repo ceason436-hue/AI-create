@@ -12,10 +12,11 @@ if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 1_000) {
 
 const db = new PrismaClient();
 const cutoff = new Date(Date.now() - timeoutMinutes * 60_000);
+const activeStatuses = [RequestStatus.PENDING, RequestStatus.QUEUED, RequestStatus.RUNNING, RequestStatus.PROVIDER_PENDING, RequestStatus.RESULT_READY, RequestStatus.PERSISTING, RequestStatus.RETRY_WAIT, RequestStatus.RECONCILING, RequestStatus.CANCEL_REQUESTED];
 
 try {
   const candidates = await db.aiRequest.findMany({
-    where: { status: RequestStatus.RUNNING, updatedAt: { lt: cutoff } },
+    where: { status: { in: activeStatuses }, updatedAt: { lt: cutoff } },
     select: { requestId: true, accountId: true, tool: true, reservedCredits: true },
     orderBy: { updatedAt: "asc" },
     take: batchSize,
@@ -25,10 +26,11 @@ try {
   for (const candidate of candidates) {
     const result = await db.$transaction(async (tx) => {
       const updated = await tx.aiRequest.updateMany({
-        where: { requestId: candidate.requestId, status: RequestStatus.RUNNING, updatedAt: { lt: cutoff } },
-        data: { status: RequestStatus.RELEASED },
+        where: { requestId: candidate.requestId, status: { in: activeStatuses }, updatedAt: { lt: cutoff } },
+        data: { status: RequestStatus.RELEASED, errorCode: "PROVIDER_TIMEOUT", finishedAt: new Date() },
       });
       if (updated.count !== 1) return false;
+      await tx.aiJob.updateMany({ where: { requestId: candidate.requestId, status: { in: activeStatuses } }, data: { status: RequestStatus.RELEASED, errorCode: "PROVIDER_TIMEOUT", leaseToken: null, leaseExpiresAt: null } });
 
       if (candidate.reservedCredits > 0) {
         await tx.creditWallet.update({
@@ -38,6 +40,7 @@ try {
             reservedBalance: { decrement: candidate.reservedCredits },
           },
         });
+        await tx.creditLedger.updateMany({ where: { accountId: candidate.accountId, referenceType: "AI_REQUEST", referenceId: candidate.requestId, reason: "AI_RESERVED" }, data: { reason: "AI_RELEASED", delta: 0 } });
       }
       await tx.usageEvent.create({
         data: {

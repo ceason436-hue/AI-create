@@ -12,3 +12,12 @@ export async function getPublicMediaSlots(slotKeys: string[]): Promise<Record<st
     return Object.fromEntries(slots.flatMap((slot) => { const asset = slot.assetId ? assetsById.get(slot.assetId) : null; const mobileAsset = slot.mobileAssetId ? assetsById.get(slot.mobileAssetId) : null; return asset ? [[slot.slotKey, { slotKey: slot.slotKey, title: slot.title, description: slot.description, aspectRatio: slot.aspectRatio, focalPoint: slot.focalPoint, src: publicMediaUrl(asset.id)!, mimeType: asset.mimeType, mobileSrc: mobileAsset ? publicMediaUrl(mobileAsset.id) : null, mobileMimeType: mobileAsset?.mimeType ?? null, altText: asset.altText || asset.title || slot.title }]] : []; }));
   } catch { return {}; }
 }
+
+export async function loadPublicMediaSlots(slotKeys: string[]) {
+  try {
+    await db.mediaSlot.count();
+    return { state: "ready" as const, slots: await getPublicMediaSlots(slotKeys) };
+  } catch {
+    return { state: "unavailable" as const, slots: {} as Record<string, PublicMediaSlot> };
+  }
+}

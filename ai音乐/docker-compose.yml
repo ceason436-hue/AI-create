@@ -5,9 +5,9 @@ services:
       dockerfile: Dockerfile
     container_name: ai-music-app
     ports:
-      - "3000:3000"
-    restart: always
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
     env_file:
-      - .env
+      - ./ai-music-app/.env.production.local
     environment:
       - NODE_ENV=production

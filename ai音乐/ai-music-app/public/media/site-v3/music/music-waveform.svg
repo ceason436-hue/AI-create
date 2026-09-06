@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-labelledby="t d">
+  <title id="t">音乐波形</title><desc id="d">靛蓝与橙色组成的可缩放声音波形。</desc>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset=".62" stop-color="#4059B7"/><stop offset="1" stop-color="#F15A2A"/></linearGradient><filter id="s" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <path d="M25 130H1175" stroke="#C9D2EA" stroke-dasharray="2 12"/>
+  <path d="M30 130C70 130 78 104 110 104s40 52 72 52 42-106 77-106 43 160 80 160 40-130 76-130 45 88 80 88 46-42 78-42 43 20 76 20 40-72 74-72 44 116 78 116 44-150 80-150 43 181 79 181 43-104 76-104 42 38 74 38 42-15 76-15 40 10 76 10" fill="none" stroke="#253A8F" stroke-opacity=".13" stroke-width="20" filter="url(#s)"/>
+  <path d="M30 130C70 130 78 104 110 104s40 52 72 52 42-106 77-106 43 160 80 160 40-130 76-130 45 88 80 88 46-42 78-42 43 20 76 20 40-72 74-72 44 116 78 116 44-150 80-150 43 181 79 181 43-104 76-104 42 38 74 38 42-15 76-15 40 10 76 10" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#F15A2A"><circle cx="259" cy="50" r="8"/><circle cx="797" cy="40" r="8"/><circle cx="1176" cy="140" r="8"/></g>
+</svg>

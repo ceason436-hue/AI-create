@@ -7,12 +7,12 @@ export function PublicPage({ eyebrow, title, intro, children, tone = "light" }: 
 }
 
 export function PlaceholderImage({ src = "/tu1.jpg", alt = "品牌占位图", className = "", mimeType, sourceLabel }: { src?: string; alt?: string; className?: string; mimeType?: string | null; sourceLabel?: string }) {
-  const label = sourceLabel ?? (src.startsWith("/handbook/") ? "真实资料：《AI科瑞特手册》· [PENDING-CONTENT]" : mimeType?.startsWith("video/") ? "已发布视频素材" : "品牌占位素材 · 待替换");
-  return <div className={`placeholder-image ${className}`}>{mimeType?.startsWith("video/") ? <video src={src} controls playsInline preload="metadata" aria-label={alt} /> : <Image src={src} alt={alt} width={1000} height={650} />}<span>{label}</span></div>;
+  const label = sourceLabel ?? (mimeType?.startsWith("video/") ? "课堂与创作记录" : "科创学习现场");
+  return <figure className={`placeholder-image ${className}`}>{mimeType?.startsWith("video/") ? <video src={src} controls playsInline preload="metadata" aria-label={alt} /> : <Image src={src} alt={alt} width={1000} height={650} />}<figcaption>{label}</figcaption></figure>;
 }
 
 export function ContentCards({ items, basePath }: { items: Array<{ id: string; slug: string; title: string; summary: string; type?: string; coverAssetId?: string | null; coverMimeType?: string | null; coverSourceLabel?: string | null }>; basePath: string }) {
-  return <div className="content-card-grid">{items.map((item, index) => <Link href={`${basePath}/${item.slug}`} key={item.id} className="content-card"><div className={`content-card-art art-${(index % 3) + 1}`}>{item.coverAssetId && item.coverMimeType?.startsWith("video/") ? <video src={item.coverAssetId} muted playsInline preload="metadata" aria-label={`${item.title}视频封面`} /> : item.coverAssetId && item.coverAssetId.startsWith("/") ? <Image src={item.coverAssetId} alt={item.title} width={500} height={300} /> : <span>0{index + 1}</span>}</div><div className="content-card-body"><span>{item.type || "内容占位"}</span><h2>{item.title}</h2><p>{item.summary}</p>{item.coverSourceLabel && <small className="content-card-source">{item.coverSourceLabel}</small>}<b>查看详情 →</b></div></Link>)}</div>;
+  return <div className="content-card-grid">{items.map((item, index) => <Link href={`${basePath}/${item.slug}`} key={item.id} className="content-card"><div className={`content-card-art art-${(index % 3) + 1}`}>{item.coverAssetId && item.coverMimeType?.startsWith("video/") ? <video src={item.coverAssetId} muted playsInline preload="metadata" aria-label={`${item.title}视频封面`} /> : item.coverAssetId && item.coverAssetId.startsWith("/") ? <Image src={item.coverAssetId} alt={item.title} width={500} height={300} /> : <span>0{index + 1}</span>}</div><div className="content-card-body"><span>{item.type || "科创记录"}</span><h2>{item.title}</h2><p>{item.summary}</p>{item.coverSourceLabel && <small className="content-card-source">{item.coverSourceLabel}</small>}<b>查看详情 →</b></div></Link>)}</div>;
 }
 
 export function ContentGallery({ items, alt }: { items?: Array<{ src: string; mimeType: string | null; caption: string | null; focalPoint: string | null; captionsSrc?: string | null; captionLanguage?: string | null }>; alt: string }) {

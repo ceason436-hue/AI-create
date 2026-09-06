@@ -17,12 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh">
-      <body className="bg-primary-container font-body-lg antialiased selection:bg-secondary-fixed selection:text-black">
-        {/* Background Fluid Shapes (Copied from Landing Hero) */}
-        <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-          <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[50%] bg-secondary-fixed blur-[8px] fluid-shape-1 opacity-80"></div>
-          <div className="absolute top-[20%] right-[-5%] w-[40%] h-[40%] bg-secondary-fixed/50 blur-[12px] fluid-shape-2 opacity-60"></div>
-        </div>
+      <body className="app-body bg-background font-body-lg antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
 
         <div className="min-h-screen flex flex-col overflow-x-hidden">
           <script dangerouslySetInnerHTML={{ __html: `(() => {
@@ -59,10 +54,10 @@ export default function RootLayout({
                   </span>
                 </Link>
                 <div className="hidden md:flex items-center gap-6">
-                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/tools/ai-music">AI 音乐</Link>
-                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/tools/ai-art">AI 绘画</Link>
-                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/tools/ai-programming">AI 编程</Link>
-                  <Link className="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-1 hover:scale-105 transition-transform duration-200" href="/tools/ai-reading">AI 阅读</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-music">AI 音乐</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-art">AI 绘画</Link>
+                  <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/ai-programming">AI 编程</Link>
+                  <Link className="text-secondary-fixed font-bold border-b-stroke-thick border-secondary-fixed pb-1 hover:scale-105 transition-transform duration-200" href="/ai-reading">AI 阅读</Link>
                   <Link className="text-on-primary-container/80 font-medium pb-1 hover:scale-105 transition-transform duration-200" href="/courses">课程体系</Link>
                 </div>
               </div>
@@ -72,7 +67,7 @@ export default function RootLayout({
           </header>
 
           {/* Main Content Area */}
-          <main className="flex-1 flex flex-col p-6 max-w-7xl mx-auto w-full relative z-10 mt-20">
+          <main className="flex-1 flex flex-col px-3 py-4 md:px-5 max-w-[1600px] mx-auto w-full relative z-10 mt-20">
             {children}
           </main>
           <AiTrialConsent />

@@ -1,5 +1,8 @@
 import { db } from "@/lib/db";
 import { AI_TOOL_CATALOG, AI_TOOLS, type AiTool } from "@/lib/ai-tool-catalog";
+import { resolvePublicMediaAssets, type PublicMedia } from "@/lib/public-media";
+
+const PUBLIC_AI_TOOL_KEYS = new Set<AiTool>(["code", "image", "music", "reading"]);
 
 export type PublicAiTool = {
   toolKey: AiTool;
@@ -8,7 +11,7 @@ export type PublicAiTool = {
   category: string;
   routePath: string;
   color: string;
-  coverAssetId: string | null;
+  cover: PublicMedia | null;
 };
 
 export async function getPublicAiTools(): Promise<PublicAiTool[]> {
@@ -16,10 +19,11 @@ export async function getPublicAiTools(): Promise<PublicAiTool[]> {
     where: { status: "ACTIVE", visibleToPublic: true },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
   });
+  const mediaById = await resolvePublicMediaAssets(rows.map((row) => row.coverAssetId));
   return rows.flatMap((row) => {
-    if (!isKnownAiTool(row.toolKey)) return [];
+    if (!isKnownAiTool(row.toolKey) || !PUBLIC_AI_TOOL_KEYS.has(row.toolKey)) return [];
     const base = AI_TOOL_CATALOG[row.toolKey];
-    return [{ toolKey: row.toolKey, name: row.name, description: row.description, category: row.category, routePath: row.routePath || base.routePath, color: base.color, coverAssetId: row.coverAssetId }];
+    return [{ toolKey: row.toolKey, name: row.name, description: row.description, category: row.category, routePath: base.routePath, color: base.color, cover: row.coverAssetId ? mediaById.get(row.coverAssetId) ?? null : null }];
   });
 }
 

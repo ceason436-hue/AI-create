@@ -1,16 +1,29 @@
 import { NextResponse } from 'next/server';
+import { z } from "zod";
+import { withAiGateway } from "@/lib/ai-gateway";
+import { badRequest } from "@/lib/http";
+import { providerExceptionResponse, providerFetch, providerHttpErrorResponse } from "@/lib/provider-fetch";
 
 export const maxDuration = 120; // 允许最长 120 秒执行时间
 
+const visionInputSchema = z.object({
+  imageUrl: z.string().min(1).max(3_500_000),
+  prompt: z.string().trim().min(1).max(20_000),
+  curriculumTarget: z.string().trim().max(1_000).optional(),
+});
+
 export async function POST(req: Request) {
+  return withAiGateway(req, "vision", async () => {
   try {
-    const body = await req.json();
+    const parsed = visionInputSchema.safeParse(await req.json());
+    if (!parsed.success) return badRequest();
+    const body = parsed.data;
     const { imageUrl, prompt, curriculumTarget } = body;
 
     const apiKey = process.env.MINIMAX_API_KEY;
     
     if (!apiKey) {
-      return NextResponse.json({ error: '服务器未配置 MINIMAX_API_KEY' }, { status: 500 });
+      return NextResponse.json({ error: 'AI 服务暂不可用。' }, { status: 503 });
     }
 
     const baseUrl = process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com';
@@ -41,11 +54,7 @@ export async function POST(req: Request) {
     // For vision, we use abab6.5s-chat or abab6.5-chat or abab6.5g-chat which supports vision
     // Note: If abab6.5s doesn't support vision, you might need to change the model to abab6.5g-chat
     
-    let base64Data = imageUrl;
-    // Format image URL properly if it's base64
-    if (imageUrl.startsWith('data:image')) {
-      // Keep it as is
-    }
+    const base64Data = imageUrl;
 
     const payload = {
       model: "MiniMax-M3", // M3 supports vision
@@ -73,7 +82,7 @@ export async function POST(req: Request) {
       'Content-Type': 'application/json',
     };
 
-    const response = await fetch(url, {
+    const response = await providerFetch(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
@@ -83,7 +92,7 @@ export async function POST(req: Request) {
     let data;
     try {
       data = JSON.parse(responseText);
-    } catch (e) {
+    } catch {
       console.error("Minimax Vision API returned non-JSON:", responseText.substring(0, 200));
       return NextResponse.json({ 
         error: 'AI 识别图片时间较长，导致请求超时或服务器返回了异常响应，请稍后重试。' 
@@ -91,14 +100,12 @@ export async function POST(req: Request) {
     }
 
     if (!response.ok || (data.base_resp && data.base_resp.status_code !== 0)) {
-      console.error("Minimax Vision API Error:", data);
-      return NextResponse.json({ 
-        error: data.base_resp?.status_msg || data.message || 'API 调用失败' 
-      }, { status: response.status !== 200 ? response.status : 400 });
+      console.error("MiniMax vision request failed", { status: response.status });
+      return providerHttpErrorResponse(response);
     }
 
     const choice = data.choices[0];
-    let content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
+    const content = choice.messages ? choice.messages[choice.messages.length - 1].content : choice.message.content;
     
     // Robust JSON extraction
     let jsonStr = content;
@@ -121,10 +128,10 @@ export async function POST(req: Request) {
       };
     }
 
-    return NextResponse.json(parsedData);
+    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "VISION", preview: parsedData } });
 
-  } catch (error: any) {
-    console.error("Internal Server Error:", error);
-    return NextResponse.json({ error: error.message || '服务器内部错误' }, { status: 500 });
+  } catch (error) {
+    return providerExceptionResponse(error);
   }
+  });
 }

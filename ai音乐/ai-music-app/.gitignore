@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/playwright-report
+/test-results
+/.qa-shots
+/.tmp
 
 # next.js
 /.next/
@@ -32,6 +36,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+!.env.platform.example
+!.env.infrastructure.example
 
 # vercel
 .vercel

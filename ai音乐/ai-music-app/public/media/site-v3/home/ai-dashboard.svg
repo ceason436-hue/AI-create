@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 600" role="img" aria-labelledby="t d">
+  <title id="t">AI 数据观察界面</title><desc id="d">传感数据、识别结果与趋势的抽象可视化。</desc>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#4059B7"/></linearGradient></defs>
+  <rect width="920" height="600" rx="32" fill="#F8FAFD"/><rect x="28" y="28" width="864" height="544" rx="24" fill="#fff" stroke="#D3DBED" stroke-width="2"/>
+  <rect x="28" y="28" width="174" height="544" rx="24" fill="url(#g)"/><rect x="178" y="28" width="24" height="544" fill="url(#g)"/>
+  <g fill="#fff" opacity=".8"><rect x="68" y="118" width="91" height="16" rx="8"/><rect x="68" y="165" width="70" height="16" rx="8"/><rect x="68" y="212" width="105" height="16" rx="8"/><rect x="68" y="259" width="84" height="16" rx="8"/></g>
+  <g fill="#F8FAFD" stroke="#D3DBED" stroke-width="2"><rect x="230" y="58" width="300" height="215" rx="18"/><rect x="552" y="58" width="310" height="215" rx="18"/><rect x="230" y="298" width="632" height="238" rx="18"/></g>
+  <path d="M263 222l55-58 49 30 43-74 42 38 46-61" fill="none" stroke="#253A8F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><g fill="#F15A2A"><circle cx="318" cy="164" r="8"/><circle cx="410" cy="120" r="8"/><circle cx="498" cy="97" r="8"/></g>
+  <circle cx="707" cy="166" r="74" fill="none" stroke="#D7DEEF" stroke-width="20"/><path d="M707 92a74 74 0 0 1 68 103" fill="none" stroke="#253A8F" stroke-width="20" stroke-linecap="round"/><path d="M775 195a74 74 0 0 1-42 40" fill="none" stroke="#F15A2A" stroke-width="20" stroke-linecap="round"/>
+  <path d="M270 482c60-90 105-20 166-94 66-80 120 72 188-1 64-69 111-4 190-55" fill="none" stroke="#253A8F" stroke-width="6"/><path d="M270 500h544" stroke="#D2DAEC" stroke-width="2" stroke-dasharray="5 9"/>
+</svg>

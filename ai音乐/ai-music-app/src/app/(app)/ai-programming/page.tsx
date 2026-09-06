@@ -24,19 +24,18 @@ export default function AIProgrammingPage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   
   const loadingSteps = [
-    "🤔 正在理解您的需求并构思逻辑...",
-    "🎨 正在设计界面与交互细节...",
-    "⚙️ 正在编写高质量的前端代码...",
-    "✨ 正在组装并进行最终优化..."
+    "正在理解你的想法与目标...",
+    "正在整理页面结构与操作步骤...",
+    "正在完成可以运行的作品...",
+    "正在检查细节并准备预览..."
   ];
   const loadingStepCount = loadingSteps.length;
 
   // 初始默认占位代码
-  const [code, setCode] = useState(`<!-- 生成的代码将显示在这里 -->
-<div style="display: flex; height: 100%; align-items: center; justify-content: center; font-family: sans-serif; flex-direction: column; background: #f8fafc;">
-  <h1 style="color: #4F46E5; margin-bottom: 8px;">欢迎使用 AI 编程</h1>
-  <p style="color: #64748b;">在左侧输入你的需求，我将为你生成可运行的代码！</p>
-</div>`);
+  const [code, setCode] = useState(`<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#f7f9fd;color:#172342;font-family:"Noto Sans SC",sans-serif}.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.head h1{margin:0;font-size:22px;color:#143a9f}.tag{padding:6px 10px;border:1px solid #b9c8e4;border-radius:6px;background:#fff}.board{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,1fr);gap:14px}.panel{border:1px solid #d8e1f0;border-radius:9px;padding:12px;background:#fff}.panel img{display:block;width:100%;height:calc(100vh - 150px);min-height:340px;object-fit:cover;border-radius:6px}.steps{display:flex;gap:10px;margin-top:14px}.steps button{flex:1;min-height:40px;border:1px solid #143a9f;border-radius:6px;background:#fff;color:#143a9f;font-weight:700}.steps button:first-child{background:#143a9f;color:#fff}@media(max-width:700px){.board{grid-template-columns:1fr}.panel img{height:auto;min-height:0}}
+</style></head><body><div class="head"><h1>机器人迷宫挑战</h1><span class="tag">运行与观察</span></div><div class="board"><div class="panel"><img src="/media/site-v3/coding/maze-board.svg" alt="机器人迷宫运行画面"></div><div class="panel"><img src="/media/site-v3/coding/coding-flowchart.svg" alt="机器人行进逻辑流程图"></div></div><div class="steps"><button type="button">运行程序</button><button type="button">重新开始</button><button type="button">修改步骤</button></div></body></html>`);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -288,7 +287,7 @@ export default function AIProgrammingPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)] gap-6 w-full relative">
+    <div className="ai-studio programming-studio flex flex-col md:flex-row h-[calc(100vh-8rem)] gap-6 w-full relative">
       {/* 左侧：对话区域 */}
       <div className="w-full md:w-1/3 flex flex-col bg-white rounded-3xl shadow-sm border border-black/5 overflow-hidden">
         <div className="p-4 border-b border-black/5 bg-gray-50 flex items-center justify-between">
@@ -337,9 +336,9 @@ export default function AIProgrammingPage() {
         {/* 快捷指令区 */}
         {messages.length === 1 && (
           <div className="px-4 pb-2 flex flex-wrap gap-2">
-            <button onClick={() => handleSend("帮我写一个带动画效果的登录页面")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">✨ 动画登录页</button>
-            <button onClick={() => handleSend("写一个番茄钟计时器")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">🍅 番茄钟</button>
-            <button onClick={() => handleSend("生成一个个人简历展示页")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">📄 个人简历页</button>
+            <button onClick={() => handleSend("帮我写一个带动画效果的登录页面")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">动画登录页</button>
+            <button onClick={() => handleSend("写一个番茄钟计时器")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">番茄钟</button>
+            <button onClick={() => handleSend("生成一个个人简历展示页")} className="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition">个人简历页</button>
           </div>
         )}
 
@@ -463,6 +462,7 @@ export default function AIProgrammingPage() {
           )}
         </div>
       </div>
+      <img className="programming-process-strip" src="/media/site-v3/coding/coding-process.svg" alt="理解任务、设计步骤、运行观察、修改优化四步编程流程" width="1200" height="260" />
     </div>
   );
 }

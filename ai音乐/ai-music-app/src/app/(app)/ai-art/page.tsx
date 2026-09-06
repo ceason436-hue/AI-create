@@ -13,13 +13,13 @@ function isLocalArtWork(value: unknown): value is LocalArtWork {
 
 export default function AIArtGenerator() {
   const [activeTab, setActiveTab] = useState<"text2img" | "img2img">("text2img");
-  const [prompt, setPrompt] = useState("");
-  const [ratio, setRatio] = useState("1:1");
-  const [style, setStyle] = useState<string | null>(null);
-  const [isStyleExpanded, setIsStyleExpanded] = useState(false);
+  const [prompt, setPrompt] = useState("未来的智慧教室，宽敞明亮，学生佩戴 AR 眼镜与 AI 助教互动，全息投影展示 3D 模型与数据图表，氛围科技感、教育感、积极向上。");
+  const [ratio, setRatio] = useState("16:9");
+  const [style, setStyle] = useState<string | null>("education");
+  const [isStyleExpanded, setIsStyleExpanded] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [resultImage, setResultImage] = useState<string | null>(null);
+  const [resultImage, setResultImage] = useState<string | null>("/media/site-v3/art/visual-generation-sample-v1.png");
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
   
   const [rightTab, setRightTab] = useState<"current" | "works">("current");
@@ -84,6 +84,7 @@ export default function AIArtGenerator() {
   ];
 
   const styles = [
+    { id: "education", label: "科教科技" },
     { id: "anime", label: "二次元" },
     { id: "realistic", label: "写实摄影" },
     { id: "3d", label: "3D渲染" },
@@ -192,7 +193,7 @@ export default function AIArtGenerator() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-8 pb-12 animate-in fade-in duration-500">
+    <div className="ai-studio art-studio w-full flex flex-col gap-8 pb-12 animate-in fade-in duration-500">
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 bg-secondary-fixed rounded-full flex items-center justify-center brutalist-border shadow-[4px_4px_0_0_#000]">
@@ -455,6 +456,10 @@ export default function AIArtGenerator() {
 
               </div>
 
+              <div className="art-variant-grid" aria-label="四个构图结果缩略图">
+                {[1, 2, 3, 4].map((index) => <button type="button" key={index} aria-label={`查看构图方案 ${index}`}><img src={`/media/site-v3/art/classroom-variant-0${index}.png`} alt={`智慧教室构图方案 ${index}`} /></button>)}
+              </div>
+
               {/* Action Footer (Download) */}
               {resultImage && !isGenerating && (
                 <div className="flex justify-end animate-in fade-in slide-in-from-bottom-4">
@@ -502,6 +507,7 @@ export default function AIArtGenerator() {
           )}
         </div>
       </div>
+      <img className="art-process-strip" src="/media/site-v3/art/art-process.svg" alt="描述主体、确定构图、比较结果、继续修改四步绘画创作流程" width="1280" height="320" />
     </div>
   );
 }

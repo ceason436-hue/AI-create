@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { aiToolCreditCostsSchema } from "./ai-cost-policy";
 
-const validCosts = { chat: 1, code: 2, image: 3, music: 4, music_query: 1, vision: 5 };
+const validCosts = { chat: 1, code: 2, image: 3, music: 4, music_query: 1, reading: 5, vision: 5 };
 
 describe("AI credit cost policy", () => {
   it("accepts a complete non-negative integer cost table", () => {
@@ -11,7 +11,7 @@ describe("AI credit cost policy", () => {
 
   it("rejects incomplete tables so an unpriced AI tool cannot be enabled", () => {
     const incompleteCosts: Partial<typeof validCosts> = { ...validCosts };
-    delete incompleteCosts.vision;
+    delete incompleteCosts.reading;
     expect(aiToolCreditCostsSchema.safeParse(incompleteCosts).success).toBe(false);
   });
 

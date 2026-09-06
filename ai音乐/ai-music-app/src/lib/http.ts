@@ -4,8 +4,8 @@ export function badRequest(message = "请求参数无效") {
   return NextResponse.json({ error: message }, { status: 400 });
 }
 
-export function unauthorized() {
-  return NextResponse.json({ error: "请先登录后再使用 AI 功能。" }, { status: 401 });
+export function unauthorized(message = "请先登录后再使用 AI 功能。") {
+  return NextResponse.json({ error: message }, { status: 401 });
 }
 
 export function forbidden(message = "没有权限执行此操作") {

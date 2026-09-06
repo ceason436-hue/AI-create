@@ -4,6 +4,8 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { contentItemSnapshot, isRevisionableContentType, restoredContentItemData } from "@/lib/content-item-revisions";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
+import { isReadyPublicMedia } from "@/lib/admin-public-media";
+import { revalidatePublicContent } from "@/lib/public-revalidation";
 
 const modelNames = { activities: "activity", achievements: "achievement", teachers: "teacherProfile", campuses: "campus", partners: "partnerSchool" } as const;
 type ModelDelegate = { findUnique: (args: unknown) => Promise<Record<string, unknown> | null>; update: (args: unknown) => Promise<Record<string, unknown>> };
@@ -28,6 +30,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ co
   if (!isRevisionableContentType(contentType) || !getModel(db, contentType)) return Response.json({ error: "内容类型不存在。" }, { status: 404 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "内容信息无效。" }, { status: 400 });
+  if (!(await isReadyPublicMedia(parsed.data.coverAssetId, "image/"))) return Response.json({ error: "内容封面必须是已启用且处理完成的图片。" }, { status: 400 });
   try {
     const result = await db.$transaction(async (tx) => {
       const model = getModel(tx, contentType); if (!model) throw new Error("CONTENT_NOT_FOUND");
@@ -43,6 +46,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ co
       await tx.auditLog.create({ data: { actorId: access.account.id, action: revision ? "CONTENT_RESTORED" : "CONTENT_UPDATED", targetType: contentType.toUpperCase(), targetId: itemId, result: "SUCCEEDED", after: { version, restoreVersion: parsed.data.restoreVersion } } });
       return { item, version };
     });
+    if (contentType === "activities" || contentType === "achievements") revalidatePublicContent(contentType);
     return Response.json(result);
   } catch (error) {
     if (error instanceof Error && ["CONTENT_NOT_FOUND", "REVISION_NOT_FOUND"].includes(error.message)) return Response.json({ error: "内容或历史版本不存在。" }, { status: 404 });

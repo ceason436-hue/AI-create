@@ -23,6 +23,7 @@ const toolKeys = [
   "image",
   "music",
   "music_query",
+  "reading",
   "vision",
 ] as const;
 type Tool = (typeof toolKeys)[number];
@@ -32,6 +33,7 @@ const toolNames: Record<Tool, string> = {
   image: "AI 绘画",
   music: "AI 音乐",
   music_query: "音乐查询",
+  reading: "AI 阅读",
   vision: "视觉点评",
 };
 type Tab = "overview" | "schools" | "training" | "access" | "ai";
@@ -161,6 +163,7 @@ export default function AdminDashboardPage() {
     image: "",
     music: "",
     music_query: "",
+    reading: "",
     vision: "",
   });
   const load = useCallback(async () => {

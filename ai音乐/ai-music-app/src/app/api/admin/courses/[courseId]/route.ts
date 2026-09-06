@@ -3,6 +3,8 @@ import { requireAdminResponse } from "@/lib/admin-access";
 import { coursePublicationIssues } from "@/lib/course-publication-policy";
 import { db } from "@/lib/db";
 import { internalError } from "@/lib/http";
+import { revalidateCourses } from "@/lib/public-revalidation";
+import { isReadyPublicMedia } from "@/lib/admin-public-media";
 
 const schema = z.object({ categoryId: z.string().optional(), name: z.string().trim().min(1).max(180).optional(), shortDescription: z.string().trim().min(1).max(500).optional(), fullDescription: z.string().trim().max(20_000).optional(), targetAudience: z.string().trim().max(500).optional(), gradeRange: z.string().trim().max(80).optional(), difficulty: z.string().trim().max(32).optional(), deliveryModes: z.array(z.string().trim().min(1).max(32)).max(8).optional(), durationText: z.string().trim().max(80).optional(), enrollmentStatus: z.string().trim().max(32).optional(), coverAssetId: z.string().trim().max(128).optional(), publishStatus: z.enum(["DRAFT", "REVIEW", "PUBLISHED", "ARCHIVED"]).optional() });
 
@@ -18,6 +20,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ co
   const access = await requireAdminResponse(); if ("response" in access) return access.response;
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "课程信息无效。" }, { status: 400 });
+  if (!(await isReadyPublicMedia(parsed.data.coverAssetId, "image/"))) return Response.json({ error: "课程封面必须是已启用且处理完成的图片。" }, { status: 400 });
   const { courseId } = await params;
   try {
     const current = await db.course.findUnique({ where: { id: courseId }, select: { targetAudience: true, coverAssetId: true, modules: { select: { publishStatus: true } } } });
@@ -28,6 +31,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ co
     }
     const course = await db.course.update({ where: { id: courseId }, data: { ...parsed.data, updatedBy: access.account.id, publishedAt: parsed.data.publishStatus === "PUBLISHED" ? new Date() : undefined }, include: { category: true, modules: { include: { lessons: true } } } });
     await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_UPDATED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED", after: parsed.data } });
+    revalidateCourses(course.slug);
     return Response.json({ course });
   } catch { return internalError(); }
 }
@@ -38,6 +42,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   try {
     const course = await db.course.update({ where: { id: courseId }, data: { publishStatus: "ARCHIVED", updatedBy: access.account.id } });
     await db.auditLog.create({ data: { actorId: access.account.id, action: "COURSE_ARCHIVED", targetType: "COURSE", targetId: course.id, result: "SUCCEEDED" } });
+    revalidateCourses(course.slug);
     return Response.json({ archived: true });
   } catch { return internalError(); }
 }

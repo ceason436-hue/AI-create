@@ -97,6 +97,7 @@ async function writeLocalObject(objectKey: string, content: Buffer) {
 }
 
 export async function putObjectAtKey(objectKey: string, content: Buffer, options: ObjectWriteOptions = {}): Promise<StoredObject> {
+  objectKey = objectKey.startsWith("krt-ai/") ? objectKey : `krt-ai/${objectKey}`;
   assertSafeObjectKey(objectKey);
   if (driver() === "LOCAL") await writeLocalObject(objectKey, content);
   else if (driver() === "OSS") await ossFetch("PUT", objectKey, content, options);
@@ -106,7 +107,7 @@ export async function putObjectAtKey(objectKey: string, content: Buffer, options
 
 export async function putObject(accountId: string, content: Buffer, extension: string, options: ObjectWriteOptions = {}): Promise<StoredObject> {
   const safeExtension = extension.replace(/[^a-z0-9]/gi, "").slice(0, 16) || "bin";
-  return putObjectAtKey(`${accountId}/${randomUUID()}.${safeExtension}`, content, options);
+  return putObjectAtKey(`krt-ai/works/${accountId}/${randomUUID()}.${safeExtension}`, content, options);
 }
 
 export async function getObject(objectKey: string) {

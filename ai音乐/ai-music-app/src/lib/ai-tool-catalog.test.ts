@@ -4,7 +4,7 @@ import { AI_TOOL_CATALOG, AI_TOOLS, isAiTool } from "./ai-tool-catalog";
 
 describe("AI tool catalog", () => {
   it("only recognises provider routes that are implemented by the server gateway", () => {
-    expect(AI_TOOLS).toEqual(["chat", "code", "image", "music", "music_query", "vision"]);
+    expect(AI_TOOLS).toEqual(["chat", "code", "image", "music", "music_query", "reading", "vision"]);
     expect(isAiTool("image")).toBe(true);
     expect(isAiTool("arbitrary-provider-route")).toBe(false);
   });

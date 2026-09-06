@@ -6,6 +6,7 @@ export const aiToolCreditCostsSchema = z.object({
   image: z.number().int().min(0).max(10_000),
   music: z.number().int().min(0).max(10_000),
   music_query: z.number().int().min(0).max(10_000),
+  reading: z.number().int().min(0).max(10_000),
   vision: z.number().int().min(0).max(10_000),
 });
 

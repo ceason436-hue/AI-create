@@ -1,2 +1,2 @@
 import { PublicPage } from "@/components/public-page";
-export default function PrivacyPage() { return <PublicPage eyebrow="LEGAL" title="隐私政策" intro="正式发布前由项目负责人补充经审核的隐私政策文本。"><section className="public-content legal-copy"><h2>当前占位说明</h2><p>本页面为开发阶段占位，不代表最终法律文本。平台会根据账户、课程、作品、咨询和 AI 使用场景收集必要信息，并在正式上线前明确用途、保存期限、删除方式和未成年人相关规则。</p></section></PublicPage>; }
+export default function PrivacyPage() { return <PublicPage eyebrow="PRIVACY" title="隐私说明" intro="我们重视孩子、家长与学校在学习过程中的个人信息安全。"><section className="public-content legal-copy"><h2>信息使用</h2><p>我们仅在提供账户、课程学习、作品保存、咨询回应和必要服务支持时使用相关信息，并尽量遵循最少必要原则。</p><h2>未成年人保护</h2><p>未成年使用者应在家长、监护人或学校教师的指导下使用平台。请不要在创作内容中填写密码、证件号码或其他不应公开的个人信息。</p><h2>咨询与联系</h2><p>如需了解个人信息相关事宜，请通过课程咨询入口或页面展示的电话联系科瑞特团队。</p></section></PublicPage>; }
