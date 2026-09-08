@@ -298,51 +298,12 @@
 .segmentBody > div {
   min-height: 0;
   flex: 1 1 auto;
-  max-height: 82px;
+  max-height: 178px;
   overflow-y: auto;
   padding-right: 7px;
   color: #1c2c45;
   font-size: 16px;
   line-height: 1.72;
-}
-.segmentBody ol {
-  flex: 0 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  overflow-x: auto;
-  list-style: none;
-  padding: 13px 8px 0;
-  margin: 0;
-}
-.segmentBody li {
-  flex: 0 0 auto;
-  min-width: 42px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-.segmentBody li button {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #b4becc;
-  border-radius: 50%;
-  background: #fff;
-  color: #536077;
-}
-.segmentBody li span {
-  color: #7b8799;
-  font-size: 10px;
-}
-.segmentBody li.current button {
-  border-color: var(--blue);
-  background: var(--blue);
-  color: #fff;
-}
-.segmentBody li.current span {
-  color: var(--blue);
-  font-weight: 700;
 }
 
 .chat {
@@ -930,27 +891,10 @@
   margin-top: 8px;
 }
 .segmentBody > div {
-  max-height: 68px;
+  max-height: 150px;
   overflow-y: auto;
   font-size: 13px;
   line-height: 1.65;
-}
-.segmentBody ol {
-  justify-content: flex-start;
-  gap: 8px;
-  padding: 8px 2px 0;
-}
-.segmentBody li {
-  min-width: 34px;
-  gap: 2px;
-}
-.segmentBody li button {
-  width: 27px;
-  height: 27px;
-  font-size: 11px;
-}
-.segmentBody li span {
-  font-size: 9px;
 }
 .chat {
   padding: 13px 15px 11px;

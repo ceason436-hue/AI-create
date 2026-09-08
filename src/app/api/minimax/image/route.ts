@@ -10,7 +10,7 @@ const imageInputSchema = z.object({
   mode: z.enum(["text2img", "img2img"]),
   prompt: z.string().trim().min(1).max(2_000),
   ratio: z.enum(["1:1", "16:9", "9:16", "4:3", "3:4"]).optional(),
-  style: z.string().trim().max(300).optional(),
+  style: z.string().trim().max(300).nullish(),
   referenceImage: z.string().max(3_500_000).optional(),
 });
 

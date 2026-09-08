@@ -14,14 +14,28 @@ export async function POST(request: Request) {
     if (!parsed.success) return badRequest("请提供当前阅读段落。");
     if (!process.env.MINIMAX_API_KEY) return NextResponse.json({ error: "AI 老师暂不可用。" }, { status: 503 });
     const { segment, question, messages } = parsed.data;
-    const response = await providerFetch(minimaxM3Url(), { method: "POST", headers: minimaxM3Headers(), body: JSON.stringify(toM3Payload([
+    const conversation = messages.length > 0
+      ? messages
+      : [{ role: "user" as const, content: question || "请用一句话引导我观察这个段落。" }];
+    const providerPayload = toM3Payload([
       { role: "system", content: READING_TEACHER_ROLE_PROMPT },
       { role: "system", content: `当前段落：${segment}\n引导问题：${question || "请引导学生观察段落。"}` },
-      ...messages,
-    ], { maxTokens: 500, temperature: 0.65 })) });
+      ...conversation,
+    ], { maxTokens: 500, temperature: 0.65 });
+    const response = await providerFetch(minimaxM3Url(), { method: "POST", headers: minimaxM3Headers(), body: JSON.stringify(providerPayload) });
     const body = await response.json().catch(() => null);
     const text = extractM3Text(body);
-    if (!response.ok || !text) return NextResponse.json({ error: "AI 老师暂时无法回答，请稍后再试。" }, { status: 502 });
+    if (!response.ok || !text) {
+      const baseResp = body && typeof body === "object" && "base_resp" in body ? (body as { base_resp?: { status_code?: unknown; status_msg?: unknown } }).base_resp : undefined;
+      console.error("MiniMax reading teacher request failed", {
+        status: response.status,
+        providerStatus: baseResp?.status_code,
+        providerMessage: baseResp?.status_msg,
+        providerError: body && typeof body === "object" && "error" in body ? (body as { error?: unknown }).error : undefined,
+        bodyKeys: body && typeof body === "object" ? Object.keys(body) : [],
+      });
+      return NextResponse.json({ error: "AI 老师暂时无法回答，请稍后再试。" }, { status: 502 });
+    }
     return NextResponse.json({ text });
   });
 }

@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from "crypto";
 import { AccountStatus, AccountType, RequestStatus, UsageStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { getCurrentAccount } from "@/lib/auth";
+import { createTemporarySchoolSession, getCurrentAccount } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { conflict, forbidden, serviceUnavailable, tooManyRequests, unauthorized } from "@/lib/http";
 import { getRedis } from "@/lib/redis";
@@ -10,7 +10,7 @@ import { consumeAnonymousTrial, getAnonymousId, hasTrialConsent } from "@/lib/an
 import { CourseToolContext, resolveCourseToolContext } from "@/lib/course-tool-context";
 import { AI_TOOLS, type AiTool } from "@/lib/ai-tool-catalog";
 import { getActiveAiTool } from "@/lib/ai-tools";
-import { isTemporaryDeployment } from "@/lib/temporary-deployment";
+import { isTemporaryDeployment, TEMPORARY_SCHOOL_ACCOUNT } from "@/lib/temporary-deployment";
 
 export { AI_TOOLS };
 export type { AiTool };
@@ -136,7 +136,17 @@ export async function beginAiRequest(request: Request, tool: AiTool, options?: {
     return { ok: false, response: NextResponse.json({ error: "请求内容过大。" }, { status: 413 }) };
   }
 
-  const sessionAccount = await getCurrentAccount();
+  let sessionAccount = await getCurrentAccount();
+  if (!sessionAccount && isTemporaryDeployment()) {
+    await createTemporarySchoolSession();
+    sessionAccount = {
+      id: TEMPORARY_SCHOOL_ACCOUNT.id,
+      type: AccountType.SCHOOL_SHARED,
+      status: AccountStatus.ACTIVE,
+      loginIdentifier: TEMPORARY_SCHOOL_ACCOUNT.loginIdentifier,
+      roleKeys: [],
+    };
+  }
   let accountId: string;
   let anonymous = false;
   let courseContext: CourseToolContext | null = null;

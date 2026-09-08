@@ -8,6 +8,6 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ["**/node_modules/**", "**/.next/**", "**/.next-temporary/**", "**/coverage/**", "**/e2e/**"],
+    exclude: ["**/node_modules/**", "**/.next/**", "**/.next-temporary/**", "**/.next-temporary-*/**", "**/coverage/**", "**/e2e/**"],
   },
 });

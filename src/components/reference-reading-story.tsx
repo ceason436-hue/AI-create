@@ -497,19 +497,6 @@ export function ReferenceReadingStory() {
           </div>
           <div className={s.segmentBody}>
             <div>{current.text}</div>
-            <ol>
-              {segments.map((_, i) => (
-                <li className={index === i ? s.current : ""} key={i}>
-                  <button
-                    aria-current={index === i ? "step" : undefined}
-                    onClick={() => selectSegment(i)}
-                  >
-                    {i + 1}
-                  </button>
-                  <span>{project?.segmentWorks[i]?.image ? "已完成" : index === i ? "当前" : "待读"}</span>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
         <section className={s.chat}>
