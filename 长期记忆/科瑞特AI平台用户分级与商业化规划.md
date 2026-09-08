@@ -169,7 +169,7 @@
 
 项目主体位于：
 
-`ai音乐/ai-music-app`
+`D:\programe\AI科瑞特\AI-create`
 
 技术栈为：
 
