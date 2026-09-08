@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scaffold reference: ai-reading-workspace-comp-v1.png</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double+Ink:wght@400&family=Libertinus+Keyboard:wght@400&display=swap">
+  <link rel="stylesheet" href="layout.css">
+  <style>html,body{margin:0}body{background:#f6f7f7}.region{box-sizing:border-box}.region.text p{white-space:pre-wrap}</style>
+</head>
+<body>
+<!-- Reference only. Every region sits at its measured box inside a comp-aspect frame. Take the boxes (layout.css), keep your own semantic structure. -->
+<main class="comp-frame" style="max-width:1672px">
+  <div class="r-topbar region chrome" data-region="topbar"><!-- compact white application header with title, progress and save action --></div>
+  <div class="r-workflow region chrome" data-region="workflow"><!-- four-step reading workflow rail --></div>
+  <div class="r-segment-heading region text" data-region="segment-heading"><!-- 当前段落 heading and status --><p style="font-size:var(--r-segment-heading-font);font-family:var(--r-segment-heading-family),sans-serif;font-weight:var(--r-segment-heading-weight);line-height:1.05;margin:0">segment-heading</p></div>
+  <div class="r-segment-copy region text" data-region="segment-copy"><!-- large Chinese source paragraph --><p style="font-size:var(--r-segment-copy-font);font-family:var(--r-segment-copy-family),sans-serif;font-weight:var(--r-segment-copy-weight);line-height:1.05;margin:0">segment-copy</p></div>
+  <div class="r-segment-nav region control" data-region="segment-nav"><!-- dynamic horizontal segment navigation: rebuild the control's chrome from the crop (comp-spec.mjs --crop segment-nav); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-teacher-avatar region chrome" data-region="teacher-avatar"><!-- existing project-approved teacher avatar component; no new raster plate --></div>
+  <div class="r-teacher-chat region control" data-region="teacher-chat"><!-- teacher guidance messages and fixed reply composer: rebuild the control's chrome from the crop (comp-spec.mjs --crop teacher-chat); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-creation-heading region text" data-region="creation-heading"><!-- 画面创作 heading and reading-first helper text --><p style="font-size:var(--r-creation-heading-font);font-family:var(--r-creation-heading-family),sans-serif;font-weight:var(--r-creation-heading-weight);line-height:1.05;margin:0">creation-heading</p></div>
+  <div class="r-preview region control" data-region="preview"><!-- wide 16:9 generated image preview: rebuild the control's chrome from the crop (comp-spec.mjs --crop preview); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-prompt region control" data-region="prompt"><!-- single concise image description input: rebuild the control's chrome from the crop (comp-spec.mjs --crop prompt); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-styles region control" data-region="styles"><!-- compact style options: rebuild the control's chrome from the crop (comp-spec.mjs --crop styles); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-generate region control" data-region="generate"><!-- consent and primary generation action: rebuild the control's chrome from the crop (comp-spec.mjs --crop generate); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-secondary-actions region control" data-region="secondary-actions"><!-- compare, variant and edit actions: rebuild the control's chrome from the crop (comp-spec.mjs --crop secondary-actions); its ink box, border, fill, radius, and label size are the comp's --></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,139 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-07T17:41:18.874Z",
+  "comp": "C:\\Users\\Eason02\\AppData\\Local\\Temp\\codex-clipboard-e4811b82-b1c3-4342-b577-c296fa73aede.png",
+  "direction": null,
+  "breakpoint": "1672x941",
+  "artifact": null,
+  "phase": "plates",
+  "phases": {
+    "comps": {
+      "status": "skipped",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [
+        {
+          "at": "2026-09-07T17:41:18.874Z",
+          "text": "started with an approved comp; the comp round happened before this state (surface round or manual)"
+        }
+      ],
+      "gate": null,
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-07T17:41:18.872Z",
+      "closedAt": "2026-09-07T20:54:28.959Z",
+      "attempts": 4,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "21 regions, 8 plates, 8 text regions measured",
+        "at": "2026-09-07T20:54:28.958Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "open",
+      "openedAt": "2026-09-07T20:54:28.959Z",
+      "closedAt": null,
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "plate missing for lesson-thumb-one: expected assets\\plates\\lesson-thumb-one.png; produce it from comp-spec.mjs --crop lesson-thumb-one with generate-image.mjs --plate",
+          "plate missing for lesson-thumb-two: expected assets\\plates\\lesson-thumb-two.png; produce it from comp-spec.mjs --crop lesson-thumb-two with generate-image.mjs --plate",
+          "plate missing for lesson-thumb-three: expected assets\\plates\\lesson-thumb-three.png; produce it from comp-spec.mjs --crop lesson-thumb-three with generate-image.mjs --plate",
+          "plate missing for lesson-thumb-four: expected assets\\plates\\lesson-thumb-four.png; produce it from comp-spec.mjs --crop lesson-thumb-four with generate-image.mjs --plate",
+          "plate missing for lesson-thumb-five: expected assets\\plates\\lesson-thumb-five.png; produce it from comp-spec.mjs --crop lesson-thumb-five with generate-image.mjs --plate",
+          "plate missing for lesson-thumb-six: expected assets\\plates\\lesson-thumb-six.png; produce it from comp-spec.mjs --crop lesson-thumb-six with generate-image.mjs --plate",
+          "plate missing for course-cover: expected assets\\plates\\course-cover.png; produce it from comp-spec.mjs --crop course-cover with generate-image.mjs --plate",
+          "plate missing for scene-plates: expected assets\\plates\\scene-plates.png; produce it from comp-spec.mjs --crop scene-plates with generate-image.mjs --plate"
+        ],
+        "summary": "0/8 plates",
+        "at": "2026-09-07T20:56:10.483Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "sections": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": {
+    "disposition": "fix",
+    "at": "2026-09-07T21:00:40.076Z",
+    "phaseAtFinish": "plates"
+  },
+  "plates": {
+    "lesson-thumb-one": {
+      "status": "missing"
+    },
+    "lesson-thumb-two": {
+      "status": "missing"
+    },
+    "lesson-thumb-three": {
+      "status": "missing"
+    },
+    "lesson-thumb-four": {
+      "status": "missing"
+    },
+    "lesson-thumb-five": {
+      "status": "missing"
+    },
+    "lesson-thumb-six": {
+      "status": "missing"
+    },
+    "course-cover": {
+      "status": "missing"
+    },
+    "scene-plates": {
+      "status": "missing"
+    }
+  }
+}

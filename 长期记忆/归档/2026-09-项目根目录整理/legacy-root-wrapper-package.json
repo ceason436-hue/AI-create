@@ -1,0 +1,13 @@
+{
+  "name": "create-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "科瑞特 AI 科创综合应用",
+  "scripts": {
+    "dev": "npm --prefix \"ai音乐/ai-music-app\" run dev --",
+    "preview": "npm --prefix \"ai音乐/ai-music-app\" run dev --",
+    "build": "npm --prefix \"ai音乐/ai-music-app\" run build --",
+    "start": "npm --prefix \"ai音乐/ai-music-app\" run start --",
+    "lint": "npm --prefix \"ai音乐/ai-music-app\" run lint --"
+  }
+}

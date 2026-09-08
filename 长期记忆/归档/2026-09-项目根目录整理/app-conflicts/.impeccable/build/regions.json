@@ -1,0 +1,17 @@
+{
+  "regions": [
+    { "id": "topbar", "kind": "chrome", "grid": "A0:J0", "note": "compact white application header with title, progress and save action" },
+    { "id": "workflow", "kind": "chrome", "grid": "B1:I1", "note": "four-step reading workflow rail" },
+    { "id": "segment-heading", "kind": "text", "grid": "A2:C2", "note": "当前段落 heading and status" },
+    { "id": "segment-copy", "kind": "text", "grid": "A2:D3", "note": "large Chinese source paragraph" },
+    { "id": "segment-nav", "kind": "control", "grid": "A4:D4", "note": "dynamic horizontal segment navigation" },
+    { "id": "teacher-avatar", "kind": "chrome", "grid": "A6:A7", "note": "existing project-approved teacher avatar component; no new raster plate" },
+    { "id": "teacher-chat", "kind": "control", "grid": "A5:D9", "note": "teacher guidance messages and fixed reply composer" },
+    { "id": "creation-heading", "kind": "text", "grid": "E2:J2", "note": "画面创作 heading and reading-first helper text" },
+    { "id": "preview", "kind": "control", "grid": "E2:J5", "note": "wide 16:9 generated image preview" },
+    { "id": "prompt", "kind": "control", "grid": "E6:J6", "note": "single concise image description input" },
+    { "id": "styles", "kind": "control", "grid": "E7:J7", "note": "compact style options" },
+    { "id": "generate", "kind": "control", "grid": "E8:J8", "note": "consent and primary generation action" },
+    { "id": "secondary-actions", "kind": "control", "grid": "E9:J9", "note": "compare, variant and edit actions" }
+  ]
+}

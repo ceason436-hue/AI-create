@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>科瑞特 AI｜全站生成效果图（待确认）</title>
+  <link rel="stylesheet" href="./preview.css" />
+</head>
+<body>
+  <aside class="review-rail">
+    <div class="review-brand">
+      <span class="review-kicker">CREATE AI · IMAGE PREVIEW</span>
+      <h1>全站生成效果图</h1>
+      <p>PDF 仅提供事实、课程结构与场景依据。画廊中的页面照片、图表、界面和插图均为重新生成的预览素材，不直接使用 PDF 原图。</p>
+    </div>
+    <nav id="pageNav" class="page-nav" aria-label="页面预览目录"></nav>
+    <div class="review-legend">
+      <span><i class="dot dot-blue"></i>靛蓝：结构与行动</span>
+      <span><i class="dot dot-orange"></i>橙色：重点与反馈</span>
+      <span><i class="dot dot-line"></i>细线：工程语汇</span>
+    </div>
+  </aside>
+
+  <main class="review-main">
+    <header class="review-toolbar">
+      <div>
+        <span id="pageIndex" class="review-index">01 / 13</span>
+        <h2 id="pageTitle">首页</h2>
+      </div>
+      <label class="page-select-wrap">
+        <span>切换页面</span>
+        <select id="pageSelect" aria-label="切换预览页面"></select>
+      </label>
+      <div class="source-panel">
+        <span>内容依据</span>
+        <strong id="pageSources">锁定母版方向 · 手册 P01 / P38–42 事实参考</strong>
+      </div>
+      <div class="viewport-switch" aria-label="预览尺寸">
+        <button class="is-active" data-width="desktop">桌面</button>
+        <button data-width="mobile">移动</button>
+      </div>
+    </header>
+    <section class="stage">
+      <div id="artboard" class="artboard" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="./generated-preview.js"></script>
+</body>
+</html>
