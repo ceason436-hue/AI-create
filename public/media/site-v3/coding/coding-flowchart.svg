@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="t d">
+  <title id="t">机器人避障逻辑流程</title><desc id="d">启动、读取传感器、判断距离、转向和前进的流程。</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0l10 5-10 5z" fill="#253A8F"/></marker><pattern id="p" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#D6DEEF"/></pattern></defs>
+  <rect width="900" height="620" rx="28" fill="#F8FAFD"/><rect width="900" height="620" rx="28" fill="url(#p)"/>
+  <g fill="none" stroke="#253A8F" stroke-width="4" marker-end="url(#a)"><path d="M450 100v54M450 245v50M450 415v55M320 355H195v115M580 355h125v115"/></g>
+  <g stroke="#253A8F" stroke-width="3"><rect x="350" y="40" width="200" height="60" rx="30" fill="#253A8F"/><rect x="315" y="155" width="270" height="90" rx="18" fill="#fff"/><path d="M450 295l130 60-130 60-130-60z" fill="#FFF4EE"/><rect x="85" y="470" width="220" height="92" rx="18" fill="#fff"/><rect x="595" y="470" width="220" height="92" rx="18" fill="#fff"/></g>
+  <g fill="none" stroke="#F15A2A" stroke-width="8" stroke-linecap="round"><path d="M408 70h84M395 191h110M154 516h82M667 516h76"/></g>
+</svg>

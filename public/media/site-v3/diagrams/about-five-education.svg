@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" fill="none">
+  <title>科创五育与工程思维</title><desc>以真实项目连接德智体美劳，并通过问题、原型、测试、迭代与表达形成工程过程。</desc>
+  <rect width="1200" height="700" fill="#F8FAFE"/><g font-family="Arial, Microsoft YaHei" text-anchor="middle"><circle cx="600" cy="350" r="125" fill="#1D2F82"/><text x="600" y="338" fill="white" font-size="20">真实科创项目</text><text x="600" y="381" fill="white" font-size="34" font-weight="700">科创五育</text>
+    <g font-size="28" font-weight="700"><g transform="translate(600 94)"><circle r="72" fill="#F05A24"/><text y="10" fill="white">德</text></g><g transform="translate(940 250)"><circle r="72" fill="white" stroke="#1D2F82"/><text y="10" fill="#1D2F82">智</text></g><g transform="translate(810 570)"><circle r="72" fill="white" stroke="#1D2F82"/><text y="10" fill="#1D2F82">体</text></g><g transform="translate(390 570)"><circle r="72" fill="white" stroke="#1D2F82"/><text y="10" fill="#1D2F82">美</text></g><g transform="translate(260 250)"><circle r="72" fill="white" stroke="#1D2F82"/><text y="10" fill="#1D2F82">劳</text></g></g>
+    <path d="M600 219V166M720 296L870 264M674 450L774 522M526 450L426 522M480 296L330 264" stroke="#CAD3E8" stroke-width="2"/>
+    <text x="600" y="656" fill="#68738E" font-size="17">问题 → 原型 → 测试 → 迭代 → 表达</text>
+  </g>
+</svg>

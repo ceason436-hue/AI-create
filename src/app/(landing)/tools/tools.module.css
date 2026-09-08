@@ -1,0 +1,47 @@
+.page { --ink: #1d2f82; --ink-strong: #172569; --text: #24324d; --muted: #62708b; --accent: #f05a24; --line: #d9e0ee; --canvas: #f8fafd; color: var(--text); background: var(--canvas); }
+.hero, .catalog, .principle, .musicPage { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.hero { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: clamp(40px, 8vw, 110px); align-items: end; padding: clamp(92px, 12vw, 150px) 0 72px; border-bottom: 1px solid var(--line); }
+.hero::after { position: absolute; z-index: -1; right: 0; bottom: 34px; width: min(34vw, 420px); height: 136px; background-image: radial-gradient(circle, rgba(240, 90, 36, .2) 1px, transparent 1.4px); background-size: 18px 18px; content: ""; pointer-events: none; }
+.eyebrow { display: block; margin-bottom: 18px; color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.hero h1 { max-width: 780px; margin: 0; color: var(--ink-strong); font-size: clamp(40px, 5vw, 56px); line-height: 1.15; letter-spacing: -.04em; }
+.hero p { margin: 0; padding-left: 26px; border-left: 2px solid var(--accent); font-size: 18px; line-height: 1.8; }
+.catalog { padding: clamp(72px, 9vw, 116px) 0; }
+.sectionHead { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 32px; margin-bottom: 46px; }
+.sectionHead > span { color: var(--accent); font-weight: 800; letter-spacing: .12em; }
+.sectionHead h2 { max-width: 760px; margin: 0; color: var(--ink-strong); font-size: clamp(30px, 4vw, 44px); line-height: 1.25; letter-spacing: -.035em; }
+.toolList { border-top: 1px solid var(--line); }
+.toolRow { display: grid; grid-template-columns: 70px minmax(240px, .75fr) minmax(0, 1.25fr); gap: 30px; padding: 30px 0; color: inherit; border-bottom: 1px solid var(--line); text-decoration: none; }
+.number { padding-top: 4px; color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+.media { min-height: 230px; background-color: #e8edf7; background-position: center; background-size: cover; border-radius: 8px; }
+.toolCopy { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; padding: 8px 0; }
+.toolCopy > span { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.toolCopy h3 { margin: 12px 0; color: var(--ink-strong); font-size: clamp(28px, 4vw, 42px); line-height: 1.15; letter-spacing: -.035em; }
+.toolCopy p { max-width: 600px; margin: 0; font-size: 17px; line-height: 1.75; }
+.open { display: inline-flex; align-items: center; gap: 9px; margin-top: 28px; color: var(--ink); font-weight: 800; }
+.open span { transition: transform 180ms ease; }
+.toolRow:hover .open span { transform: translateX(5px); }
+.musicLab { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); }
+.musicLab > span { display: block; margin-bottom: 11px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .1em; }
+.exerciseLinks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.exerciseLinks a { color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; }
+.exerciseLinks a:hover { color: var(--accent); }
+.principleWrap { padding: 0 0 100px; }
+.principle { display: grid; grid-template-columns: 1fr 1fr; border-block: 1px solid var(--line); }
+.principle div { padding: 34px 38px; }
+.principle div + div { border-left: 1px solid var(--line); }
+.principle span { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .1em; }
+.principle h3 { margin: 12px 0 9px; color: var(--ink-strong); font-size: 24px; }
+.principle p { margin: 0; color: var(--muted); line-height: 1.7; }
+.musicPage { min-height: 70vh; padding: clamp(92px, 12vw, 150px) 0 100px; }
+.musicPage h1 { max-width: 760px; margin: 0; color: var(--ink-strong); font-size: clamp(40px, 5vw, 56px); line-height: 1.15; letter-spacing: -.04em; }
+.musicLead { max-width: 680px; margin: 24px 0 52px; font-size: 18px; line-height: 1.8; }
+.exerciseList { border-top: 1px solid var(--line); }
+.exercise { display: grid; grid-template-columns: 68px 1fr auto; gap: 26px; align-items: center; padding: 24px 0; color: inherit; border-bottom: 1px solid var(--line); text-decoration: none; }
+.exercise strong { display: block; margin-bottom: 5px; color: var(--ink-strong); font-size: 23px; }
+.exercise p { margin: 0; color: var(--muted); }
+.exercise b { color: var(--ink); }
+.back { display: inline-block; margin-top: 30px; color: var(--ink); font-weight: 750; text-decoration: none; }
+.page a:focus-visible { outline: 3px solid var(--focus, #2545a8); outline-offset: 4px; }
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; } .hero p { max-width: 620px; } .toolRow { grid-template-columns: 52px minmax(180px, .7fr) minmax(0, 1.3fr); gap: 18px; } }
+@media (max-width: 620px) { .hero, .catalog, .principle, .musicPage { width: min(100% - 40px, 1180px); } .hero { padding-top: 76px; } .hero::after { width: 136px; height: 90px; opacity: .7; } .hero h1, .musicPage h1 { font-size: clamp(36px, 11vw, 44px); } .sectionHead { grid-template-columns: 1fr; gap: 8px; } .toolRow { grid-template-columns: 34px 1fr; } .media, .toolCopy { grid-column: 2; } .media { min-height: 170px; } .principle { grid-template-columns: 1fr; } .principle div + div { border-left: 0; border-top: 1px solid var(--line); } .exercise { grid-template-columns: 42px 1fr; } .exercise b { grid-column: 2; } }
+@media (prefers-reduced-motion: reduce) { .open span { transition: none; } }

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="t d">
-  <title id="t">音乐创作三步流程</title><desc id="d">表达、生成和调整三个阶段的视觉流程。</desc>
-  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#F15A2A"/></marker><pattern id="p" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#D8E0F1"/></pattern></defs>
-  <rect width="1200" height="300" rx="28" fill="#F8FAFD"/><rect width="1200" height="300" rx="28" fill="url(#p)"/>
-  <path d="M334 150h126M740 150h126" stroke="#F15A2A" stroke-width="3" stroke-dasharray="5 10" marker-end="url(#a)"/>
-  <g stroke="#253A8F" stroke-width="3" fill="#fff"><circle cx="220" cy="150" r="90"/><circle cx="600" cy="150" r="90"/><circle cx="980" cy="150" r="90"/></g>
-  <g fill="none" stroke="#253A8F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M176 168h88M187 145l18-26 24 42 18-30 13 18"/><path d="M575 116v75c0 14-11 25-25 25s-25-9-25-21 12-21 27-21c9 0 16 3 23 8m0-57 58-13v68c0 14-11 25-25 25s-25-9-25-21 12-21 27-21c9 0 16 3 23 8"/><path d="M935 132h90M935 168h90M958 111v42M1002 147v42"/></g>
-  <g fill="#F15A2A"><circle cx="220" cy="62" r="10"/><circle cx="600" cy="62" r="10"/><circle cx="980" cy="62" r="10"/></g>
-</svg>

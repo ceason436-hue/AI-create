@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" fill="none">
+  <title>科创活动准备与复盘</title><desc>以真实任务为核心的理解规则、制定方案、制作测试、表达展示与复盘改进。</desc>
+  <rect width="1200" height="620" fill="#F8FAFE"/>
+  <path d="M192 310C192 116 1008 116 1008 310C1008 504 192 504 192 310Z" stroke="#CAD3E8" stroke-width="2" stroke-dasharray="6 10"/>
+  <g font-family="Arial, Microsoft YaHei" text-anchor="middle"><circle cx="600" cy="310" r="112" fill="#1D2F82"/><text x="600" y="302" fill="white" font-size="21">以任务为线索</text><text x="600" y="342" fill="white" font-size="32" font-weight="700">完整经历工程过程</text>
+    <g transform="translate(190 310)"><circle r="74" fill="#F05A24"/><text y="8" fill="white" font-size="24" font-weight="700">理解规则</text></g>
+    <g transform="translate(350 122)"><circle r="74" fill="white" stroke="#1D2F82"/><text y="8" fill="#1D2F82" font-size="24" font-weight="700">制定方案</text></g>
+    <g transform="translate(850 122)"><circle r="74" fill="white" stroke="#1D2F82"/><text y="8" fill="#1D2F82" font-size="24" font-weight="700">制作测试</text></g>
+    <g transform="translate(1010 310)"><circle r="74" fill="white" stroke="#1D2F82"/><text y="8" fill="#1D2F82" font-size="24" font-weight="700">表达展示</text></g>
+    <g transform="translate(600 532)"><circle r="74" fill="white" stroke="#F05A24"/><text y="8" fill="#1D2F82" font-size="24" font-weight="700">复盘改进</text></g>
+  </g>
+</svg>

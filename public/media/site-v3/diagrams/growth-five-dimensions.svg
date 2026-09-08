@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" fill="none">
+  <title>学员成长五维观察</title><desc>围绕问题理解、技术运用、工程迭代、协作过程与表达呈现记录成长，不表示标准化成绩。</desc>
+  <rect width="1200" height="700" fill="#F8FAFE"/>
+  <g transform="translate(600 350)"><path d="M0-250L238-77L147 202L-147 202L-238-77Z" stroke="#CAD3E8"/><path d="M0-185L176-57L109 150L-109 150L-176-57Z" stroke="#CAD3E8"/><path d="M0-120L114-37L71 97L-71 97L-114-37Z" stroke="#CAD3E8"/><path d="M0 0L0-250M0 0L238-77M0 0L147 202M0 0L-147 202M0 0L-238-77" stroke="#DDE3F1"/><path d="M0-208L184-60L111 153L-121 166L-190-62Z" fill="#1D2F82" fill-opacity=".13" stroke="#1D2F82" stroke-width="3"/><circle cy="-208" r="7" fill="#F05A24"/><circle cx="184" cy="-60" r="7" fill="#F05A24"/><circle cx="111" cy="153" r="7" fill="#F05A24"/><circle cx="-121" cy="166" r="7" fill="#F05A24"/><circle cx="-190" cy="-62" r="7" fill="#F05A24"/></g>
+  <g font-family="Arial, Microsoft YaHei" fill="#1D2F82" font-size="23" font-weight="700"><text x="600" y="52" text-anchor="middle">问题理解</text><text x="912" y="278">技术运用</text><text x="790" y="620">工程迭代</text><text x="250" y="620">协作过程</text><text x="124" y="278">表达呈现</text></g>
+  <text x="600" y="666" text-anchor="middle" font-family="Arial, Microsoft YaHei" font-size="16" fill="#68738E">用于展示成长观察维度，不表示标准化分数、排名或升学结果</text>
+</svg>

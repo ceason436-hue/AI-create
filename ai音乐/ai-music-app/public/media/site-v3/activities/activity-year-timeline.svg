@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 420" role="img" aria-labelledby="t d">
-  <title id="t">年度科创活动时间线</title><desc id="d">四个季度由兴趣体验走向成果展示。</desc>
-  <defs><pattern id="p" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" fill="#D8E0F1"/></pattern></defs>
-  <rect width="1300" height="420" rx="28" fill="#F8FAFD"/><rect width="1300" height="420" rx="28" fill="url(#p)"/>
-  <path d="M120 220C300 115 420 325 610 220s320-105 570 0" fill="none" stroke="#253A8F" stroke-width="5"/>
-  <g><circle cx="170" cy="193" r="50" fill="#253A8F"/><circle cx="465" cy="262" r="50" fill="#fff" stroke="#253A8F" stroke-width="4"/><circle cx="765" cy="175" r="50" fill="#fff" stroke="#253A8F" stroke-width="4"/><circle cx="1080" cy="182" r="50" fill="#F15A2A"/></g>
-  <g fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M145 193h50M170 168v50" stroke="#fff"/><path d="M435 267l24-24 22 20 18-18" stroke="#253A8F"/><path d="M741 194v-38h48v38M753 171h24" stroke="#253A8F"/><path d="M1053 197l27-42 27 42M1064 182h32" stroke="#fff"/></g>
-  <g stroke="#F15A2A" stroke-width="3"><path d="M170 258v88M465 327v19M765 240v106M1080 247v99"/></g>
-</svg>

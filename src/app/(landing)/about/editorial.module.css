@@ -1,0 +1,245 @@
+.section {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: clamp(64px, 8vw, 110px) 0;
+}
+
+.section + .section { border-top: 1px solid #d9e0ee; }
+
+.mediaBand {
+  width: min(1340px, calc(100% - 40px));
+  margin: 18px auto clamp(28px, 5vw, 68px);
+}
+
+.mediaBand img {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 42vw, 560px);
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center 48%;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #f05a24;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.section h2 {
+  max-width: 780px;
+  margin: 14px 0 18px;
+  color: #172569;
+  font-size: clamp(30px, 4.5vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+.lead {
+  max-width: 760px;
+  margin: 0;
+  color: #53617b;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.85;
+}
+
+.manifesto {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1.2fr);
+  gap: clamp(38px, 7vw, 90px);
+  align-items: start;
+}
+
+.manifestoQuote {
+  margin: 0;
+  padding: 0 0 0 24px;
+  border-left: 3px solid #f05a24;
+  color: #1d2f82;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 780;
+  line-height: 1.45;
+}
+
+.prose { display: grid; gap: 20px; }
+.prose p { margin: 0; color: #53617b; font-size: 16px; line-height: 1.85; }
+.prose strong { color: #1d2f82; }
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 46px;
+  border-top: 1px solid #cdd6e6;
+}
+
+.timeline article {
+  position: relative;
+  padding: 30px 30px 0 0;
+}
+
+.timeline article::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f05a24;
+}
+
+.timeline b { display: block; color: #1d2f82; font-size: 14px; }
+.timeline h3 { margin: 10px 0 8px; color: #24324d; font-size: 19px; }
+.timeline p { margin: 0; color: #62708b; font-size: 14px; line-height: 1.7; }
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 46px;
+}
+
+.principles article { border-top: 2px solid #1d2f82; padding-top: 20px; }
+.principles svg { color: #f05a24; }
+.principles h3 { margin: 18px 0 10px; color: #1d2f82; font-size: 21px; }
+.principles p { margin: 0; color: #62708b; font-size: 14px; line-height: 1.75; }
+
+.advisor {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(30px, 6vw, 76px);
+  align-items: center;
+  margin-top: 42px;
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid #d9e0ee;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.advisorMark {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(29, 47, 130, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 47, 130, 0.06) 1px, transparent 1px),
+    #f3f6fb;
+  background-size: 22px 22px;
+  color: #1d2f82;
+}
+
+.advisorMark span {
+  width: 106px;
+  height: 106px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #bdc9dd;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 30px;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+}
+
+.advisor h3 { margin: 10px 0 8px; color: #172569; font-size: 28px; }
+.advisor p { margin: 0; color: #62708b; line-height: 1.8; }
+.advisor small { display: block; margin-top: 20px; color: #7b879e; line-height: 1.65; }
+
+.honors {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(36px, 7vw, 90px);
+  align-items: start;
+}
+
+.honorList { display: grid; gap: 0; border-top: 1px solid #cdd6e6; }
+.honorList article { display: grid; grid-template-columns: 42px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid #d9e0ee; }
+.honorList svg { margin-top: 2px; color: #f05a24; }
+.honorList h3 { margin: 0 0 7px; color: #1d2f82; font-size: 18px; }
+.honorList p { margin: 0; color: #62708b; font-size: 14px; line-height: 1.7; }
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: clamp(40px, 7vw, 86px);
+  align-items: start;
+}
+
+.contactList { display: grid; gap: 18px; margin-top: 36px; }
+.contactItem { display: grid; grid-template-columns: 36px 1fr; gap: 13px; align-items: start; }
+.contactItem svg { color: #f05a24; }
+.contactItem b { display: block; color: #1d2f82; font-size: 14px; }
+.contactItem p, .contactItem a { margin: 4px 0 0; color: #53617b; line-height: 1.65; }
+.contactItem a { display: inline-block; font-size: 18px; font-weight: 750; text-underline-offset: 4px; }
+
+.qrPanel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid #d9e0ee;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.qrPanel figure { margin: 0; text-align: center; }
+.qrPanel img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; image-rendering: crisp-edges; }
+.qrPanel figcaption { margin-top: 10px; color: #33415d; font-size: 13px; font-weight: 750; }
+
+.consultLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1.18fr);
+  gap: clamp(40px, 7vw, 90px);
+  align-items: start;
+}
+
+.consultSteps { display: grid; gap: 0; margin-top: 34px; border-top: 1px solid #d9e0ee; }
+.consultImage { margin: 0 0 34px; }
+.consultImage img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; border-radius: 8px; object-fit: cover; object-position: center; }
+.consultStep { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 20px 0; border-bottom: 1px solid #d9e0ee; }
+.consultStep b { color: #f05a24; font-size: 13px; }
+.consultStep h3 { margin: 0 0 6px; color: #1d2f82; font-size: 17px; }
+.consultStep p { margin: 0; color: #62708b; font-size: 14px; line-height: 1.65; }
+
+.formCard { padding: clamp(24px, 4vw, 38px); border: 1px solid #d9e0ee; border-radius: 18px; background: #fff; box-shadow: 0 20px 60px rgba(23, 37, 105, 0.08); }
+.formCard h2 { margin: 12px 0 8px; font-size: 30px; }
+.formCard > p { margin: 0; color: #62708b; line-height: 1.65; }
+
+.form { display: grid; gap: 18px; margin-top: 28px; }
+.formGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.field { display: grid; gap: 7px; color: #33415d; font-size: 13px; font-weight: 750; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid #cbd4e4; border-radius: 10px; padding: 12px 13px; background: #fff; color: #24324d; font: inherit; font-weight: 500; outline: none; }
+.field select, .field input { min-height: 46px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: #2545a8; box-shadow: 0 0 0 3px rgba(37, 69, 168, 0.12); }
+.required { color: #c64024; }
+.submit { min-height: 48px; border: 1px solid #1d2f82; border-radius: 10px; padding: 0 18px; background: #1d2f82; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.submit:hover:not(:disabled) { background: #172569; }
+.submit:disabled { cursor: wait; opacity: 0.62; }
+.submit:focus-visible, .contactItem a:focus-visible { outline: 3px solid rgba(37, 69, 168, 0.28); outline-offset: 3px; }
+.status, .error { margin: 0; border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.6; }
+.status { background: #eef8f3; color: #166343; }
+.error { background: #fff3ef; color: #8d2c1d; }
+.privacy { margin: -6px 0 0; color: #7b879e; font-size: 12px; line-height: 1.55; }
+
+@media (max-width: 780px) {
+  .section { width: min(100% - 32px, 1180px); padding: 58px 0; }
+  .manifesto, .honors, .contact, .consultLayout, .advisor { grid-template-columns: 1fr; }
+  .timeline, .principles { grid-template-columns: 1fr; }
+  .timeline { border-top: 0; }
+  .timeline article { border-top: 1px solid #cdd6e6; }
+  .advisorMark { min-height: 160px; }
+  .qrPanel { max-width: 420px; }
+  .mediaBand { width: calc(100% - 32px); margin-top: 6px; }
+  .mediaBand img { height: auto; aspect-ratio: 4 / 3; }
+}
+
+@media (max-width: 520px) {
+  .formGrid, .qrPanel { grid-template-columns: 1fr; }
+  .qrPanel img { max-width: 220px; margin: 0 auto; }
+}

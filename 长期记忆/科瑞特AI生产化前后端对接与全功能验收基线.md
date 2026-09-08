@@ -2,7 +2,7 @@
 
 > 状态：`ACTIVE / 生产化主文档`
 > 审计日期：2026-09-06
-> 应用目录：`D:\programe\AI科瑞特\AI-create\ai音乐\ai-music-app`
+> 应用目录：`D:\programe\AI科瑞特\AI-create`
 > 生产域名：`https://lingpeak.com`
 > 本文不记录任何真实密码、密钥或学生资料。
 

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" role="img" aria-labelledby="t d">
-  <title id="t">音乐作品空状态</title><desc id="d">唱片、音符和声音轨道构成的线描插画。</desc>
-  <defs><pattern id="p" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#DCE3F3"/></pattern><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#F15A2A"/></linearGradient></defs>
-  <rect width="560" height="420" rx="32" fill="#F8FAFD"/><rect x="18" y="18" width="524" height="384" rx="24" fill="url(#p)"/>
-  <circle cx="280" cy="205" r="104" fill="#fff" stroke="#CBD5EB" stroke-width="2"/><circle cx="280" cy="205" r="72" fill="none" stroke="#253A8F" stroke-width="18" stroke-dasharray="2 13"/><circle cx="280" cy="205" r="28" fill="url(#g)"/><circle cx="280" cy="205" r="8" fill="#fff"/>
-  <path d="M363 89v98c0 25-19 43-44 43-18 0-31-10-31-25 0-17 17-31 39-31 8 0 15 2 21 5v-71l74-17v76c0 25-19 43-44 43-18 0-31-10-31-25 0-17 17-31 39-31 8 0 15 2 21 5V79z" fill="#F15A2A"/>
-  <path d="M105 324h350M130 345h300" stroke="#253A8F" stroke-opacity=".18" stroke-width="6" stroke-linecap="round"/>
-</svg>

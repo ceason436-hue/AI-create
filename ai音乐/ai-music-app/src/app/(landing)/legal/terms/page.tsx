@@ -1,2 +1,0 @@
-import { PublicPage } from "@/components/public-page";
-export default function TermsPage() { return <PublicPage eyebrow="SERVICE" title="服务条款" intro="使用课程、学习账户和创作工具前，请先了解彼此的约定。"><section className="public-content legal-copy"><h2>使用约定</h2><p>请在课程学习和创作中遵守法律法规、尊重他人权利，并在监护人的指导下使用适合未成年人的内容与工具。</p><h2>账户与作品</h2><p>请妥善保管账户信息。课程课件、学习进度和作品应仅用于合法、合适的学习与创作交流；涉及他人作品时请先取得必要授权。</p><h2>课程与咨询</h2><p>课程安排、报名与服务内容以实际沟通和确认信息为准。如有疑问，请通过课程咨询入口联系科瑞特团队。</p></section></PublicPage>; }

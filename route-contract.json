@@ -1,0 +1,2791 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "src/app",
+  "summary": {
+    "pages": 69,
+    "routeHandlers": 90
+  },
+  "requirements": {
+    "courseRoutes": {
+      "required": [
+        "/courses",
+        "/courses/directions/[slug]",
+        "/courses/[courseSlug]"
+      ],
+      "missing": []
+    }
+  },
+  "collisions": {
+    "duplicatePaths": [],
+    "dynamicShapes": [],
+    "pageRoute": []
+  },
+  "routes": [
+    {
+      "kind": "page",
+      "url": "/",
+      "dynamicShape": "/",
+      "sourceFile": "src/app/(landing)/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/about",
+      "dynamicShape": "/about",
+      "sourceFile": "src/app/(landing)/about/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/achievements",
+      "dynamicShape": "/achievements",
+      "sourceFile": "src/app/(landing)/achievements/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/achievements/[achievementSlug]",
+      "dynamicShape": "/achievements/[]",
+      "sourceFile": "src/app/(landing)/achievements/[achievementSlug]/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "achievementSlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/activities",
+      "dynamicShape": "/activities",
+      "sourceFile": "src/app/(landing)/activities/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/activities/[activitySlug]",
+      "dynamicShape": "/activities/[]",
+      "sourceFile": "src/app/(landing)/activities/[activitySlug]/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "activitySlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin",
+      "dynamicShape": "/admin",
+      "sourceFile": "src/app/(admin)/admin/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/ai-tools",
+      "dynamicShape": "/admin/ai-tools",
+      "sourceFile": "src/app/(admin)/admin/ai-tools/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/content",
+      "dynamicShape": "/admin/content",
+      "sourceFile": "src/app/(admin)/admin/content/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/content/[contentType]",
+      "dynamicShape": "/admin/content/[]",
+      "sourceFile": "src/app/(admin)/admin/content/[contentType]/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/content/[contentType]/[itemId]/media",
+      "dynamicShape": "/admin/content/[]/[]/media",
+      "sourceFile": "src/app/(admin)/admin/content/[contentType]/[itemId]/media/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/content/[contentType]/[itemId]/revisions",
+      "dynamicShape": "/admin/content/[]/[]/revisions",
+      "sourceFile": "src/app/(admin)/admin/content/[contentType]/[itemId]/revisions/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/course-categories",
+      "dynamicShape": "/admin/course-categories",
+      "sourceFile": "src/app/(admin)/admin/course-categories/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/courses",
+      "dynamicShape": "/admin/courses",
+      "sourceFile": "src/app/(admin)/admin/courses/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/courses/[courseId]",
+      "dynamicShape": "/admin/courses/[]",
+      "sourceFile": "src/app/(admin)/admin/courses/[courseId]/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/courses/[courseId]/announcements",
+      "dynamicShape": "/admin/courses/[]/announcements",
+      "sourceFile": "src/app/(admin)/admin/courses/[courseId]/announcements/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/courseware",
+      "dynamicShape": "/admin/courseware",
+      "sourceFile": "src/app/(admin)/admin/courseware/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/curriculum",
+      "dynamicShape": "/admin/curriculum",
+      "sourceFile": "src/app/(admin)/admin/curriculum/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/enrollments",
+      "dynamicShape": "/admin/enrollments",
+      "sourceFile": "src/app/(admin)/admin/enrollments/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/inquiries",
+      "dynamicShape": "/admin/inquiries",
+      "sourceFile": "src/app/(admin)/admin/inquiries/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/media",
+      "dynamicShape": "/admin/media",
+      "sourceFile": "src/app/(admin)/admin/media/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/media-slots",
+      "dynamicShape": "/admin/media-slots",
+      "sourceFile": "src/app/(admin)/admin/media-slots/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/media/[assetId]/captions",
+      "dynamicShape": "/admin/media/[]/captions",
+      "sourceFile": "src/app/(admin)/admin/media/[assetId]/captions/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/media/[assetId]/revisions",
+      "dynamicShape": "/admin/media/[]/revisions",
+      "sourceFile": "src/app/(admin)/admin/media/[assetId]/revisions/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/admin/site-pages",
+      "dynamicShape": "/admin/site-pages",
+      "sourceFile": "src/app/(admin)/admin/site-pages/page.tsx",
+      "routeGroups": [
+        "(admin)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-art",
+      "dynamicShape": "/ai-art",
+      "sourceFile": "src/app/(app)/ai-art/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-music",
+      "dynamicShape": "/ai-music",
+      "sourceFile": "src/app/(app)/ai-music/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-music/creation",
+      "dynamicShape": "/ai-music/creation",
+      "sourceFile": "src/app/(app)/ai-music/creation/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-programming",
+      "dynamicShape": "/ai-programming",
+      "sourceFile": "src/app/(app)/ai-programming/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-reading",
+      "dynamicShape": "/ai-reading",
+      "sourceFile": "src/app/(app)/ai-reading/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-reading/overview",
+      "dynamicShape": "/ai-reading/overview",
+      "sourceFile": "src/app/(app)/ai-reading/overview/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/ai-reading/workspace",
+      "dynamicShape": "/ai-reading/workspace",
+      "sourceFile": "src/app/(app)/ai-reading/workspace/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/accounts",
+      "dynamicShape": "/api/admin/accounts",
+      "sourceFile": "src/app/api/admin/accounts/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/ai-settings",
+      "dynamicShape": "/api/admin/ai-settings",
+      "sourceFile": "src/app/api/admin/ai-settings/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/ai-tools",
+      "dynamicShape": "/api/admin/ai-tools",
+      "sourceFile": "src/app/api/admin/ai-tools/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/ai-tools/[toolKey]",
+      "dynamicShape": "/api/admin/ai-tools/[]",
+      "sourceFile": "src/app/api/admin/ai-tools/[toolKey]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "toolKey",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/content/[contentType]",
+      "dynamicShape": "/api/admin/content/[]",
+      "sourceFile": "src/app/api/admin/content/[contentType]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/content/[contentType]/[itemId]",
+      "dynamicShape": "/api/admin/content/[]/[]",
+      "sourceFile": "src/app/api/admin/content/[contentType]/[itemId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/content/[contentType]/[itemId]/media",
+      "dynamicShape": "/api/admin/content/[]/[]/media",
+      "sourceFile": "src/app/api/admin/content/[contentType]/[itemId]/media/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/content/[contentType]/[itemId]/media/[mediaId]",
+      "dynamicShape": "/api/admin/content/[]/[]/media/[]",
+      "sourceFile": "src/app/api/admin/content/[contentType]/[itemId]/media/[mediaId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        },
+        {
+          "name": "mediaId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/content/[contentType]/[itemId]/revisions",
+      "dynamicShape": "/api/admin/content/[]/[]/revisions",
+      "sourceFile": "src/app/api/admin/content/[contentType]/[itemId]/revisions/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "contentType",
+          "kind": "dynamic"
+        },
+        {
+          "name": "itemId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/course-categories",
+      "dynamicShape": "/api/admin/course-categories",
+      "sourceFile": "src/app/api/admin/course-categories/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/course-categories/[categoryId]",
+      "dynamicShape": "/api/admin/course-categories/[]",
+      "sourceFile": "src/app/api/admin/course-categories/[categoryId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "categoryId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courses",
+      "dynamicShape": "/api/admin/courses",
+      "sourceFile": "src/app/api/admin/courses/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courses/[courseId]",
+      "dynamicShape": "/api/admin/courses/[]",
+      "sourceFile": "src/app/api/admin/courses/[courseId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courses/[courseId]/announcements",
+      "dynamicShape": "/api/admin/courses/[]/announcements",
+      "sourceFile": "src/app/api/admin/courses/[courseId]/announcements/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courses/[courseId]/announcements/[announcementId]",
+      "dynamicShape": "/api/admin/courses/[]/announcements/[]",
+      "sourceFile": "src/app/api/admin/courses/[courseId]/announcements/[announcementId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        },
+        {
+          "name": "announcementId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courses/[courseId]/curriculum",
+      "dynamicShape": "/api/admin/courses/[]/curriculum",
+      "sourceFile": "src/app/api/admin/courses/[courseId]/curriculum/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courseware",
+      "dynamicShape": "/api/admin/courseware",
+      "sourceFile": "src/app/api/admin/courseware/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courseware/[assetId]",
+      "dynamicShape": "/api/admin/courseware/[]",
+      "sourceFile": "src/app/api/admin/courseware/[assetId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courseware/[assetId]/retry",
+      "dynamicShape": "/api/admin/courseware/[]/retry",
+      "sourceFile": "src/app/api/admin/courseware/[assetId]/retry/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courseware/process-next",
+      "dynamicShape": "/api/admin/courseware/process-next",
+      "sourceFile": "src/app/api/admin/courseware/process-next/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/courseware/upload",
+      "dynamicShape": "/api/admin/courseware/upload",
+      "sourceFile": "src/app/api/admin/courseware/upload/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/enrollments",
+      "dynamicShape": "/api/admin/enrollments",
+      "sourceFile": "src/app/api/admin/enrollments/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/enrollments/bulk/apply",
+      "dynamicShape": "/api/admin/enrollments/bulk/apply",
+      "sourceFile": "src/app/api/admin/enrollments/bulk/apply/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/enrollments/bulk/preview",
+      "dynamicShape": "/api/admin/enrollments/bulk/preview",
+      "sourceFile": "src/app/api/admin/enrollments/bulk/preview/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/inquiries",
+      "dynamicShape": "/api/admin/inquiries",
+      "sourceFile": "src/app/api/admin/inquiries/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/inquiries/[inquiryId]",
+      "dynamicShape": "/api/admin/inquiries/[]",
+      "sourceFile": "src/app/api/admin/inquiries/[inquiryId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "inquiryId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/invitations",
+      "dynamicShape": "/api/admin/invitations",
+      "sourceFile": "src/app/api/admin/invitations/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/invitations/[invitationId]",
+      "dynamicShape": "/api/admin/invitations/[]",
+      "sourceFile": "src/app/api/admin/invitations/[invitationId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "invitationId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media",
+      "dynamicShape": "/api/admin/media",
+      "sourceFile": "src/app/api/admin/media/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media-slots",
+      "dynamicShape": "/api/admin/media-slots",
+      "sourceFile": "src/app/api/admin/media-slots/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media-slots/[slotId]",
+      "dynamicShape": "/api/admin/media-slots/[]",
+      "sourceFile": "src/app/api/admin/media-slots/[slotId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "slotId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media/[assetId]",
+      "dynamicShape": "/api/admin/media/[]",
+      "sourceFile": "src/app/api/admin/media/[assetId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media/[assetId]/captions",
+      "dynamicShape": "/api/admin/media/[]/captions",
+      "sourceFile": "src/app/api/admin/media/[assetId]/captions/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media/[assetId]/retry",
+      "dynamicShape": "/api/admin/media/[]/retry",
+      "sourceFile": "src/app/api/admin/media/[assetId]/retry/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media/[assetId]/revisions",
+      "dynamicShape": "/api/admin/media/[]/revisions",
+      "sourceFile": "src/app/api/admin/media/[assetId]/revisions/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/media/process-next",
+      "dynamicShape": "/api/admin/media/process-next",
+      "sourceFile": "src/app/api/admin/media/process-next/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/orders",
+      "dynamicShape": "/api/admin/orders",
+      "sourceFile": "src/app/api/admin/orders/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/plans",
+      "dynamicShape": "/api/admin/plans",
+      "sourceFile": "src/app/api/admin/plans/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/schools",
+      "dynamicShape": "/api/admin/schools",
+      "sourceFile": "src/app/api/admin/schools/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/schools/[schoolId]",
+      "dynamicShape": "/api/admin/schools/[]",
+      "sourceFile": "src/app/api/admin/schools/[schoolId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "schoolId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/schools/[schoolId]/reset-password",
+      "dynamicShape": "/api/admin/schools/[]/reset-password",
+      "sourceFile": "src/app/api/admin/schools/[schoolId]/reset-password/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "schoolId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/site-pages",
+      "dynamicShape": "/api/admin/site-pages",
+      "sourceFile": "src/app/api/admin/site-pages/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/site-pages/[pageId]",
+      "dynamicShape": "/api/admin/site-pages/[]",
+      "sourceFile": "src/app/api/admin/site-pages/[pageId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "pageId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/site-pages/[pageId]/sections",
+      "dynamicShape": "/api/admin/site-pages/[]/sections",
+      "sourceFile": "src/app/api/admin/site-pages/[pageId]/sections/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "pageId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/site-pages/[pageId]/sections/[sectionId]",
+      "dynamicShape": "/api/admin/site-pages/[]/sections/[]",
+      "sourceFile": "src/app/api/admin/site-pages/[pageId]/sections/[sectionId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "pageId",
+          "kind": "dynamic"
+        },
+        {
+          "name": "sectionId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/training/cohorts",
+      "dynamicShape": "/api/admin/training/cohorts",
+      "sourceFile": "src/app/api/admin/training/cohorts/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/training/cohorts/[cohortId]",
+      "dynamicShape": "/api/admin/training/cohorts/[]",
+      "sourceFile": "src/app/api/admin/training/cohorts/[cohortId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "cohortId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/admin/training/organizations/[organizationId]",
+      "dynamicShape": "/api/admin/training/organizations/[]",
+      "sourceFile": "src/app/api/admin/training/organizations/[organizationId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "organizationId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/ai/reading/analyze",
+      "dynamicShape": "/api/ai/reading/analyze",
+      "sourceFile": "src/app/api/ai/reading/analyze/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/ai/reading/extract",
+      "dynamicShape": "/api/ai/reading/extract",
+      "sourceFile": "src/app/api/ai/reading/extract/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/ai/requests/[requestId]",
+      "dynamicShape": "/api/ai/requests/[]",
+      "sourceFile": "src/app/api/ai/requests/[requestId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "requestId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/ai/trial",
+      "dynamicShape": "/api/ai/trial",
+      "sourceFile": "src/app/api/ai/trial/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/auth/login",
+      "dynamicShape": "/api/auth/login",
+      "sourceFile": "src/app/api/auth/login/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/auth/logout",
+      "dynamicShape": "/api/auth/logout",
+      "sourceFile": "src/app/api/auth/logout/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/auth/register",
+      "dynamicShape": "/api/auth/register",
+      "sourceFile": "src/app/api/auth/register/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/auth/register/training",
+      "dynamicShape": "/api/auth/register/training",
+      "sourceFile": "src/app/api/auth/register/training/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/auth/session",
+      "dynamicShape": "/api/auth/session",
+      "sourceFile": "src/app/api/auth/session/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/health/live",
+      "dynamicShape": "/api/health/live",
+      "sourceFile": "src/app/api/health/live/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/health/ready",
+      "dynamicShape": "/api/health/ready",
+      "sourceFile": "src/app/api/health/ready/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courses",
+      "dynamicShape": "/api/me/courses",
+      "sourceFile": "src/app/api/me/courses/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [
+        {
+          "exports": [
+            "GET"
+          ],
+          "target": "../learning-dashboard/route"
+        }
+      ],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courses/[courseId]",
+      "dynamicShape": "/api/me/courses/[]",
+      "sourceFile": "src/app/api/me/courses/[courseId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courses/[courseId]/lessons/[lessonId]",
+      "dynamicShape": "/api/me/courses/[]/lessons/[]",
+      "sourceFile": "src/app/api/me/courses/[courseId]/lessons/[lessonId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        },
+        {
+          "name": "lessonId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courses/[courseId]/lessons/[lessonId]/progress",
+      "dynamicShape": "/api/me/courses/[]/lessons/[]/progress",
+      "sourceFile": "src/app/api/me/courses/[courseId]/lessons/[lessonId]/progress/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseId",
+          "kind": "dynamic"
+        },
+        {
+          "name": "lessonId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courseware/[assetId]/content",
+      "dynamicShape": "/api/me/courseware/[]/content",
+      "sourceFile": "src/app/api/me/courseware/[assetId]/content/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/courseware/[assetId]/preview-session",
+      "dynamicShape": "/api/me/courseware/[]/preview-session",
+      "sourceFile": "src/app/api/me/courseware/[assetId]/preview-session/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/enrollments",
+      "dynamicShape": "/api/me/enrollments",
+      "sourceFile": "src/app/api/me/enrollments/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [
+        {
+          "exports": [
+            "GET"
+          ],
+          "target": "../learning-dashboard/route"
+        }
+      ],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/learning-dashboard",
+      "dynamicShape": "/api/me/learning-dashboard",
+      "sourceFile": "src/app/api/me/learning-dashboard/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/me/status",
+      "dynamicShape": "/api/me/status",
+      "sourceFile": "src/app/api/me/status/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/media/[assetId]",
+      "dynamicShape": "/api/media/[]",
+      "sourceFile": "src/app/api/media/[assetId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/media/[assetId]/captions",
+      "dynamicShape": "/api/media/[]/captions",
+      "sourceFile": "src/app/api/media/[assetId]/captions/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/chat",
+      "dynamicShape": "/api/minimax/chat",
+      "sourceFile": "src/app/api/minimax/chat/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/code",
+      "dynamicShape": "/api/minimax/code",
+      "sourceFile": "src/app/api/minimax/code/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/image",
+      "dynamicShape": "/api/minimax/image",
+      "sourceFile": "src/app/api/minimax/image/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/music",
+      "dynamicShape": "/api/minimax/music",
+      "sourceFile": "src/app/api/minimax/music/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/music/query",
+      "dynamicShape": "/api/minimax/music/query",
+      "sourceFile": "src/app/api/minimax/music/query/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/minimax/vision",
+      "dynamicShape": "/api/minimax/vision",
+      "sourceFile": "src/app/api/minimax/vision/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/achievements",
+      "dynamicShape": "/api/public/achievements",
+      "sourceFile": "src/app/api/public/achievements/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/achievements/[achievementSlug]",
+      "dynamicShape": "/api/public/achievements/[]",
+      "sourceFile": "src/app/api/public/achievements/[achievementSlug]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "achievementSlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/activities",
+      "dynamicShape": "/api/public/activities",
+      "sourceFile": "src/app/api/public/activities/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/activities/[activitySlug]",
+      "dynamicShape": "/api/public/activities/[]",
+      "sourceFile": "src/app/api/public/activities/[activitySlug]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "activitySlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/ai-tools",
+      "dynamicShape": "/api/public/ai-tools",
+      "sourceFile": "src/app/api/public/ai-tools/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/course-categories",
+      "dynamicShape": "/api/public/course-categories",
+      "sourceFile": "src/app/api/public/course-categories/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/courses",
+      "dynamicShape": "/api/public/courses",
+      "sourceFile": "src/app/api/public/courses/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/courses/[courseSlug]",
+      "dynamicShape": "/api/public/courses/[]",
+      "sourceFile": "src/app/api/public/courses/[courseSlug]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseSlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/public/inquiries",
+      "dynamicShape": "/api/public/inquiries",
+      "sourceFile": "src/app/api/public/inquiries/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/works",
+      "dynamicShape": "/api/works",
+      "sourceFile": "src/app/api/works/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/works/[workId]",
+      "dynamicShape": "/api/works/[]",
+      "sourceFile": "src/app/api/works/[workId]/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "workId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/works/[workId]/course-context",
+      "dynamicShape": "/api/works/[]/course-context",
+      "sourceFile": "src/app/api/works/[workId]/course-context/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "workId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "PATCH"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/works/[workId]/download",
+      "dynamicShape": "/api/works/[]/download",
+      "sourceFile": "src/app/api/works/[workId]/download/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "workId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [
+        "GET"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "route",
+      "url": "/api/works/import-audio",
+      "dynamicShape": "/api/works/import-audio",
+      "sourceFile": "src/app/api/works/import-audio/route.ts",
+      "routeGroups": [],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [
+        "POST"
+      ],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/consult",
+      "dynamicShape": "/consult",
+      "sourceFile": "src/app/(landing)/consult/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/courses",
+      "dynamicShape": "/courses",
+      "sourceFile": "src/app/(landing)/courses/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/courses/[courseSlug]",
+      "dynamicShape": "/courses/[]",
+      "sourceFile": "src/app/(landing)/courses/[courseSlug]/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseSlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/courses/directions/[slug]",
+      "dynamicShape": "/courses/directions/[]",
+      "sourceFile": "src/app/(landing)/courses/directions/[slug]/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "slug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/learn",
+      "dynamicShape": "/learn",
+      "sourceFile": "src/app/(app)/learn/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/learn/courses",
+      "dynamicShape": "/learn/courses",
+      "sourceFile": "src/app/(app)/learn/courses/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/learn/courses/[courseSlug]",
+      "dynamicShape": "/learn/courses/[]",
+      "sourceFile": "src/app/(app)/learn/courses/[courseSlug]/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseSlug",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/learn/courses/[courseSlug]/lessons/[lessonId]",
+      "dynamicShape": "/learn/courses/[]/lessons/[]",
+      "sourceFile": "src/app/(app)/learn/courses/[courseSlug]/lessons/[lessonId]/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "courseSlug",
+          "kind": "dynamic"
+        },
+        {
+          "name": "lessonId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/learn/courseware/[assetId]",
+      "dynamicShape": "/learn/courseware/[]",
+      "sourceFile": "src/app/(app)/learn/courseware/[assetId]/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [
+        {
+          "name": "assetId",
+          "kind": "dynamic"
+        }
+      ],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/legal/ai-safety",
+      "dynamicShape": "/legal/ai-safety",
+      "sourceFile": "src/app/(landing)/legal/ai-safety/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/legal/privacy",
+      "dynamicShape": "/legal/privacy",
+      "sourceFile": "src/app/(landing)/legal/privacy/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/legal/terms",
+      "dynamicShape": "/legal/terms",
+      "sourceFile": "src/app/(landing)/legal/terms/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/login",
+      "dynamicShape": "/login",
+      "sourceFile": "src/app/(landing)/login/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/my-works",
+      "dynamicShape": "/my-works",
+      "sourceFile": "src/app/(app)/my-works/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/register",
+      "dynamicShape": "/register",
+      "sourceFile": "src/app/(landing)/register/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/register/training",
+      "dynamicShape": "/register/training",
+      "sourceFile": "src/app/(landing)/register/training/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": [
+        {
+          "type": "redirect",
+          "destination": "/register"
+        }
+      ]
+    },
+    {
+      "kind": "page",
+      "url": "/school-cooperation",
+      "dynamicShape": "/school-cooperation",
+      "sourceFile": "src/app/(landing)/school-cooperation/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/stage1",
+      "dynamicShape": "/stage1",
+      "sourceFile": "src/app/(app)/stage1/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": [
+        {
+          "type": "redirect",
+          "destination": "/"
+        }
+      ]
+    },
+    {
+      "kind": "page",
+      "url": "/stage1/melody",
+      "dynamicShape": "/stage1/melody",
+      "sourceFile": "src/app/(app)/stage1/melody/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/stage1/pitch-explorer",
+      "dynamicShape": "/stage1/pitch-explorer",
+      "sourceFile": "src/app/(app)/stage1/pitch-explorer/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/stage1/rhythm",
+      "dynamicShape": "/stage1/rhythm",
+      "sourceFile": "src/app/(app)/stage1/rhythm/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/stage1/three-keys",
+      "dynamicShape": "/stage1/three-keys",
+      "sourceFile": "src/app/(app)/stage1/three-keys/page.tsx",
+      "routeGroups": [
+        "(app)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools",
+      "dynamicShape": "/tools",
+      "sourceFile": "src/app/(landing)/tools/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-art",
+      "dynamicShape": "/tools/ai-art",
+      "sourceFile": "src/app/(landing)/tools/ai-art/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-art/workspace",
+      "dynamicShape": "/tools/ai-art/workspace",
+      "sourceFile": "src/app/(landing)/tools/ai-art/workspace/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [
+        {
+          "exports": [
+            "default"
+          ],
+          "target": "../page"
+        }
+      ],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-music",
+      "dynamicShape": "/tools/ai-music",
+      "sourceFile": "src/app/(landing)/tools/ai-music/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-music/workspace",
+      "dynamicShape": "/tools/ai-music/workspace",
+      "sourceFile": "src/app/(landing)/tools/ai-music/workspace/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-programming",
+      "dynamicShape": "/tools/ai-programming",
+      "sourceFile": "src/app/(landing)/tools/ai-programming/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-programming/workspace",
+      "dynamicShape": "/tools/ai-programming/workspace",
+      "sourceFile": "src/app/(landing)/tools/ai-programming/workspace/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-reading",
+      "dynamicShape": "/tools/ai-reading",
+      "sourceFile": "src/app/(landing)/tools/ai-reading/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-reading/result",
+      "dynamicShape": "/tools/ai-reading/result",
+      "sourceFile": "src/app/(landing)/tools/ai-reading/result/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/ai-reading/workspace",
+      "dynamicShape": "/tools/ai-reading/workspace",
+      "sourceFile": "src/app/(landing)/tools/ai-reading/workspace/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/music",
+      "dynamicShape": "/tools/music",
+      "sourceFile": "src/app/(landing)/tools/music/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/music/melody",
+      "dynamicShape": "/tools/music/melody",
+      "sourceFile": "src/app/(landing)/tools/music/melody/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/music/pitch",
+      "dynamicShape": "/tools/music/pitch",
+      "sourceFile": "src/app/(landing)/tools/music/pitch/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/music/rhythm",
+      "dynamicShape": "/tools/music/rhythm",
+      "sourceFile": "src/app/(landing)/tools/music/rhythm/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    },
+    {
+      "kind": "page",
+      "url": "/tools/music/three-keys",
+      "dynamicShape": "/tools/music/three-keys",
+      "sourceFile": "src/app/(landing)/tools/music/three-keys/page.tsx",
+      "routeGroups": [
+        "(landing)"
+      ],
+      "parallelSlots": [],
+      "privateSegments": [],
+      "dynamicParams": [],
+      "methods": [],
+      "reexports": [],
+      "redirects": []
+    }
+  ]
+}

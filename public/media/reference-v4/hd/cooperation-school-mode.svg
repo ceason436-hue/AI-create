@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300">
+  <g font-family="Microsoft YaHei,Arial,sans-serif" text-anchor="middle">
+    <path d="M78 242h484l-42 48H120z" fill="#f36b27"/><path d="M116 184h408l-35 58H151z" fill="#174caa"/><path d="M157 126h326l-32 58H189z" fill="#3973cc"/><path d="M204 68h232l-29 58H233z" fill="#8cb1e7"/>
+    <g fill="#fff" font-size="25" font-weight="700"><text x="320" y="101">能力提升</text><text x="320" y="161">资源支持</text><text x="320" y="220">课程共建</text><text x="320" y="275">校本实施</text></g>
+    <g fill="none" stroke="#aac0e6" stroke-width="2"><path d="M86 58H28v192h46"/><circle cx="28" cy="58" r="5" fill="#f36b27" stroke="none"/></g>
+  </g>
+</svg>

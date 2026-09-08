@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" role="img" aria-labelledby="t d">
-  <title id="t">教育理念三角关系</title><desc id="d">真实问题、动手实践和公开表达相互连接。</desc>
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#415BBB"/></linearGradient><pattern id="p" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#D5DEEF"/></pattern></defs>
-  <rect width="760" height="650" rx="32" fill="#F8FAFD"/><rect width="760" height="650" rx="32" fill="url(#p)"/>
-  <path d="M380 110L130 520h500z" fill="none" stroke="#253A8F" stroke-width="4"/><path d="M380 110L255 315h250z" fill="#253A8F" fill-opacity=".08"/>
-  <circle cx="380" cy="110" r="82" fill="url(#g)"/><circle cx="130" cy="520" r="82" fill="#fff" stroke="#253A8F" stroke-width="4"/><circle cx="630" cy="520" r="82" fill="#F15A2A"/>
-  <g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M344 102h72M354 128h52M366 76h28" stroke="#fff"/><path d="M94 540l36-55 36 55M113 522h34" stroke="#253A8F"/><path d="M594 520h72M606 495l48 50" stroke="#fff"/></g>
-  <circle cx="380" cy="360" r="58" fill="#fff" stroke="#F15A2A" stroke-width="4"/><circle cx="380" cy="360" r="18" fill="#F15A2A"/>
-</svg>

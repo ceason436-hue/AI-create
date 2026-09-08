@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" role="img" aria-labelledby="t d">
-  <title id="t">AI 绘画四步流程</title><desc id="d">描述、构图、比较和精修四个阶段。</desc>
-  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#415BBB"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0l10 5-10 5z" fill="#A8B4D5"/></marker></defs>
-  <path d="M205 160h170M515 160h170M825 160h170" stroke="#A8B4D5" stroke-width="3" marker-end="url(#a)"/>
-  <g fill="#fff" stroke="#D4DCEF" stroke-width="2"><rect x="45" y="65" width="170" height="190" rx="24"/><rect x="355" y="65" width="170" height="190" rx="24"/><rect x="665" y="65" width="170" height="190" rx="24"/><rect x="975" y="65" width="170" height="190" rx="24"/></g>
-  <g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M95 122h70M95 151h52M95 180h70M95 209h42"/><path d="M395 207l35-76 35 50 22-32 19 58zM408 120h82v99h-82z"/><path d="M699 123h51v72h-51zM758 123h51v72h-51zM725 218h58"/><path d="M1019 199l37-37 26 26 32-62M1014 122h29M1098 216h24"/></g>
-  <g fill="#F15A2A"><circle cx="130" cy="65" r="9"/><circle cx="440" cy="65" r="9"/><circle cx="750" cy="65" r="9"/><circle cx="1060" cy="65" r="9"/></g>
-</svg>

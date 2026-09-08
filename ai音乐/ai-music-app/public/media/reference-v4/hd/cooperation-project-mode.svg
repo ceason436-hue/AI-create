@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300">
-  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#376bc4"/></marker></defs>
-  <g font-family="Microsoft YaHei,Arial,sans-serif" text-anchor="middle">
-    <path d="M120 82H274M366 82h154M520 110v66M486 218H354M262 218H120M120 190v-80" fill="none" stroke="#376bc4" stroke-width="3" stroke-dasharray="6 7" marker-end="url(#a)"/>
-    <g font-size="22" fill="#123f92"><rect x="36" y="52" width="168" height="60" rx="10" fill="#eaf1fc"/><text x="120" y="90">课题选择</text><rect x="236" y="52" width="168" height="60" rx="10" fill="#ffd09e"/><text x="320" y="90">方案设计</text><rect x="436" y="52" width="168" height="60" rx="10" fill="#eaf1fc"/><text x="520" y="90">迭代优化</text><rect x="340" y="188" width="168" height="60" rx="10" fill="#ffd09e"/><text x="424" y="226">作品产出</text><rect x="132" y="188" width="168" height="60" rx="10" fill="#eaf1fc"/><text x="216" y="226">展示交流</text></g>
-    <circle cx="320" cy="150" r="24" fill="#fff" stroke="#f36b27" stroke-width="3"/><path d="M308 150h24M320 138v24" stroke="#f36b27" stroke-width="3"/>
-  </g>
-</svg>

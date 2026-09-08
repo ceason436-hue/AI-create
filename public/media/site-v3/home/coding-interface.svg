@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 600" role="img" aria-labelledby="t d">
+  <title id="t">编程学习界面</title><desc id="d">无品牌的积木编程与运行预览界面。</desc>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#4059B7"/></linearGradient></defs>
+  <rect width="920" height="600" rx="32" fill="#F8FAFD"/><rect x="28" y="28" width="864" height="544" rx="24" fill="#fff" stroke="#D3DBED" stroke-width="2"/>
+  <rect x="28" y="28" width="864" height="62" rx="24" fill="url(#g)"/><rect x="28" y="66" width="864" height="24" fill="url(#g)"/><g fill="#fff"><circle cx="67" cy="59" r="8" opacity=".55"/><circle cx="94" cy="59" r="8" opacity=".72"/><circle cx="121" cy="59" r="8"/></g>
+  <rect x="50" y="112" width="130" height="438" rx="14" fill="#F2F5FB"/><rect x="201" y="112" width="420" height="438" rx="14" fill="#F8FAFD"/><rect x="642" y="112" width="228" height="438" rx="14" fill="#EEF3FB"/>
+  <g fill="none" stroke="#253A8F" stroke-width="4"><circle cx="756" cy="278" r="76"/><path d="M704 332l52-105 52 105M729 285h54"/></g><circle cx="756" cy="278" r="16" fill="#F15A2A"/>
+  <g><rect x="236" y="148" width="210" height="42" rx="12" fill="#F15A2A"/><rect x="265" y="200" width="248" height="42" rx="12" fill="#4059B7"/><rect x="294" y="252" width="185" height="42" rx="12" fill="#6B7CC5"/><rect x="265" y="304" width="278" height="42" rx="12" fill="#253A8F"/><rect x="294" y="356" width="215" height="42" rx="12" fill="#F08A61"/><rect x="236" y="408" width="250" height="42" rx="12" fill="#4059B7"/></g>
+  <g fill="#C9D3EA"><rect x="72" y="145" width="84" height="18" rx="9"/><rect x="72" y="190" width="62" height="18" rx="9"/><rect x="72" y="235" width="91" height="18" rx="9"/><rect x="72" y="280" width="72" height="18" rx="9"/></g>
+</svg>

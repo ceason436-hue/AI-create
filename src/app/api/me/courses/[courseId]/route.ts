@@ -1,0 +1,5 @@
+import { getCurrentAccount } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { activeEnrollmentWhere } from "@/lib/learning";
+
+export async function GET(_request: Request, { params }: { params: Promise<{ courseId: string }> }) { const account = await getCurrentAccount().catch(() => null); if (!account) return Response.json({ error: "请先登录。" }, { status: 401 }); const { courseId } = await params; const enrollment = await db.enrollment.findFirst({ where: { ...activeEnrollmentWhere(account.id), courseId }, include: { course: { include: { category: true, modules: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" }, include: { lessons: { orderBy: { sortOrder: "asc" }, where: { publishStatus: "PUBLISHED" } } } } } } } }).catch(() => null); if (!enrollment) return Response.json({ error: "没有有效报名。" }, { status: 403 }); return Response.json({ course: { id: enrollment.course.id, name: enrollment.course.name, slug: enrollment.course.slug, category: enrollment.course.category.name, modules: enrollment.course.modules } }, { headers: { "Cache-Control": "private, no-store" } }); }

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 360" role="img" aria-labelledby="t d">
-  <title id="t">科瑞特发展时间线</title><desc id="d">由课程研发到校园实践与生态共创的阶段线。</desc>
-  <path d="M100 180H1200" stroke="#D3DBED" stroke-width="5"/><path d="M100 180H920" stroke="#253A8F" stroke-width="5"/>
-  <g fill="#fff" stroke="#253A8F" stroke-width="4"><circle cx="150" cy="180" r="38"/><circle cx="420" cy="180" r="38"/><circle cx="690" cy="180" r="38"/><circle cx="960" cy="180" r="38"/></g><circle cx="1150" cy="180" r="38" fill="#F15A2A"/>
-  <g stroke="#253A8F" stroke-width="3" stroke-dasharray="4 7"><path d="M150 130V55M420 230v75M690 130V55M960 230v75"/></g>
-  <g fill="#F15A2A"><circle cx="150" cy="180" r="10"/><circle cx="420" cy="180" r="10"/><circle cx="690" cy="180" r="10"/><circle cx="960" cy="180" r="10"/></g><path d="M1132 180l13 13 25-29" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

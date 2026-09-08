@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 300" role="img" aria-labelledby="t d">
-  <title id="t">AI 阅读四阶段</title><desc id="d">导入、拆分、阅读引导和绘本表达。</desc>
-  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0l10 5-10 5z" fill="#F15A2A"/></marker></defs>
-  <path d="M250 150h120M555 150h120M860 150h120" stroke="#F15A2A" stroke-width="3" stroke-dasharray="7 10" marker-end="url(#a)"/>
-  <g fill="#fff" stroke="#D3DBED" stroke-width="2"><rect x="50" y="55" width="200" height="190" rx="26"/><rect x="355" y="55" width="200" height="190" rx="26"/><rect x="660" y="55" width="200" height="190" rx="26"/><rect x="965" y="55" width="200" height="190" rx="26"/></g>
-  <g fill="none" stroke="#253A8F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M111 111h78v78h-78zM126 135h48M126 157h38"/><path d="M410 108h36v36h-36zM465 108h36v36h-36zM410 163h36v36h-36zM465 163h36v36h-36z"/><path d="M704 126c20-20 47-20 67 0v74c-20-20-47-20-67 0zm67 0c20-20 47-20 67 0v74c-20-20-47-20-67 0"/><path d="M1005 109h120v84h-120zM1024 173l25-27 21 20 18-18 18 25"/></g>
-  <g fill="#F15A2A"><circle cx="150" cy="55" r="9"/><circle cx="455" cy="55" r="9"/><circle cx="760" cy="55" r="9"/><circle cx="1065" cy="55" r="9"/></g>
-</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 260" role="img" aria-labelledby="t d">
+  <title id="t">课程建议四项因素</title><desc id="d">年龄、兴趣、经验和目标四枚线性图标。</desc>
+  <g fill="#fff" stroke="#D2DAED" stroke-width="2"><rect x="20" y="25" width="250" height="210" rx="24"/><rect x="296" y="25" width="250" height="210" rx="24"/><rect x="572" y="25" width="250" height="210" rx="24"/><rect x="848" y="25" width="250" height="210" rx="24"/></g>
+  <g fill="none" stroke="#253A8F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><circle cx="145" cy="102" r="30"/><path d="M93 190c8-35 29-52 52-52s44 17 52 52"/><path d="M378 94c0-23 18-40 42-40 17 0 30 9 39 24 9-15 22-24 39-24 24 0 42 17 42 40 0 44-81 90-81 90s-81-46-81-90z"/><path d="M634 73h126v112H634zM657 103h80M657 132h58M657 160h70"/><path d="M910 179l55-55 35 35 56-78M1040 81h16v17"/></g>
+  <g fill="#F15A2A"><circle cx="145" cy="25" r="9"/><circle cx="421" cy="25" r="9"/><circle cx="697" cy="25" r="9"/><circle cx="973" cy="25" r="9"/></g>
+</svg>

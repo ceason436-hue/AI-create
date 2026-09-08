@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="t d">
-  <title id="t">研究型成长路径</title><desc id="d">从问题到证据、原型、表达和复盘的螺旋路径。</desc>
-  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0l10 5-10 5z" fill="#F15A2A"/></marker></defs>
-  <path d="M120 210c0-120 190-145 260-60 72 88-26 180 90 206 136 30 178-132 96-207-78-72-13-141 102-115 101 23 90 135 35 185-61 56 8 150 127 124 105-23 166-112 252-76" fill="none" stroke="#253A8F" stroke-width="5" marker-end="url(#a)"/>
-  <g fill="#fff" stroke="#253A8F" stroke-width="4"><circle cx="120" cy="210" r="44"/><circle cx="380" cy="150" r="44"/><circle cx="570" cy="346" r="44"/><circle cx="760" cy="128" r="44"/><circle cx="1010" cy="300" r="44"/></g>
-  <g fill="#F15A2A"><circle cx="120" cy="210" r="12"/><circle cx="380" cy="150" r="12"/><circle cx="570" cy="346" r="12"/><circle cx="760" cy="128" r="12"/><circle cx="1010" cy="300" r="12"/></g>
-</svg>

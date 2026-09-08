@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 560" role="img" aria-labelledby="t d">
-  <title id="t">合作网络地图装饰</title><desc id="d">抽象城市网络与定位点。</desc>
-  <defs><pattern id="p" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#DCE3F2"/></pattern></defs>
-  <rect width="920" height="560" rx="30" fill="#F8FAFD"/><rect width="920" height="560" rx="30" fill="url(#p)"/>
-  <path d="M95 380c115-142 196-40 285-162 92-126 176-31 250 48 75 79 132 15 205-72" fill="none" stroke="#253A8F" stroke-width="4" stroke-dasharray="6 11"/>
-  <g fill="#fff" stroke="#253A8F" stroke-width="4"><circle cx="128" cy="340" r="30"/><circle cx="360" cy="235" r="30"/><circle cx="570" cy="238" r="30"/><circle cx="790" cy="210" r="30"/></g>
-  <g fill="#F15A2A"><circle cx="128" cy="340" r="10"/><circle cx="360" cy="235" r="10"/><circle cx="570" cy="238" r="10"/><circle cx="790" cy="210" r="10"/></g>
-  <path d="M440 94c0-47 38-85 85-85s85 38 85 85c0 64-85 151-85 151s-85-87-85-151z" fill="#253A8F"/><circle cx="525" cy="94" r="30" fill="#fff"/><circle cx="525" cy="94" r="11" fill="#F15A2A"/>
-</svg>
