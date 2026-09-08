@@ -524,7 +524,7 @@ export function ReferenceReadingImport() {
                         onClick={() => setSelectedId(item.id)}
                         key={item.id}
                       >
-                        <img src={item.coverImage} alt="" />
+                        <img src={item.coverImage} alt="" loading="lazy" decoding="async" />
                         <span>
                           <strong>
                             {idx + 1}　{item.title}
@@ -550,6 +550,8 @@ export function ReferenceReadingImport() {
                     className={s.previewCover}
                     src={selected.coverImage}
                     alt={`${selected.title}课程封面`}
+                    loading="eager"
+                    decoding="async"
                   />
                   <h3>{selected.title}</h3>
                   <p className={s.meta}>

@@ -68,7 +68,7 @@ const styleOptions = [
   const rows = [10, 367, 725];
   return {
     name,
-    src: "/media/site-v3/art/style-reference-atlas-v2.png",
+    src: "/media/site-v3/art/style-reference-atlas-v2.webp",
     width: 1448,
     box: `${columns[index % 4]} ${rows[Math.floor(index / 4)]} 350 350`,
   };

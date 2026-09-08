@@ -827,7 +827,7 @@ ${historyContext}
         <div className="reading-continuity-title"><strong>连续绘本场景（6 段）</strong><span>统一画风将应用于整个绘本</span></div>
         <div className="reading-continuity-grid">
           {Array.from({ length: 6 }, (_, index) => {
-            const frame = segments[index]?.image || `/media/site-v3/reading/story-frame-0${index + 1}.png`;
+            const frame = segments[index]?.image || `/media/site-v3/reading/story-frame-0${index + 1}.webp`;
             return <figure key={index} className={index === currentIndex ? "is-current" : ""}><img src={frame} alt={`绘本第 ${index + 1} 段画面`} width="1672" height="941" /><figcaption>第 {index + 1} 段 <span>{index < currentIndex ? "已完成" : index === currentIndex ? "当前" : "待生成"}</span></figcaption></figure>;
           })}
         </div>

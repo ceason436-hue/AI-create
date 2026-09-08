@@ -66,7 +66,7 @@ const readingStyles = [
     rows = [10, 367, 725];
   return {
     name,
-    src: "/media/site-v3/art/style-reference-atlas-v2.png",
+    src: "/media/site-v3/art/style-reference-atlas-v2.webp",
     width: 1448,
     box: `${columns[index % 4]} ${rows[Math.floor(index / 4)]} 350 350`,
   };
@@ -514,7 +514,7 @@ export function ReferenceReadingStory() {
           <div className={s.messages} ref={messagesRef} aria-live="polite">
             <p>
               <img
-                src="/media/site-v3/reading/ai-teacher-cartoon-v1.png"
+                src="/media/site-v3/reading/ai-teacher-cartoon-v1.webp"
                 alt="卡通 AI 阅读老师"
               />
               {current.question}
@@ -527,14 +527,14 @@ export function ReferenceReadingStory() {
                 </p>
               ) : (
                 <p key={`assistant-${messageIndex}`}>
-                  <img src="/media/site-v3/reading/ai-teacher-cartoon-v1.png" alt="卡通 AI 阅读老师" />
+                  <img src="/media/site-v3/reading/ai-teacher-cartoon-v1.webp" alt="卡通 AI 阅读老师" loading="lazy" decoding="async" />
                   {message.content}
                 </p>
               ),
             )}
             {teacherBusy && (
               <p className={s.thinking} role="status" aria-live="polite">
-                <img src="/media/site-v3/reading/ai-teacher-cartoon-v1.png" alt="卡通 AI 阅读老师" />
+                <img src="/media/site-v3/reading/ai-teacher-cartoon-v1.webp" alt="卡通 AI 阅读老师" loading="lazy" decoding="async" />
                 <span className={s.thinkingContent}>
                   <strong>小老师正在想一想</strong>
                   <span>我正在找找课文里的小线索，马上回来哦</span>

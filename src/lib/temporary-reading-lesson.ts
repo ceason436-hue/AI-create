@@ -9,7 +9,7 @@ export type TemporaryReadingSegment = {
 export const TEMPORARY_READING_LESSON = {
   id: "daqingshuxia-de-xiaoxue",
   title: "大青树下的小学",
-  coverImage: "/media/temporary-deploy/reading/daqingshuxia-de-xiaoxue-cover.png",
+  coverImage: "/media/temporary-deploy/reading/daqingshuxia-de-xiaoxue-cover.webp",
   grade: 3,
   semester: "FIRST" as const,
   publisher: "统编版",
