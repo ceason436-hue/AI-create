@@ -2,5 +2,8 @@
  * pixels from its source atlas, even when its responsive frame changes ratio. */
 export function ReferenceAsset({src,sourceWidth,box,alt,className=""}:{src:string;sourceWidth:number;box:string;alt:string;className?:string}) {
   const [x,y,width,height]=box.split(" ").map(Number);
-  return <svg className={className} viewBox={box} preserveAspectRatio="xMidYMid meet" overflow="hidden" role="img" aria-label={alt}><svg x={x} y={y} width={width} height={height} style={{width,height}} viewBox={box} overflow="hidden"><image href={src} width={sourceWidth}/></svg></svg>;
+  // React's SVG typings do not yet expose the browser's lazy image attributes;
+  // keep them on the element so atlas images yield to viewport content.
+  const lazyImageProps = { loading: "lazy", decoding: "async" } as Record<string, string>;
+  return <svg className={className} viewBox={box} preserveAspectRatio="xMidYMid meet" overflow="hidden" role="img" aria-label={alt}><svg x={x} y={y} width={width} height={height} style={{width,height}} viewBox={box} overflow="hidden"><image href={src} width={sourceWidth} {...lazyImageProps} /></svg></svg>;
 }

@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Keep responsive image variants below the 3840px default so desktop
+  // screens do not download 4K assets for a roughly 1–2K-wide viewport.
+  images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 768],
+    formats: ["image/avif", "image/webp"],
+  },
   // CI/review builds can use a separate directory while the local dev server owns .next.
   distDir: process.env.KRT_NEXT_DIST_DIR || ".next",
   // Permit both common loopback names during local development. Without this,

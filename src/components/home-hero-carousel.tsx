@@ -21,7 +21,7 @@ export function HomeHeroCarousel({ content, heroMedia }: { content: HomePageCont
   }, [slides.length]);
   const slide = slides[active] ?? slides[0];
   return <section className={s.hero} aria-labelledby="home-title">
-    {slides.map((item, index) => <Image key={`${item.image}-${index}`} src={item.image} width={1536} height={1024} alt={item.alt} className={`${s.heroPhoto} ${index === active ? s.heroPhotoActive : ""}`} priority={index === 0} />)}
+    {slides.map((item, index) => <Image key={`${item.image}-${index}`} src={item.image} width={1536} height={1024} alt={item.alt} sizes="100vw" quality={72} className={`${s.heroPhoto} ${index === active ? s.heroPhotoActive : ""}`} priority={index === 0} />)}
     <div className={s.heroCopy}>
       <p className={s.slogan}>{slide.eyebrow ?? content.hero.eyebrow}</p><svg className={s.rule} viewBox="0 0 250 15" aria-hidden="true"><path d="M0 13 8 5H194M8 1h67M200 5h40" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="246" cy="5" r="3" fill="none" stroke="currentColor"/></svg>
       <h1 id="home-title">{slide.titleLine1 ?? content.hero.titleLine1}<br />{slide.titleLine2 ?? content.hero.titleLine2}<span>。</span></h1>
