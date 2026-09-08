@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" role="img" aria-labelledby="t d">
+  <title id="t">工程标注线</title><desc id="d">用于登录页背景的三组技术标注线与节点。</desc>
+  <defs><pattern id="p" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#fff" fill-opacity=".24"/></pattern></defs>
+  <rect width="900" height="700" fill="url(#p)" opacity=".7"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".82" stroke-width="2"><path d="M120 175h170l72 72h120"/><path d="M780 320H620l-68 68H420"/><path d="M110 535h185l72-72h96"/></g>
+  <g fill="#F15A2A" stroke="#fff" stroke-width="3"><circle cx="120" cy="175" r="11"/><circle cx="482" cy="247" r="11"/><circle cx="780" cy="320" r="11"/><circle cx="420" cy="388" r="11"/><circle cx="110" cy="535" r="11"/><circle cx="463" cy="463" r="11"/></g>
+  <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"><path d="M148 145h92M650 290h88M141 505h104"/><path d="M148 204h58M684 349h54M141 564h70"/></g>
+</svg>

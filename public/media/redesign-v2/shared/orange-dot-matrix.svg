@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <title>橙色精细点阵</title>
+  <circle cx="4" cy="4" r="1.25" fill="#F05A24" fill-opacity=".22"/>
+  <circle cx="28" cy="4" r="1" fill="#F05A24" fill-opacity=".12"/>
+  <circle cx="4" cy="28" r="1" fill="#1D2F82" fill-opacity=".08"/>
+  <circle cx="28" cy="28" r="1.25" fill="#F05A24" fill-opacity=".16"/>
+</svg>

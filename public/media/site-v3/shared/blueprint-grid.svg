@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <title>科瑞特工程图纸网格</title>
+  <path d="M0 0H120V120H0Z" fill="#F8FAFE"/>
+  <path d="M0 30H120M0 60H120M0 90H120M30 0V120M60 0V120M90 0V120" stroke="#1D2F82" stroke-opacity=".055" stroke-width="1"/>
+  <path d="M0 0H120M0 120H120M0 0V120M120 0V120" stroke="#1D2F82" stroke-opacity=".09" stroke-width="1"/>
+  <circle cx="60" cy="60" r="2" fill="#F05A24" fill-opacity=".22"/>
+</svg>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>科瑞特 AI · 全站开发资源 v2</title>
+  <style>
+    :root{--ink:#1d2f82;--orange:#f05a24;--paper:#f8fafe;--muted:#66718a;--line:#d9e0ef}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"Microsoft YaHei",system-ui,sans-serif}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(240,90,36,.12) 1px,transparent 1px);background-size:28px 28px;opacity:.65}
+    header,main{position:relative;width:min(1480px,calc(100% - 48px));margin:auto}
+    header{padding:62px 0 40px;border-bottom:1px solid var(--line)}
+    .kicker{display:flex;align-items:center;gap:14px;color:var(--orange);font-weight:800;letter-spacing:.08em}.kicker:before{content:"";width:54px;height:2px;background:var(--orange)}
+    h1{margin:22px 0 12px;font-size:clamp(38px,5vw,72px);line-height:1.03;letter-spacing:-.04em;max-width:980px}header p{max-width:900px;color:var(--muted);font-size:18px;line-height:1.8;margin:0}
+    .status{margin-top:28px;display:flex;gap:24px;flex-wrap:wrap}.status span{border-left:2px solid var(--orange);padding-left:12px;color:#344366}
+    main{padding:48px 0 100px}section{margin:0 0 68px}h2{font-size:28px;margin:0 0 10px}.intro{margin:0 0 24px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    figure{grid-column:span 4;margin:0;background:#fff;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+    figure.wide{grid-column:span 6}.media{aspect-ratio:3/2;display:grid;place-items:center;overflow:hidden;background:#eef2fa}.media.diagram{aspect-ratio:12/7;background:white}.media img{width:100%;height:100%;object-fit:cover;display:block}.media.diagram img{object-fit:contain}
+    figcaption{padding:18px 20px 20px}.name{font-size:18px;font-weight:800}.meta{color:var(--muted);font-size:13px;margin-top:7px;line-height:1.55;word-break:break-all}
+    .notice{border:1px solid var(--line);background:rgba(255,255,255,.82);padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}.notice b{color:var(--orange);font-size:22px}.notice p{margin:0;color:var(--muted);line-height:1.7}
+    @media(max-width:960px){figure,figure.wide{grid-column:span 6}}
+    @media(max-width:620px){header,main{width:min(100% - 28px,1480px)}header{padding-top:38px}figure,figure.wide{grid-column:1/-1}.grid{grid-template-columns:1fr}.notice{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="kicker">DEVELOPMENT MEDIA · V2</div>
+    <h1>全站开发资源，逐张可核对。</h1>
+    <p>所有场景依据《AI 科瑞特手册》的课程与业务事实重新创作，不直接使用 PDF 原图。图中人物、课堂与作品均为概念场景，不代表具名学校、获奖学生或真实赛事结果。</p>
+    <div class="status"><span>PNG 场景 31 项</span><span>SVG 结构与纹理 13 项</span><span>AI 阅读专用资源：待页面审核后补</span></div>
+  </header>
+  <main id="root"></main>
+  <script>
+    const groups = [
+      ["首页与课程","首页成长路径、六大课程方向和两项主题课程。",[
+        ["首页首屏","home/hero-maker-studio-v1.png","P1、P38–42"],["兴趣","home/path-interest-v1.png","P38–42"],["学习","home/path-learn-v1.png","P37–42"],["实践","home/path-build-v1.png","P39–42"],["表达","home/path-present-v1.png","P40、P42"],
+        ["编程课程","courses/course-programming-v1.png","P11–15"],["3D 建模","courses/course-3d-v1.png","P16–18"],["人工智能","courses/course-ai-v1.png","P19–20"],["无人机","courses/course-drone-v1.png","P21–26"],["机器人","courses/course-robotics-v1.png","P27–35"],["综合科创","courses/course-innovation-v1.png","P36、P47–48"],["智能农业与生态养殖","courses/smart-agriculture-system-v1.png","P47"],["中草药与现代科技","courses/herbal-iot-project-v1.png","P48"]
+      ]],
+      ["AI 创作与工具","工具入口、场景背景与示例输出；当前不包含 AI 阅读专用资源。",[
+        ["AI 创作空间总览","ai-space/creator-lab-overview-v1.png","P11–20 + 真实工具"],["AI 音乐入口","ai-space/tool-music-v1.png","P19–20"],["AI 绘画入口","ai-space/tool-art-v1.png","P19–20"],["AI 编程入口","ai-space/tool-code-v1.png","P11–15、P19–20"],["音乐工作台场景","music/sound-workbench-hero-v1.png","真实工具流程"],["绘画示例输出","art/visual-generation-sample-v1.png","原创概念作品"],["机器人路径模拟","coding/robot-path-simulation-v1.png","真实工具流程"]
+      ]],
+      ["合作、活动与成长","概念场景不冒充具体学校、赛事或获奖证明。",[
+        ["合作课堂","cooperation/classroom-concept-v1.png","P65–66"],["创客空间剖视图","cooperation/maker-space-cutaway-v1.png","P65–66"],["课堂器材包","cooperation/classroom-kit-v1.png","P27–36、P65–66"],["活动工作坊","activities/workshop-process-v1.png","P55–61"],["原型测试与迭代","activities/prototype-testing-v1.png","P55–61"],["项目评审与表达","growth/project-review-v1.png","P7–9、P62–64"],["成长过程证据","growth/evidence-flatlay-v1.png","P7–9、P40、P42"]
+      ]],
+      ["咨询、品牌与登录","用于咨询转化、品牌内容和账户入口。",[
+        ["家庭课程沟通","consult/family-course-dialogue-v1.png","P39–40"],["创客空间概览","about/maker-studio-overview-v1.png","P5–6、P36–42"],["课程研发静物","about/curriculum-research-flatlay-v1.png","P5、P9、P36–42"],["登录注册侧图","auth/maker-desk-side-v1.png","P1、P36–42"]
+      ]],
+      ["结构图与母版纹理","SVG 可直接内联、响应式缩放和变色。",[
+        ["工程图纸网格","shared/blueprint-grid.svg","母版纹理","diagram"],["橙色点阵","shared/orange-dot-matrix.svg","母版纹理","diagram"],["章节技术线","shared/section-rule.svg","母版构件","diagram"],["兴趣到表达","diagrams/learning-path.svg","P38–42","diagram"],["六大课程方向","diagrams/course-six-directions.svg","P10–36","diagram"],["四阶段课程梯度","diagrams/course-ladder.svg","P38、P43–46","diagram"],["PBL 七步循环","diagrams/pbl-cycle.svg","P40","diagram"],["AI 创作五步","diagrams/ai-creation-loop.svg","P19–20","diagram"],["校园合作链路","diagrams/cooperation-delivery.svg","P65–66","diagram"],["活动准备与复盘","diagrams/event-prep-loop.svg","P55–61","diagram"],["成长五维观察","diagrams/growth-five-dimensions.svg","P7–9、P37、P42","diagram"],["选课决策图","diagrams/consult-course-map.svg","P39–40","diagram"],["科创五育","diagrams/about-five-education.svg","P41–42","diagram"]
+      ]]
+    ];
+    const root=document.querySelector('#root');
+    groups.forEach(([title,intro,items])=>{const sec=document.createElement('section');sec.innerHTML=`<h2>${title}</h2><p class="intro">${intro}</p><div class="grid"></div>`;const grid=sec.querySelector('.grid');items.forEach(([name,path,basis,type])=>{const f=document.createElement('figure');if(type==='diagram')f.className='wide';f.innerHTML=`<div class="media ${type||''}"><img src="${path}" alt="${name}" loading="lazy"></div><figcaption><div class="name">${name}</div><div class="meta">${path}<br>参考：${basis}</div></figcaption>`;grid.append(f)});root.append(sec)});
+    const note=document.createElement('div');note.className='notice';note.innerHTML='<b>边界</b><p>具名学校 Logo、真实专家肖像、证书、赛事标识和二维码不由生成模型制作。它们必须使用经授权的精确文件；AI 阅读专用图像也会等页面交互确认后再单独生成。</p>';root.append(note);
+  </script>
+</body>
+</html>

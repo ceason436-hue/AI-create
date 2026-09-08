@@ -1,0 +1,25 @@
+{
+  "regions": [
+    { "id": "header", "kind": "chrome", "grid": "A0:J0", "note": "白色课程库顶部标题导航栏" },
+    { "id": "navigation-heading", "kind": "text", "grid": "A1:B1", "note": "左栏教材导航标题与版本文字" },
+    { "id": "grade-controls", "kind": "control", "grid": "A2:B6", "note": "左栏年级和上下学期选择按钮" },
+    { "id": "backup-controls", "kind": "control", "grid": "A8:B9", "note": "左栏备用课文入口操作按钮组" },
+    { "id": "directory-heading", "kind": "text", "grid": "C1:E1", "note": "中央课文目录区域标题文字" },
+    { "id": "unit-one-title", "kind": "text", "grid": "C2:E2", "note": "中央第一单元自然观察标题" },
+    { "id": "lesson-thumb-one", "kind": "plate", "grid": "C2:C2", "note": "小蝌蚪找妈妈课程插画缩略图", "bleed": true },
+    { "id": "lesson-thumb-two", "kind": "plate", "grid": "C3:C3", "note": "植物妈妈有办法课程插画缩略图", "bleed": true },
+    { "id": "lesson-thumb-three", "kind": "plate", "grid": "C4:C4", "note": "拍手歌儿童课程插画缩略图" },
+    { "id": "lesson-thumb-four", "kind": "plate", "grid": "C5:C5", "note": "田家四季歌课程插画缩略图" },
+    { "id": "unit-two-title", "kind": "text", "grid": "C6:E6", "note": "中央第二单元家乡生活标题" },
+    { "id": "lesson-thumb-five", "kind": "plate", "grid": "C7:C7", "note": "场景歌乡村课程插画缩略图" },
+    { "id": "lesson-thumb-six", "kind": "plate", "grid": "C8:C8", "note": "树之歌自然课程插画缩略图", "bleed": true },
+    { "id": "lesson-list-text", "kind": "text", "grid": "D2:E8", "note": "中央课程名称摘要与画面数量文字" },
+    { "id": "preview-heading", "kind": "text", "grid": "F1:J1", "note": "右栏课文预览区域标题文字" },
+    { "id": "course-cover", "kind": "plate", "grid": "F2:J4", "note": "选中课文的儿童水彩课程封面插画" },
+    { "id": "course-title", "kind": "text", "grid": "F5:H5", "note": "右栏选中课文标题和年级信息文字" },
+    { "id": "course-status", "kind": "control", "grid": "F5:G5", "note": "右栏课文校对和智能拆分状态标签" },
+    { "id": "course-summary", "kind": "text", "grid": "F6:J6", "note": "右栏选中课文教学摘要说明文字" },
+    { "id": "scene-plates", "kind": "plate", "grid": "F7:J8", "note": "参考设计中的分段画面儿童插画缩略图", "bleed": true },
+    { "id": "primary-actions", "kind": "control", "grid": "F9:J9", "note": "右栏开始创作与查看课文原文按钮" }
+  ]
+}

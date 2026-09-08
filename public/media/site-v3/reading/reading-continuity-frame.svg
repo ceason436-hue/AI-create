@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 340" role="img" aria-labelledby="t d">
+  <title id="t">六段连续故事框</title><desc id="d">六个连续画面缩略框与进度轨道。</desc>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#F15A2A"/></linearGradient></defs>
+  <path d="M120 280H1280" stroke="#D8E0F1" stroke-width="5"/><path d="M120 280H720" stroke="url(#g)" stroke-width="5"/>
+  <g fill="#fff" stroke="#C9D3EA" stroke-width="2"><rect x="40" y="50" width="200" height="150" rx="16"/><rect x="264" y="50" width="200" height="150" rx="16"/><rect x="488" y="50" width="200" height="150" rx="16"/><rect x="712" y="50" width="200" height="150" rx="16"/><rect x="936" y="50" width="200" height="150" rx="16"/><rect x="1160" y="50" width="200" height="150" rx="16"/></g>
+  <g fill="none" stroke="#253A8F" stroke-width="4" opacity=".55"><path d="M72 165l40-42 36 31 30-36 30 47"/><path d="M296 165l38-58 42 48 29-25 27 35"/><path d="M520 165l46-36 30 20 30-42 30 58"/><path d="M744 165l40-50 36 42 28-26 32 34"/><path d="M968 165l36-34 31 22 31-48 38 60"/><path d="M1192 165l38-48 34 33 31-25 33 40"/></g>
+  <g fill="#253A8F"><circle cx="120" cy="280" r="12"/><circle cx="344" cy="280" r="12"/><circle cx="568" cy="280" r="12"/></g><g fill="#fff" stroke="#AAB7D6" stroke-width="4"><circle cx="792" cy="280" r="12"/><circle cx="1016" cy="280" r="12"/><circle cx="1240" cy="280" r="12"/></g><circle cx="568" cy="280" r="6" fill="#F15A2A"/>
+</svg>

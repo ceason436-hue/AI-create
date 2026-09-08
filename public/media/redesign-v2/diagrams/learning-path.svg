@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" fill="none">
+  <title>兴趣、学习、实践、表达成长路径</title><desc>依据手册第38至42页重新绘制的学习路径。</desc>
+  <rect width="1200" height="520" fill="#F8FAFE"/>
+  <path d="M80 390C230 380 264 198 430 222C596 246 632 354 790 292C930 237 958 111 1120 118" stroke="#1D2F82" stroke-width="3"/>
+  <path d="M80 390C230 380 264 198 430 222C596 246 632 354 790 292C930 237 958 111 1120 118" stroke="#F05A24" stroke-width="11" stroke-dasharray="2 42" stroke-linecap="round"/>
+  <g font-family="Arial, Microsoft YaHei, sans-serif">
+    <g transform="translate(70 306)"><circle cx="62" cy="62" r="62" fill="white" stroke="#1D2F82"/><text x="62" y="54" text-anchor="middle" font-size="19" fill="#F05A24" font-weight="700">01</text><text x="62" y="84" text-anchor="middle" font-size="25" fill="#1D2F82" font-weight="700">兴趣</text><text x="0" y="158" font-size="17" fill="#53607D">从真实问题产生好奇</text></g>
+    <g transform="translate(348 136)"><circle cx="62" cy="62" r="62" fill="#1D2F82"/><text x="62" y="54" text-anchor="middle" font-size="19" fill="#FF7A42" font-weight="700">02</text><text x="62" y="84" text-anchor="middle" font-size="25" fill="white" font-weight="700">学习</text><text x="-18" y="158" font-size="17" fill="#53607D">理解原理，拆解任务</text></g>
+    <g transform="translate(720 214)"><circle cx="62" cy="62" r="62" fill="white" stroke="#1D2F82"/><text x="62" y="54" text-anchor="middle" font-size="19" fill="#F05A24" font-weight="700">03</text><text x="62" y="84" text-anchor="middle" font-size="25" fill="#1D2F82" font-weight="700">实践</text><text x="-8" y="158" font-size="17" fill="#53607D">搭建、编程、测试、修改</text></g>
+    <g transform="translate(1010 42)"><circle cx="62" cy="62" r="62" fill="#F05A24"/><text x="62" y="54" text-anchor="middle" font-size="19" fill="white" font-weight="700">04</text><text x="62" y="84" text-anchor="middle" font-size="25" fill="white" font-weight="700">表达</text><text x="-8" y="158" font-size="17" fill="#53607D">讲清思考与创作过程</text></g>
+  </g>
+</svg>

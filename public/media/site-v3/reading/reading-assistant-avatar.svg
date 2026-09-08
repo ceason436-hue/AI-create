@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="t d">
+  <title id="t">AI 阅读助手头像</title><desc id="d">亲和的机器人教师头像。</desc>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#253A8F"/><stop offset="1" stop-color="#4059B7"/></linearGradient><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#253A8F" flood-opacity=".18"/></filter></defs>
+  <circle cx="160" cy="160" r="144" fill="#F4F7FD"/><g filter="url(#s)"><rect x="68" y="79" width="184" height="166" rx="62" fill="url(#g)"/><rect x="89" y="102" width="142" height="112" rx="45" fill="#fff"/></g>
+  <path d="M160 79V48" stroke="#253A8F" stroke-width="10" stroke-linecap="round"/><circle cx="160" cy="38" r="15" fill="#F15A2A"/>
+  <circle cx="132" cy="153" r="12" fill="#253A8F"/><circle cx="188" cy="153" r="12" fill="#253A8F"/><path d="M126 180c18 19 50 19 68 0" fill="none" stroke="#F15A2A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M61 151H39M281 151h-22" stroke="#253A8F" stroke-width="12" stroke-linecap="round"/>
+</svg>
