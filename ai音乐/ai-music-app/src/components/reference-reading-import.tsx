@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen,
@@ -13,17 +13,59 @@ import {
 import s from "./reference-reading-import.module.css";
 import { getBrowserToolStorage } from "@/lib/browser-tool-storage";
 import { useToolSession } from "@/lib/use-tool-session";
-const demo =
-  "小蚂蚁抬起头，发现了一颗大大的苹果。它围着苹果转了好几圈，心里想着：这么大的苹果，怎么才能把它搬回家呢？它决定去找朋友们一起想办法。";
+
+type ReadingPreset = {
+  id: string;
+  title: string;
+  article: string;
+  teacherGuide: string;
+  coverImage: string;
+  grade: number;
+  semester: "FIRST" | "SECOND";
+  publisher: string;
+  summary: string;
+  analysis?: unknown;
+};
+
 export function ReferenceReadingImport() {
   const toolSession = useToolSession(), storageIdentity = toolSession.storageIdentity, router = useRouter(),
     [title, setTitle] = useState("未命名"),
     [article, setArticle] = useState(""),
     [lesson, setLesson] = useState(""),
     [grade, setGrade] = useState(3),
+    [presets, setPresets] = useState<ReadingPreset[]>([]),
+    [presetNotice, setPresetNotice] = useState(""),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     error = !article.trim();
+  useEffect(() => {
+    let active = true;
+    fetch("/api/ai/reading/presets", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("presets unavailable")))
+      .then((data: unknown) => {
+        if (!active || !data || typeof data !== "object" || !Array.isArray((data as { presets?: unknown }).presets)) return;
+        const next = (data as { presets: unknown[] }).presets.filter((item): item is ReadingPreset => {
+          if (!item || typeof item !== "object") return false;
+          const value = item as Record<string, unknown>;
+          return typeof value.id === "string" && typeof value.title === "string" && typeof value.article === "string";
+        });
+        setPresets(next);
+      })
+      .catch(() => { if (active) setPresetNotice("预制课文暂时无法加载，可直接粘贴文章。"); });
+    return () => { active = false; };
+  }, []);
+
+  function selectPreset(preset: ReadingPreset) {
+    setTitle(preset.title);
+    setArticle(preset.article);
+    setLesson(preset.teacherGuide || "");
+    setGrade(preset.grade || 3);
+    setNotice(`已载入《${preset.title}》，可以直接开始绘本创作。`);
+    if (preset.analysis) {
+      getBrowserToolStorage("ai-reading", storageIdentity).set("analysis", { analysis: preset.analysis, requestId: null });
+      router.push("/tools/ai-reading/result");
+    }
+  }
   async function start() {
     if (!toolSession.verified) return setNotice("正在验证会话，请稍后重试。");
     if (error) return;
@@ -82,6 +124,23 @@ export function ReferenceReadingImport() {
       <section className={s.card}>
         <div className={s.form}>
           <h2>导入文章：{title}</h2>
+          {presets.length > 0 && (
+            <section className={s.presets} aria-label="预制课文">
+              <div className={s.presetsHeading}>
+                <h3>三年级上册预制课文</h3>
+                <span>点击课文即可进入绘本创作</span>
+              </div>
+              <div className={s.presetGrid}>
+                {presets.map((preset) => (
+                  <button type="button" className={s.presetCard} key={preset.id} onClick={() => selectPreset(preset)}>
+                    {preset.coverImage ? <img src={preset.coverImage} alt="" loading="lazy" decoding="async" /> : <span className={s.presetFallback}><BookOpen /></span>}
+                    <span><strong>{preset.title}</strong><small>{preset.publisher || "语文课文"} · {preset.grade}年级{preset.semester === "FIRST" ? "上册" : "下册"}</small></span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+          {presetNotice && <p className={s.presetNotice}>{presetNotice}</p>}
           <label>
             适用年级
             <select
@@ -156,15 +215,6 @@ export function ReferenceReadingImport() {
           </div>
           <button className={s.start} disabled={error || busy} onClick={start}>
             {busy ? "正在智能拆分…" : "开始智能拆分"}
-          </button>
-          <button
-            className={s.demo}
-            onClick={() => {
-              setArticle(demo);
-              setTitle("小蚂蚁和大苹果");
-            }}
-          >
-            填入示例文章
           </button>
           <p className={s.hint}>
             <Info />

@@ -1,6 +1,6 @@
 "use client";
 
-import { CLASSROOM_STORAGE_TTL_MS, createToolStorage, type ToolStorageIdentity } from "@/lib/tool-storage";
+import { SCHOOL_STORAGE_TTL_MS, createToolStorage, type ToolStorageIdentity } from "@/lib/tool-storage";
 
 type BrowserStorageOverrides = {
   sessionStorage?: Storage;
@@ -22,7 +22,7 @@ export function getBrowserToolStorage(
     identity,
     namespace,
     scope: identity === "PERSONAL" ? "DRAFT" : "EPHEMERAL",
-    ttlMs: identity === "SCHOOL_SHARED" ? CLASSROOM_STORAGE_TTL_MS : identity === "PERSONAL" ? 30 * 86_400_000 : 24 * 60 * 60 * 1_000,
+    ttlMs: identity === "SCHOOL_SHARED" ? SCHOOL_STORAGE_TTL_MS : identity === "PERSONAL" ? 30 * 86_400_000 : 24 * 60 * 60 * 1_000,
     ...overrides,
   });
 }

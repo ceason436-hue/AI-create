@@ -1,7 +1,7 @@
 export type ToolStorageIdentity = "ANONYMOUS" | "SCHOOL_SHARED" | "PERSONAL";
 export type ToolStorageScope = "EPHEMERAL" | "DRAFT";
 
-export const CLASSROOM_STORAGE_TTL_MS = 12 * 60 * 60 * 1_000;
+export const SCHOOL_STORAGE_TTL_MS = 7 * 24 * 60 * 60 * 1_000;
 
 type Clock = () => number;
 
@@ -106,7 +106,7 @@ export function createToolStorage(options: ToolStorageOptions): ToolStorage {
   let storage = memory;
   let persistence: ToolStorage["persistence"] = "memory";
 
-  if (options.identity === "PERSONAL" && options.scope === "DRAFT" && local) {
+  if ((options.identity === "PERSONAL" && options.scope === "DRAFT" || options.identity === "SCHOOL_SHARED") && local) {
     storage = local;
     persistence = "local";
   } else if (session) {
@@ -114,13 +114,25 @@ export function createToolStorage(options: ToolStorageOptions): ToolStorage {
     persistence = "session";
   }
 
-  // A school workspace can never extend beyond the confirmed 12-hour classroom boundary.
+  // School-created content is browser-local and expires after seven days.
   const ttlMs = options.identity === "SCHOOL_SHARED"
-    ? Math.min(options.ttlMs, CLASSROOM_STORAGE_TTL_MS)
+    ? Math.min(options.ttlMs, SCHOOL_STORAGE_TTL_MS)
     : options.ttlMs;
   const now = options.now ?? Date.now;
   const prefix = `krt:tool-storage:v1:${options.identity}:${options.scope}:${namespace}:`;
   const storageKey = (key: string) => `${prefix}${validSegment(key, "key")}`;
+
+  // Migrate active school work from the former session-only cache into the
+  // seven-day browser-local cache without touching unrelated data.
+  if (options.identity === "SCHOOL_SHARED" && storage === local && session && session !== local) {
+    for (const key of keysWithPrefix(session, prefix)) {
+      if (local.getItem(key) === null) {
+        const raw = session.getItem(key);
+        if (raw !== null) local.setItem(key, raw);
+      }
+      session.removeItem(key);
+    }
+  }
 
   const adapter: ToolStorage = {
     identity: options.identity,

@@ -12,6 +12,7 @@ type SessionAccount = {
 export function AuthNav({ sessionOnly = false }: { sessionOnly?: boolean } = {}) {
   const [account, setAccount] = useState<SessionAccount | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,12 +24,18 @@ export function AuthNav({ sessionOnly = false }: { sessionOnly?: boolean } = {})
   }, []);
 
   async function logout() {
-    if (document.cookie.includes("krt_account_type=SCHOOL_SHARED")) {
-      sessionStorage.clear();
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      if (document.cookie.includes("krt_account_type=SCHOOL_SHARED")) sessionStorage.clear();
+      const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) throw new Error("LOGOUT_FAILED");
+      setAccount(null);
+      router.replace("/");
+      router.refresh();
+    } catch {
+      setLoggingOut(false);
     }
-    await fetch("/api/auth/logout", { method: "POST" });
-    setAccount(null);
-    router.push("/");
   }
 
   if (!loaded) return sessionOnly ? null : <div className="h-10 w-24" aria-hidden="true" />;
@@ -41,8 +48,8 @@ export function AuthNav({ sessionOnly = false }: { sessionOnly?: boolean } = {})
         <span className="hidden max-w-28 truncate text-sm font-semibold text-on-primary-container sm:block" title={account.loginIdentifier}>
           {account.type === "SCHOOL_SHARED" ? "学校课堂" : account.loginIdentifier}
         </span>
-        <button type="button" onClick={logout} className="px-4 py-2 text-sm font-bold text-on-primary-container brutalist-border-white rounded-full hover:bg-white/10 transition-colors">
-          退出
+        <button type="button" disabled={loggingOut} aria-busy={loggingOut} onClick={logout} className="px-4 py-2 text-sm font-bold text-on-primary-container brutalist-border-white rounded-full hover:bg-white/10 transition-colors disabled:cursor-wait disabled:opacity-70">
+          {loggingOut ? "退出中…" : "退出"}
         </button>
       </div>
     );

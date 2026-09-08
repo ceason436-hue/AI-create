@@ -52,7 +52,7 @@ const initialPrompt =
   "未来的智慧教室，宽敞明亮，学生佩戴 AR 眼镜与 AI 助教互动，\n全息投影展示 3D 模型与数据可视化图表，桌面有平板电脑和笔记本，\n氛围科技感、教育感、积极向上。";
 const demoWorks: Work[] = Array.from({ length: 4 }, (_, i) => ({
   id: `demo-${i}`,
-  url: `/media/reference-v4/hd/art-classroom-${i + 1}.png`,
+  url: `/media/reference-v4/hd/art-classroom-${i + 1}.webp`,
   prompt: initialPrompt,
   createdAt: 0,
   demo: i,
@@ -60,25 +60,25 @@ const demoWorks: Work[] = Array.from({ length: 4 }, (_, i) => ({
 const styleOptions = [
   {
     name: "科教科技",
-    src: "/media/reference-v4/hd/art-styles.png",
+    src: "/media/reference-v4/hd/art-styles.webp",
     width: 2000,
     box: "10 30 980 680",
   },
   {
     name: "清新明亮",
-    src: "/media/reference-v4/hd/art-styles.png",
+    src: "/media/reference-v4/hd/art-styles.webp",
     width: 2000,
     box: "1010 30 980 680",
   },
   {
     name: "写实摄影",
-    src: "/media/reference-v4/hd/art-styles.png",
+    src: "/media/reference-v4/hd/art-styles.webp",
     width: 2000,
     box: "10 790 980 680",
   },
   {
     name: "线稿插画",
-    src: "/media/reference-v4/hd/art-styles.png",
+    src: "/media/reference-v4/hd/art-styles.webp",
     width: 2000,
     box: "1010 790 980 680",
   },

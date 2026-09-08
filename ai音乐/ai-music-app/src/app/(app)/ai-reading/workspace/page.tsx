@@ -6,7 +6,6 @@ import {
   ArrowLeft, Check, Sparkles, Image as ImageIcon, Loader2, 
   Send, RefreshCw, Palette, BookOpen, ChevronRight, Save, Upload
 } from "lucide-react";
-import { builtinArticles } from "../data";
 import * as mammoth from "mammoth";
 
 const STYLES = [
@@ -17,6 +16,7 @@ const STYLES = [
 ];
 
 type ChatMessage = { role: "ai" | "user"; content: string };
+type StableImageResponse = { status?: unknown; error?: unknown; result?: { kind?: unknown; preview?: { image?: unknown } } };
 type ReadingSegment = { id: string; text: string; question: string; isImportant: boolean; curriculumTarget: string; chatHistory?: ChatMessage[]; prompt?: string; image?: string | null };
 type ReadingSession = { id: string; title: string; date: string; fullText: string; segments: ReadingSegment[]; currentIndex: number; chatHistory: ChatMessage[]; extractedPrompt: string; generatedImage: string | null; globalStyle: string; lessonPlan: string; isManualInput: boolean; coverImage?: string | null; segmentCount?: number };
 
@@ -30,20 +30,16 @@ function readStoredSessions(raw: string | null): ReadingSession[] { if (!raw) re
 function AIReadingWorkspaceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const articleId = searchParams.get("articleId");
   const customTitle = searchParams.get("title");
   const urlSessionId = searchParams.get("sessionId");
   const targetSegmentIndex = searchParams.get("segmentIndex");
-
-  // Find the selected article from builtin data if id is provided
-  const selectedArticle = builtinArticles.find(a => a.id === articleId);
 
   const [sessionId, setSessionId] = useState<string | null>(urlSessionId);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Workspace States
-  const [title, setTitle] = useState(selectedArticle?.title || customTitle || "未命名");
-  const [fullText, setFullText] = useState(selectedArticle?.content || "");
+  const [title, setTitle] = useState(customTitle || "未命名");
+  const [fullText, setFullText] = useState("");
   const [isManualInput, setIsManualInput] = useState(true); // Default to showing the text input area
   const [isSplitting, setIsSplitting] = useState(false);
   
@@ -132,7 +128,7 @@ function AIReadingWorkspaceContent() {
       id: sessionId,
       title,
       date: new Date().toISOString().split('T')[0],
-      coverImage: currentSegments[0]?.image || selectedArticle?.coverImage || null,
+      coverImage: currentSegments[0]?.image || null,
       segmentCount: currentSegments.length,
       fullText,
       segments: currentSegments,
@@ -177,11 +173,11 @@ function AIReadingWorkspaceContent() {
         }
       }
     }
-  }, [isLoaded, sessionId, title, fullText, segments, currentIndex, chatHistory, extractedPrompt, generatedImage, globalStyle, lessonPlan, isManualInput, selectedArticle]);
+  }, [isLoaded, sessionId, title, fullText, segments, currentIndex, chatHistory, extractedPrompt, generatedImage, globalStyle, lessonPlan, isManualInput]);
 
   useEffect(() => {
     // 只有在 customTitle 存在，且当前还没有文章内容，且还没有 sessionId 的情况下才去拉取
-    if (customTitle && !selectedArticle && !fullText && isLoaded && !urlSessionId && !isFetchingArticle) {
+    if (customTitle && !fullText && isLoaded && !urlSessionId && !isFetchingArticle) {
       const fetchArticle = async () => {
         setIsFetchingArticle(true);
         try {
@@ -224,7 +220,7 @@ function AIReadingWorkspaceContent() {
 
       fetchArticle();
     }
-  }, [customTitle, selectedArticle, fullText, isLoaded, urlSessionId, isFetchingArticle]);
+  }, [customTitle, fullText, isLoaded, urlSessionId, isFetchingArticle]);
 
   const handleSplitText = async () => {
     if (!fullText.trim()) return;
@@ -464,17 +460,19 @@ ${historyContext}
         })
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => null) as StableImageResponse | null;
       clearInterval(interval);
       setImageProgress(100);
 
-      if (data.error) throw new Error(data.error);
+      if (!res.ok) throw new Error(typeof data?.error === "string" ? data.error : "绘本画面生成失败，请稍后重试。");
+      const image = data?.result?.kind === "IMAGE" && typeof data.result.preview?.image === "string" ? data.result.preview.image : "";
+      if (data?.status !== "SUCCEEDED" || !image) throw new Error(typeof data?.error === "string" ? data.error : "图片服务返回了无效结果。");
 
-      setGeneratedImage(data.image);
+      setGeneratedImage(image);
       
       // Update segment data
       const updatedSegments = [...segments];
-      updatedSegments[currentIndex].image = data.image;
+      updatedSegments[currentIndex].image = image;
       updatedSegments[currentIndex].prompt = extractedPrompt;
       setSegments(updatedSegments);
     } catch (err) {
@@ -538,9 +536,7 @@ ${historyContext}
           
           <div className="flex flex-col gap-2">
             <label className="text-white/80 font-medium">
-              {selectedArticle 
-                ? "以下是内置的文章原文，您可以进行修改或直接开始智能拆分：" 
-                : customTitle
+              {customTitle
                   ? isFetchingArticle 
                     ? "正在通过 AI 联网拉取文章原文，请稍候..."
                     : "已通过 AI 拉取文章原文，您可以进行检查或修改，然后开始智能拆分："
@@ -811,7 +807,7 @@ ${historyContext}
         <div className="reading-continuity-title"><strong>连续绘本场景（6 段）</strong><span>统一画风将应用于整个绘本</span></div>
         <div className="reading-continuity-grid">
           {Array.from({ length: 6 }, (_, index) => {
-            const frame = segments[index]?.image || `/media/site-v3/reading/story-frame-0${index + 1}.png`;
+            const frame = segments[index]?.image || `/media/site-v3/reading/story-frame-0${index + 1}.webp`;
             return <figure key={index} className={index === currentIndex ? "is-current" : ""}><img src={frame} alt={`绘本第 ${index + 1} 段画面`} width="1672" height="941" /><figcaption>第 {index + 1} 段 <span>{index < currentIndex ? "已完成" : index === currentIndex ? "当前" : "待生成"}</span></figcaption></figure>;
           })}
         </div>

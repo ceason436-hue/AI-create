@@ -59,6 +59,8 @@ export function ReferenceReadingStory() {
     [style, setStyle] = useState("动漫风格"),
     [image, setImage] = useState(""),
     [busy, setBusy] = useState(false),
+    [teacherThinking, setTeacherThinking] = useState(false),
+    [teacherReply, setTeacherReply] = useState(""),
     [notice, setNotice] = useState(""),
     [analysisRecord, setAnalysisRecord] =
       useState<ReadingAnalysisRecord | null>(null);
@@ -73,6 +75,14 @@ export function ReferenceReadingStory() {
       setPrompt(record.analysis.segments[0].text.slice(0, 160));
     } else setNotice("未找到本次真实阅读分析，请返回导入文章并完成 AI 分析。");
   }, [storageIdentity, toolSession.verified]);
+  useEffect(() => {
+    if (!teacherThinking) return;
+    const timer = window.setTimeout(() => {
+      setTeacherThinking(false);
+      setTeacherReply("你观察得很仔细！我们一起把这个画面想得更清楚吧。");
+    }, 900);
+    return () => window.clearTimeout(timer);
+  }, [teacherThinking]);
   const segments = analysisRecord?.analysis.segments ?? [],
     current = segments[index] ?? {
       text: "尚无分析结果。",
@@ -208,14 +218,6 @@ export function ReferenceReadingStory() {
           <em>重点精读</em>
           <div className={s.segmentBody}>
             <div>{current.text}</div>
-            <ol>
-              {segments.map((_, i) => (
-                <li className={index === i ? s.current : ""} key={i}>
-                  <button onClick={() => setIndex(i)}>{i + 1}</button>
-                  <span>{index === i ? "当前" : "待读"}</span>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
         <section className={s.chat}>
@@ -226,6 +228,7 @@ export function ReferenceReadingStory() {
               {current.question}
             </p>
               {submittedAnswer ? <p className={s.student}>{submittedAnswer}<User /></p> : null}
+              {teacherThinking ? <p className={s.thinking}><Bot /><span>小老师正在想一想</span><i /><i /><i /></p> : teacherReply ? <p><Bot />{teacherReply}</p> : null}
             <p>
               <Bot />
               证据提示：{current.evidence}
@@ -242,6 +245,8 @@ export function ReferenceReadingStory() {
                 if (answer.trim()) {
                   setSubmittedAnswer(answer);
                   setPrompt(answer);
+                  setTeacherReply("");
+                  setTeacherThinking(true);
                   setAnswer("");
                 }
               }}
