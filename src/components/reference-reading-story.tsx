@@ -86,6 +86,7 @@ export function ReferenceReadingStory() {
     router = useRouter();
   const [index, setIndex] = useState(0),
     [answer, setAnswer] = useState(""),
+    [teacherBusy, setTeacherBusy] = useState(false),
     [chatHistory, setChatHistory] = useState<ReadingChatMessage[]>([]),
     [prompt, setPrompt] = useState(""),
     [style, setStyle] = useState<string | null>(null),
@@ -280,10 +281,11 @@ export function ReferenceReadingStory() {
     if (!analysisRecord)
       return setNotice("请先完成文章分析后再向 AI 老师提问。");
     const question = answer.trim();
-    if (!question) return;
+    if (!question || teacherBusy) return;
     const nextHistory = [...chatHistory, { role: "user" as const, content: question }];
     setChatHistory(nextHistory);
     setAnswer("");
+    setTeacherBusy(true);
     try {
       const response = await fetch("/api/ai/reading/teacher", {
         method: "POST",
@@ -316,6 +318,8 @@ export function ReferenceReadingStory() {
         ...history,
         { role: "assistant", content: error instanceof Error ? error.message : "AI 老师暂时无法回答。" },
       ]);
+    } finally {
+      setTeacherBusy(false);
     }
   }
   async function renderBookCanvas() {
@@ -528,14 +532,25 @@ export function ReferenceReadingStory() {
                 </p>
               ),
             )}
+            {teacherBusy && (
+              <p className={s.thinking} role="status" aria-live="polite">
+                <img src="/media/site-v3/reading/ai-teacher-cartoon-v1.png" alt="卡通 AI 阅读老师" />
+                <span className={s.thinkingContent}>
+                  <strong>小老师正在想一想</strong>
+                  <span>我正在找找课文里的小线索，马上回来哦</span>
+                  <span className={s.thinkingDots} aria-hidden="true"><i /><i /><i /></span>
+                </span>
+              </p>
+            )}
           </div>
           <div className={s.reply}>
             <input
               value={answer}
+              disabled={teacherBusy}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="回答问题，描述你心中的画面..."
             />
-            <button onClick={() => void askTeacher()}>
+            <button disabled={teacherBusy || !answer.trim()} onClick={() => void askTeacher()}>
               <Send />
               发送
             </button>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { CLASSROOM_STORAGE_TTL_MS, createMemoryStorage, createToolStorage } from "./tool-storage";
+import { SCHOOL_STORAGE_TTL_MS, createMemoryStorage, createToolStorage } from "./tool-storage";
 
 function keys(storage: Storage) {
   return Array.from({ length: storage.length }, (_, index) => storage.key(index));
@@ -24,7 +24,7 @@ describe("tool storage", () => {
     expect(local.length).toBe(0);
   });
 
-  it("forces school work into session storage and expires it after at most 12 hours", () => {
+  it("keeps school work in browser-local storage and expires it after seven days", () => {
     const session = createMemoryStorage();
     const local = createMemoryStorage();
     let time = 10_000;
@@ -32,20 +32,33 @@ describe("tool storage", () => {
       identity: "SCHOOL_SHARED",
       namespace: "music",
       scope: "EPHEMERAL",
-      ttlMs: CLASSROOM_STORAGE_TTL_MS * 2,
+      ttlMs: SCHOOL_STORAGE_TTL_MS * 2,
       sessionStorage: session,
       localStorage: local,
       now: () => time,
     });
 
     adapter.set("track", { id: "classroom-track" });
-    expect(adapter.persistence).toBe("session");
-    expect(local.length).toBe(0);
+    expect(adapter.persistence).toBe("local");
+    expect(session.length).toBe(0);
     expect(adapter.get("track")).toEqual({ id: "classroom-track" });
 
-    time += CLASSROOM_STORAGE_TTL_MS;
+    time += SCHOOL_STORAGE_TTL_MS;
     expect(adapter.get("track")).toBeNull();
+    expect(local.length).toBe(0);
+  });
+
+  it("migrates an active school session envelope into the local cache", () => {
+    const session = createMemoryStorage();
+    const local = createMemoryStorage();
+    const oldStorage = createToolStorage({ identity: "SCHOOL_SHARED", namespace: "reading", scope: "EPHEMERAL", ttlMs: 1_000, sessionStorage: session });
+    oldStorage.set("analysis", { title: "大青树下的小学" });
+
+    const storage = createToolStorage({ identity: "SCHOOL_SHARED", namespace: "reading", scope: "EPHEMERAL", ttlMs: SCHOOL_STORAGE_TTL_MS, sessionStorage: session, localStorage: local });
+    expect(storage.persistence).toBe("local");
+    expect(storage.get("analysis")).toEqual({ title: "大青树下的小学" });
     expect(session.length).toBe(0);
+    expect(local.length).toBe(1);
   });
 
   it("keeps personal drafts explicit and separate from ephemeral session state", () => {

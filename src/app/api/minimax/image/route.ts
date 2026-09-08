@@ -14,6 +14,37 @@ const imageInputSchema = z.object({
   referenceImage: z.string().max(3_500_000).optional(),
 });
 
+function extractImageSource(value: unknown): string | null {
+  const queue: unknown[] = [value];
+  const visited = new Set<object>();
+  while (queue.length) {
+    const current = queue.shift();
+    if (!current || typeof current !== "object") continue;
+    if (visited.has(current)) continue;
+    visited.add(current);
+    if (Array.isArray(current)) {
+      queue.push(...current);
+      continue;
+    }
+    for (const [key, candidate] of Object.entries(current)) {
+      if (key === "image_base64") {
+        const encoded = Array.isArray(candidate) ? candidate[0] : candidate;
+        if (typeof encoded === "string" && encoded.trim()) {
+          return encoded.startsWith("data:image/") ? encoded : `data:image/jpeg;base64,${encoded}`;
+        }
+      }
+      if (["image_urls", "image_url", "image"].includes(key)) {
+        const source = Array.isArray(candidate) ? candidate[0] : candidate;
+        if (typeof source === "string" && (source.startsWith("https://") || source.startsWith("http://") || source.startsWith("data:image/"))) {
+          return source;
+        }
+      }
+      if (candidate && typeof candidate === "object") queue.push(candidate);
+    }
+  }
+  return null;
+}
+
 export async function POST(req: Request) {
   return withAiGateway(req, "image", async () => {
   try {
@@ -86,16 +117,15 @@ export async function POST(req: Request) {
     }
 
     // URL responses keep the UI responsive; retain Base64 parsing for compatibility.
-    let base64Image = '';
-    if (data.data && data.data.image_base64 && data.data.image_base64.length > 0) {
-      base64Image = `data:image/jpeg;base64,${data.data.image_base64[0]}`;
-    } else if (data.data && data.data.image_urls && data.data.image_urls.length > 0) {
-      base64Image = data.data.image_urls[0];
-    } else {
+    // MiniMax has returned the image payload under both data.* and top-level keys
+    // across API gateway versions, so walk the successful response rather than
+    // assuming one exact envelope.
+    const imageSource = extractImageSource(data);
+    if (!imageSource) {
       return NextResponse.json({ error: '返回的数据格式不匹配，未能找到图片数据' }, { status: 500 });
     }
 
-    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "IMAGE", preview: { image: base64Image } } });
+    return NextResponse.json({ status: "SUCCEEDED", result: { kind: "IMAGE", preview: { image: imageSource } } });
 
   } catch (error) {
     return providerExceptionResponse(error);

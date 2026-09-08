@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AuthNav } from "@/components/auth-nav";
 import { AiTrialConsent } from "@/components/ai-trial-consent";
+import { SCHOOL_STORAGE_TTL_MS } from "@/lib/tool-storage";
 
 export const metadata: Metadata = {
   title: "科瑞特 AI 创造平台",
@@ -24,16 +25,32 @@ export default function RootLayout({
             try {
               const cookie = document.cookie.split('; ').find((item) => item.startsWith('krt_account_type='));
               if (!cookie || decodeURIComponent(cookie.split('=').slice(1).join('=')) !== 'SCHOOL_SHARED') return;
-              const startedAtKey = 'krt_classroom_started_at';
-              const now = Date.now();
-              const startedAt = Number(sessionStorage.getItem(startedAtKey) || now);
-              if (!Number.isFinite(startedAt) || now - startedAt > 12 * 60 * 60 * 1000) {
-                sessionStorage.clear();
-                sessionStorage.setItem(startedAtKey, String(now));
-              } else if (!sessionStorage.getItem(startedAtKey)) {
-                sessionStorage.setItem(startedAtKey, String(startedAt));
+              const startedAtKey = 'krt_school_local_retention_started_at';
+              const retentionMs = ${SCHOOL_STORAGE_TTL_MS};
+              const scopedPrefix = 'krt:tool-storage:v1:SCHOOL_SHARED:';
+              const legacyKeys = ['ai_art_works', 'ai_art_progress', 'ai_art_isGenerating', 'ai_music_tracks', 'ai_music_favorites', 'ai_reading_history'];
+              const clearSchoolContent = (storage) => {
+                if (!storage) return;
+                for (let index = storage.length - 1; index >= 0; index -= 1) {
+                  const key = storage.key(index);
+                  if (key && (key.startsWith(scopedPrefix) || legacyKeys.includes(key))) storage.removeItem(key);
+                }
+              };
+              for (const key of legacyKeys) {
+                if (localStorage.getItem(key) === null && sessionStorage.getItem(key) !== null) {
+                  localStorage.setItem(key, sessionStorage.getItem(key));
+                  sessionStorage.removeItem(key);
+                }
               }
-              Object.defineProperty(window, 'localStorage', { configurable: true, get: () => sessionStorage });
+              const now = Date.now();
+              const startedAt = Number(localStorage.getItem(startedAtKey) || now);
+              if (!Number.isFinite(startedAt) || now - startedAt > retentionMs) {
+                clearSchoolContent(localStorage);
+                clearSchoolContent(sessionStorage);
+                localStorage.setItem(startedAtKey, String(now));
+              } else if (!localStorage.getItem(startedAtKey)) {
+                localStorage.setItem(startedAtKey, String(startedAt));
+              }
             } catch (_) {}
           })();` }} />
           {/* Top Navigation */}

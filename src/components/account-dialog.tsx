@@ -12,6 +12,7 @@ export function PublicAuthControls({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const [account, setAccount] = useState<SessionAccount | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -22,10 +23,18 @@ export function PublicAuthControls({ compact = false }: { compact?: boolean }) {
   }, []);
 
   async function logout() {
-    if (document.cookie.includes("krt_account_type=SCHOOL_SHARED")) sessionStorage.clear();
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/");
-    router.refresh();
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      if (document.cookie.includes("krt_account_type=SCHOOL_SHARED")) sessionStorage.clear();
+      const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) throw new Error("LOGOUT_FAILED");
+      setAccount(null);
+      router.replace("/");
+      router.refresh();
+    } catch {
+      setLoggingOut(false);
+    }
   }
 
   // Keep account entry points available before the session request resolves.
@@ -39,7 +48,7 @@ export function PublicAuthControls({ compact = false }: { compact?: boolean }) {
       <Link href={account.type === "ADMIN" ? "/admin" : account.type === "PERSONAL" ? "/my-works" : "/classroom"}>
         {account.type === "SCHOOL_SHARED" ? "进入课堂" : account.loginIdentifier}
       </Link>
-      <button type="button" onClick={logout}><LogOut aria-hidden="true" size={16} />退出</button>
+      <button type="button" disabled={loggingOut} aria-busy={loggingOut} onClick={logout}><LogOut aria-hidden="true" size={16} />{loggingOut ? "退出中…" : "退出"}</button>
     </div>;
   }
 
