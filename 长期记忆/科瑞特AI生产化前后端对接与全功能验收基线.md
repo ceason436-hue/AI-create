@@ -2,7 +2,7 @@
 
 > 状态：`ACTIVE / 生产化主文档`
 > 审计日期：2026-09-06
-> 应用目录：`D:\programe\AI科瑞特\AI-create\ai音乐\ai-music-app`
+> 应用目录：`D:\programe\AI科瑞特\AI-create`
 > 生产域名：`https://lingpeak.com`
 > 本文不记录任何真实密码、密钥或学生资料。
 
@@ -346,7 +346,7 @@ AI 绘画已经尝试调用 `/api/works`，但 UI 历史仍以 `ai_art_works` �
 - 点数账本引用、UsageEvent 请求引用唯一；结算使用状态 CAS；Redis 并发使用带 token 的 ZSET lease，不再用可重复 DECR。
 - 个人音乐由服务端受控拉取、MIME/大小/SSRF 校验后存储；作品容量用串行化事务处理；对象失败补偿；作品支持收藏、版本链和来源请求。
 - 旧 `music_query` 任意任务查询已返回 410，避免任务 ID 越权；异步恢复通过站内请求状态接口完成。
-- 生产默认仍为 `AI_GENERATION_ENABLED=false`。本轮没有付费供应商调用，模型字段、真实成本权重及供应商端同步/异步行为仍须在 Stage F 灰度实测，不能写成已验证。
+- 生产默认仍为 `AI_GENERATION_ENABLED=false`。2026-09-07 已在本机用当前 MiniMax 配置完成最小真实调用；结果见第 18 节。真实成本权重、生产开关及供应商端持续稳定性仍须在 Stage F 灰度实测。
 
 ### 阶段 D：四工具真实化与存储边界
 
@@ -365,15 +365,23 @@ AI 绘画已经尝试调用 `/api/works`，但 UI 历史仍以 `ai_art_works` �
 
 ## 16. 2026-09-07 最终本地质量门禁
 
-- `npm test`：31 files / 87 tests passed。
+- `npm test`：32 files / 91 tests passed。
 - `npx tsc --noEmit`：通过。
 - `npm run lint`：0 errors / 29 warnings；警告均为既有 `<img>` 建议和 Hook 依赖建议，未冒充零缺陷。
-- `npm run security:scan`：1417 个源码/配置文件通过凭据扫描。
-- `npm run routes:check`：69 pages / 90 route handlers，通过。
-- `npm run build`：Next.js 16.3.4 通过，108 个静态页面。生产占位 RDS 在构建期不可达，loader 安全 fallback；这不是生产 RDS 验证。
+- `npm run security:scan`：1423 个源码/配置文件通过凭据扫描。
+- `npm run routes:check`：70 pages / 93 route handlers，通过。
+- `npm run build`：Next.js 16.3.4 通过，111 个静态页面。本轮显式使用本地 PostgreSQL 与隔离 Redis 构建，避免把生产占位 RDS 的 fallback 当作数据库验收。
 - Prisma：13 个迁移已在本地 PostgreSQL 应用并显示 up to date；最新迁移为 `20260907100000_split_reading_tool`。
 - Dockerfile 已切换 `npm ci`、构建期生成 Prisma Client、非 root runner 和 readiness healthcheck；Compose 仅绑定 `127.0.0.1:3000`。镜像实构两次均因 Docker Hub OAuth `EOF` 无法拉取 `node:20-alpine`，因此镜像构建未记为通过。
 
 ## 17. 唯一剩余阶段：F 真实生产基础设施验收
 
 阶段 A-E 的已确认本地/本机预发布范围完成。仍未完成且不得宣称通过的范围为：生产 RDS 真实连通、迁移账号与运行账号最小权限；ECS RAM Role 临时凭据与私有 OSS 真实读写/生命周期；ECS Redis；LibreOffice/FFmpeg 独立 Worker 与 Token；Docker 镜像在可用 Registry 环境实构；Nginx 发布；监控告警；备份恢复；真实授权多格式课件/媒体链路；MiniMax 小流量付费灰度、成本权重；30/60 并发及失败恢复。当前 2C2G ECS 不作为最终并发验收环境，不自动扩容、不自动发布、不写生产数据。
+
+## 18. 真实 AI 供应商本地验收（2026-09-07）
+
+- AI 编程：真实 MiniMax 文本调用返回 200，单文件 HTML 可被站内契约提取并在 sandbox 预览；兼容模型返回的 `<think>` 推理段，不向前端暴露内部推理。
+- AI 阅读：真实结构化分析返回 200，得到标题、5 个关键词、3 个分段及结构信息；修复原分块正则中下划线导致文章无法分块的问题，并为无效结构化响应增加一次校正重试。
+- AI 绘画：真实 MiniMax 图片生成返回 200，站内稳定契约为 `IMAGE`，返回可显示的数据 URL。
+- AI 音乐：当前账户被 MiniMax 以 HTTP 410、供应商码 2153 拒绝，含义为音乐 API 不再向新用户开放；站内现返回明确的 503 `PROVIDER_UNAVAILABLE` 且 `retryable=false`。在配置可用的音乐供应商或具备存量 Music API 权限的账户前，不得宣称音乐生成可用。
+- 回归门禁：Vitest 32 files / 91 tests、TypeScript 和 ESLint 全部通过；管理员会话保持基线要求的 8 小时。
