@@ -27,7 +27,7 @@ PowerShell 多行命令必须使用反引号 `` ` `` 续行；不要把 `-p 22` 
 
 - 新站源码：`/opt/krt-ai`
 - Compose：`/opt/krt-ai/docker-compose.temporary.yml`
-- 新站容器：`krt-ai-platform-web`
+- 新站容器：`krt-ai`
 - Compose 项目：`krt-ai`
 - 新站本地端口：`127.0.0.1:3010 -> 3000`
 - 旧站回滚容器：`ai-music-app`（原端口 3000）
@@ -38,7 +38,7 @@ PowerShell 多行命令必须使用反引号 `` ` `` 续行；不要把 `-p 22` 
 
 ## 检查与部署命令
 
-登录后依次检查：`cd /opt/krt-ai`、`docker compose -p krt-ai -f docker-compose.temporary.yml ps`、`docker logs --tail 120 krt-ai-platform-web`、`curl -fsS http://127.0.0.1:3010/api/health/ready`、`curl -fsS https://lingpeak.com/api/health/ready`、`nginx -t`。健康接口应返回 `status: ready` 和 `mode: temporary-no-database-no-oss`。
+登录后依次检查：`cd /opt/krt-ai`、`docker compose -p krt-ai -f docker-compose.temporary.yml ps`、`docker logs --tail 120 krt-ai`、`curl -fsS http://127.0.0.1:3010/api/health/ready`、`curl -fsS https://lingpeak.com/api/health/ready`、`nginx -t`。健康接口应返回 `status: ready` 和 `mode: temporary-no-database-no-oss`。
 
 本地测试：`npm.cmd exec tsc -- --noEmit`、`npm.cmd test`；推送分支：`git push origin codex/temporary-no-db-deploy`。
 
@@ -57,4 +57,3 @@ PowerShell 多行命令必须使用反引号 `` ` `` 续行；不要把 `-p 22` 
 本地备份目录：`D:\.codex\backups\AI-create-server-old-20260908`，包含旧站源码包、Nginx 回滚包和 `MANIFEST.sha256`。GitHub 备份分支：`backup/server-old-20260908`。
 
 新对话可直接说：**“请先读取项目根目录的 `SSH_DEPLOYMENT_RUNBOOK.md`，使用其中的密钥路径连接 `47.111.227.165:22`，先检查 `/opt/krt-ai`、Docker Compose、Nginx 和健康接口，再按我的明确指令执行部署。不要读取或输出私钥、`.env.production.local` 或 API 密钥；删除、主站切换和推送操作都先确认。”**
-

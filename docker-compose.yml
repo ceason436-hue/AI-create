@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: krt-ai-platform-web
+    container_name: krt-ai
     ports:
       - "127.0.0.1:3000:3000"
     restart: unless-stopped
